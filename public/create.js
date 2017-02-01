@@ -83,6 +83,7 @@ firebase.initializeApp(config)
 /// Login form
 
 document.forms.login.addEventListener('submit', function(e) {
+  e.preventDefault()
   disableForm(e.target, true)
   var email = e.target.elements.email.value
   var password = e.target.elements.password.value
@@ -94,12 +95,21 @@ document.forms.login.addEventListener('submit', function(e) {
     disableForm(e.target, false)
     notify(error.message)
   })
-  return false
+})
+
+document.getElementById('cancel').addEventListener('click', function(e) {
+  e.preventDefault()
+  history.back()
+})
+
+var dialog = document.querySelector('dialog')
+dialogPolyfill.registerDialog(dialog)
+
+dialog.addEventListener('cancel', function(e) {
+  e.preventDefault()
 })
 
 firebase.auth().onAuthStateChanged(function(user) {
-  var dialog = document.querySelector('dialog')
-  dialogPolyfill.registerDialog(dialog)
   if (user) {
     app.user = user.email
     dialog.close()
