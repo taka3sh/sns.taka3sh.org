@@ -5,46 +5,23 @@ const config = {
 }
 
 function notify(message) {
-  var notification = document.querySelector('.mdl-js-snackbar');
-  notification.MaterialSnackbar.showSnackbar({
+  document.querySelector('.mdl-js-snackbar').MaterialSnackbar.showSnackbar({
     message: message
   });
 }
 
-function toggleForm(form, disabled) {
-  form.querySelectorAll('input').forEach(function(elem) {
-    elem.disabled = disabled
+function updateMDL() {
+  Vue.nextTick(function() {
+    document.querySelectorAll('.mdl-textfield').forEach(function(elem) {
+      if (elem.MaterialTextfield) {
+        elem.MaterialTextfield.checkDirty()
+      }
+    })
   })
-}
-
-function resetForm(form) {
-  form.querySelectorAll('.mdl-textfield').forEach(function(elem) {
-    elem.MaterialTextfield.change()
-  })
-}
-
-function onLogin(e) {
-  var email = e.target.elements.email.value
-  var password = e.target.elements.password.value
-
-  toggleForm(e.target, true)
-
-  firebase.auth().signInWithEmailAndPassword(email, password).then(function () {
-    toggleForm(e.target, false)
-    resetForm(e.target)
-  }).catch(function (error) {
-    toggleForm(e.target, false)
-    notify(error.message)
-  })
-
-  return false
-}
-
-function onLogout(e) {
-  firebase.auth().signOut()
 }
 
 function onSubmit(e) {
+  this.submitting = true
   var newPostKey = firebase.database().ref().child('posts').push().key
   var updates = {}
   updates['/posts/' + newPostKey] = {
@@ -53,38 +30,75 @@ function onSubmit(e) {
     createdAt: moment(this.createdAt).toISOString(),
   }
 
-  firebase.database().ref().update(updates).catch(function(error) {
-    notification.MaterialSnackbar.showSnackbar({
-      message: error.message
-    });
+  firebase.database().ref().update(updates).then(() => {
+    this.submitting = false
+    e.target.reset()
+    notify("A new post was successfully created")
+  }).catch((error) => {
+    notify(error.message)
   })
 }
 
-document.forms.login.onsubmit = onLogin
+function onReset() {
+  this.title = this.body = ''
+  this.createdAt = moment().startOf('minute').format()
+  updateMDL()
+}
+
+function onLogout(e) {
+  firebase.auth().signOut()
+}
 
 var app = new Vue({
   el: '#app',
   data: {
     title: "",
     body: "",
-    createdAt: moment().startOf('minute').format(),
+    createdAt: "",
     user: null,
+    submitting: false,
   },
   methods: {
     localizeDate: function(date) {
       return moment(date).format('LLLL')
     },
-    onLogin: onLogin,
     onLogout: onLogout,
     onSubmit: onSubmit,
+    onReset: onReset,
   },
+  mounted: function() {
+    document.forms.post.reset()
+  }
 })
 
 firebase.initializeApp(config)
 
-var dialog = document.querySelector('dialog')
-dialogPolyfill.registerDialog(dialog)
+/// Login form
+
+function disableForm(form, disabled) {
+  form.querySelectorAll('input').forEach(function(elem) {
+    elem.disabled = disabled
+  })
+}
+
+document.forms.login.addEventListener('submit', function(e) {
+  disableForm(e.target, true)
+  var email = e.target.elements.email.value
+  var password = e.target.elements.password.value
+  firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
+    disableForm(e.target, false)
+    e.target.reset()
+    updateMDL()
+  }).catch(function (error) {
+    disableForm(e.target, false)
+    notify(error.message)
+  })
+  return false
+})
+
 firebase.auth().onAuthStateChanged(function(user) {
+  var dialog = document.querySelector('dialog')
+  dialogPolyfill.registerDialog(dialog)
   if (user) {
     app.user = user.email
     dialog.close()

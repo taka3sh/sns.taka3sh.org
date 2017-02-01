@@ -1,39 +1,42 @@
-<div id="app" class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
   <%- partial('/_shared/header') %>
 
-  <main class="mdl-layout__content">
+  <main class="mdl-layout__content" id="app">
     <section class="mdl-grid">
-      <div class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp">
-        <form v-on:submit.prevent="onSubmit">
-          <div class="mdl-card__supporting-text">
-            <p>
-              <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" type="text" id="title" v-model="title" required>
-                <label class="mdl-textfield__label" for="title">Title</label>
-              </div>
-            </p>
-            <p>
-              <div class="mdl-textfield mdl-js-textfield">
-                <textarea class="mdl-textfield__input" type="text" rows="10" id="body" v-model="body" required></textarea>
-                <label class="mdl-textfield__label" for="body">Body</label>
-              </div>
-            </p>
-            <p>
-              <div class="mdl-textfield mdl-js-textfield">
-                <input class="mdl-textfield__input" type="datetime" id="createdAt" v-model="createdAt" required>
-                <label class="mdl-textfield__label" for="createdAt">Date / Time</label>
-              </div>
-            </p>
-            <p><input class="mdl-button mdl-js-button mdl-button--raised" type="submit" v-bind:disabled="user == null"></p>
-            <p>
-              Logged in as {{ user }}
-              <a href="#" v-on:click.prevent="onLogout" style="color: blue">Logout</a>
-            </p>
+      <form class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp" id="post" v-on:submit.prevent="onSubmit" v-on:reset.prevent="onReset">
+        <div class="mdl-card__title">
+          <h2 class="mdl-card__title-text">Creating a new post</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+          <div>
+            <div class="mdl-textfield mdl-js-textfield">
+              <input class="mdl-textfield__input" type="text" id="title" v-model="title" required v-bind:disabled="submitting">
+              <label class="mdl-textfield__label" for="title">Title</label>
+            </div>
           </div>
-        </form>
-      </div>
+          <div>
+            <div class="mdl-textfield mdl-js-textfield">
+              <textarea class="mdl-textfield__input" type="text" rows="10" id="body" v-model="body" required v-bind:disabled="submitting"></textarea>
+              <label class="mdl-textfield__label" for="body">Body</label>
+            </div>
+          </div>
+          <div>
+            <div class="mdl-textfield mdl-js-textfield">
+              <input class="mdl-textfield__input" type="datetime" id="createdAt" v-model="createdAt" required v-bind:disabled="submitting">
+              <label class="mdl-textfield__label" for="createdAt">Date / Time</label>
+            </div>
+          </div>
+        </div>
+        <div class="mdl-card__actions">
+          <input class="mdl-button mdl-js-button mdl-button--raised" type="submit" v-bind:disabled="submitting">
+          <input class="mdl-button mdl-js-button mdl-button--raised" type="reset" v-bind:disabled="submitting">
+          <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" v-on:click="onLogout" v-bind:disabled="submitting">
+            Logout ({{ user }})
+          </a>
+        </div>
+      </form>
 
-      <div class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp">
+      <article class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp">
         <div class="mdl-card__title">
           <h2 class="mdl-card__title-text">{{ title || 'Preview' }}</h2>
         </div>
@@ -41,12 +44,12 @@
           {{ body }}
           <p>{{ localizeDate(createdAt) }}</p>
         </div>
-      </div>
+      </article>
     </section>
 
     <%- partial('/_shared/footer') %>
   </main>
 </div>
 
-<%- partial('/_shared/notification') %>
 <%- partial('/_shared/loginform') %>
+<%- partial('/_shared/snackbar') %>
