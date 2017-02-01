@@ -1,24 +1,26 @@
 <div id="app" class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
   <%- partial('/_shared/header') %>
 
-  <main class="mdl-layout__content">
-    <section class="mdl-grid" id="app">
+  <main class="mdl-layout__content" id="app">
+    <section class="mdl-grid">
       <p class="mdl-cell mdl-cell--12-col">
         こちらは、たかさん支援隊からの連絡などを配信するサイトです。
       </p>
+    </section>
 
-      <template v-if="posts.length > 0">
-        <div v-for="post in posts" class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp">
-          <div class="mdl-card__title">
-            <h2 class="mdl-card__title-text">{{ post.title }}</h2>
-          </div>
-          <div class="mdl-card__supporting-text">
-            {{ post.body }}
-            <p>{{ localizeDate(post.createdAt) }}</p>
-          </div>
+    <transition-group name="posts" tag="section" class="mdl-grid" v-if="posts.length > 0">
+      <div v-for="post in posts" class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp" v-bind:key="post">
+        <div class="mdl-card__title">
+          <h2 class="mdl-card__title-text">{{ post.title }}</h2>
         </div>
-      </template>
-      <div v-else class="loading mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp">
+        <div class="mdl-card__supporting-text">
+          {{ post.body }}
+          <p>{{ localizeDate(post.createdAt) }}</p>
+        </div>
+      </div>
+    </transition-group>
+    <section class="mdl-grid" v-else>
+      <div class="loading mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp">
         <div class="mdl-card__title">
           <h2 class="mdl-card__title-text">Loading...</h2>
         </div>

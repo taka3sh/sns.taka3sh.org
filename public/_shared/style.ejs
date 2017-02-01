@@ -22,4 +22,21 @@ section {
   justify-content: center;
   align-items: center;
 }
+
+.posts-enter-active, .posts-leave-active {
+  transition: all 0.5s;
+}
+
+.posts-enter, .posts-leave-to {
+  opacity: 0.3;
+  transform: translateX(-1em);
+}
+
+.posts-move {
+  transition: transform 0.5s;
+}
 <% } %>
+
+transition-group {
+  display: none !important;
+}
