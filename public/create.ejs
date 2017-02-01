@@ -10,27 +10,27 @@
         <div class="mdl-card__supporting-text">
           <div>
             <div class="mdl-textfield mdl-js-textfield">
-              <input class="mdl-textfield__input" type="text" id="title" v-model="title" required v-bind:disabled="submitting">
+              <input class="mdl-textfield__input" type="text" id="title" v-model="title" required>
               <label class="mdl-textfield__label" for="title">Title</label>
             </div>
           </div>
           <div>
             <div class="mdl-textfield mdl-js-textfield">
-              <textarea class="mdl-textfield__input" type="text" rows="10" id="body" v-model="body" required v-bind:disabled="submitting"></textarea>
+              <textarea class="mdl-textfield__input" type="text" rows="10" id="body" v-model="body" required></textarea>
               <label class="mdl-textfield__label" for="body">Body</label>
             </div>
           </div>
           <div>
             <div class="mdl-textfield mdl-js-textfield">
-              <input class="mdl-textfield__input" type="datetime" id="createdAt" v-model="createdAt" required v-bind:disabled="submitting">
+              <input class="mdl-textfield__input" type="datetime" id="createdAt" v-model="createdAt" required>
               <label class="mdl-textfield__label" for="createdAt">Date / Time</label>
             </div>
           </div>
         </div>
         <div class="mdl-card__actions">
-          <input class="mdl-button mdl-js-button mdl-button--raised" type="submit" v-bind:disabled="submitting">
-          <input class="mdl-button mdl-js-button mdl-button--raised" type="reset" v-bind:disabled="submitting">
-          <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" v-on:click="onLogout" v-bind:disabled="submitting">
+          <input class="mdl-button mdl-js-button mdl-button--raised" type="submit">
+          <input class="mdl-button mdl-js-button mdl-button--raised" type="reset">
+          <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" v-on:click="onLogout">
             Logout ({{ user }})
           </a>
         </div>

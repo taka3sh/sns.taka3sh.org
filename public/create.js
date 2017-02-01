@@ -10,6 +10,12 @@ function notify(message) {
   });
 }
 
+function disableForm(form, disabled) {
+  form.querySelectorAll('input').forEach(function(elem) {
+    elem.disabled = disabled
+  })
+}
+
 function updateMDL() {
   Vue.nextTick(function() {
     document.querySelectorAll('.mdl-textfield').forEach(function(elem) {
@@ -21,7 +27,8 @@ function updateMDL() {
 }
 
 function onSubmit(e) {
-  this.submitting = true
+  disableForm(e.target, true)
+
   var newPostKey = firebase.database().ref().child('posts').push().key
   var updates = {}
   updates['/posts/' + newPostKey] = {
@@ -31,10 +38,11 @@ function onSubmit(e) {
   }
 
   firebase.database().ref().update(updates).then(() => {
-    this.submitting = false
+    disableForm(e.target, false)
     e.target.reset()
     notify("A new post was successfully created")
   }).catch((error) => {
+    disableForm(e.target, false)
     notify(error.message)
   })
 }
@@ -56,7 +64,6 @@ var app = new Vue({
     body: "",
     createdAt: "",
     user: null,
-    submitting: false,
   },
   methods: {
     localizeDate: function(date) {
@@ -74,12 +81,6 @@ var app = new Vue({
 firebase.initializeApp(config)
 
 /// Login form
-
-function disableForm(form, disabled) {
-  form.querySelectorAll('input').forEach(function(elem) {
-    elem.disabled = disabled
-  })
-}
 
 document.forms.login.addEventListener('submit', function(e) {
   disableForm(e.target, true)
