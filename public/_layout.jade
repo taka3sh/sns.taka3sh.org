@@ -1,0 +1,22 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    title= title
+    link(rel='stylesheet', href='https://fonts.googleapis.com/icon?family=Material+Icons')
+    link(rel='stylesheet', href='https://code.getmdl.io/1.3.0/material.amber-yellow.min.css')
+    if current.source !== 'index'
+      link(rel='stylesheet', href='https://unpkg.com/dialog-polyfill@0.4.6/dialog-polyfill.css')
+    style
+      != partial('_shared/style.ejs')
+    script(defer='', src='https://www.gstatic.com/firebasejs/3.3.0/firebase-app.js')
+    script(defer='', src='https://www.gstatic.com/firebasejs/3.3.0/firebase-database.js')
+    script(defer='', src='https://code.getmdl.io/1.3.0/material.min.js')
+    script(defer='', src='https://unpkg.com/vue/dist/vue.js')
+    script(defer='', src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment-with-locales.min.js')
+    if current.source !== 'index'
+      script(defer='', src='https://www.gstatic.com/firebasejs/3.3.0/firebase-auth.js')
+      script(defer='', src='https://unpkg.com/dialog-polyfill@0.4.6/dialog-polyfill.js')
+    script(defer='', src=current.source + '.js')
+  body
+    != yield

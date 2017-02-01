@@ -1,0 +1,33 @@
+<div id="app" class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <%- partial('/_shared/header') %>
+
+  <main class="mdl-layout__content">
+    <section class="mdl-grid" id="app">
+      <p class="mdl-cell mdl-cell--12-col">
+        こちらは、たかさん支援隊からの連絡などを配信するサイトです。
+      </p>
+
+      <template v-if="posts.length > 0">
+        <div v-for="post in posts" class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp">
+          <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">{{ post.title }}</h2>
+          </div>
+          <div class="mdl-card__supporting-text">
+            {{ post.body }}
+            <p>{{ localizeDate(post.createdAt) }}</p>
+          </div>
+        </div>
+      </template>
+      <div v-else class="loading mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp">
+        <div class="mdl-card__title">
+          <h2 class="mdl-card__title-text">Loading...</h2>
+        </div>
+        <div class="mdl-card__supporting-text">
+          <div class="mdl-spinner mdl-js-spinner is-active"></div>
+        </div>
+      </div>
+    </section>
+
+    <%- partial('/_shared/footer') %>
+  </main>
+</div>
