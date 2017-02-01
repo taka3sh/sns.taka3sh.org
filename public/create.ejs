@@ -8,6 +8,7 @@
           <h2 class="mdl-card__title-text">Creating a new post</h2>
         </div>
         <div class="mdl-card__supporting-text">
+          <p>{{ user || 'Not logged in' }}</p>
           <div>
             <div class="mdl-textfield mdl-js-textfield">
               <input class="mdl-textfield__input" type="text" id="title" v-model="title" required>
@@ -28,10 +29,10 @@
           </div>
         </div>
         <div class="mdl-card__actions">
-          <input class="mdl-button mdl-js-button mdl-button--raised" type="submit">
-          <input class="mdl-button mdl-js-button mdl-button--raised" type="reset">
+          <input class="mdl-button mdl-js-button mdl-button--raised" type="submit" value="Submit">
+          <input class="mdl-button mdl-js-button mdl-button--raised" type="reset" value="Reset">
           <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" v-on:click="onLogout">
-            Logout ({{ user }})
+            Logout
           </a>
         </div>
       </form>
