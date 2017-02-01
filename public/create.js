@@ -18,7 +18,7 @@ function disableForm(form, disabled) {
 
 function updateMDL() {
   Vue.nextTick(function() {
-    document.querySelectorAll('.mdl-textfield').forEach(function(elem) {
+    document.querySelectorAll('.mdl-js-textfield').forEach(function(elem) {
       if (elem.MaterialTextfield) {
         elem.MaterialTextfield.checkDirty()
       }
