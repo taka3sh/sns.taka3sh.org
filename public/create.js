@@ -33,9 +33,9 @@ function createPost (form) {
   var newPostKey = database.ref().child('posts').push().key
   var updates = {}
   updates['/posts/' + newPostKey] = {
-    title: form.elements.title,
-    body: form.elements.body,
-    createdAt: moment(form.elements.createdAt).toISOString()
+    title: form.elements.title.value,
+    body: form.elements.body.value,
+    createdAt: moment(form.elements.createdAt.value).toISOString()
   }
   return database.ref().update(updates)
 }
