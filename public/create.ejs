@@ -11,19 +11,19 @@
           <p>{{ user || 'Not logged in' }}</p>
           <div>
             <div class="mdl-textfield mdl-js-textfield">
-              <input class="mdl-textfield__input" type="text" id="title" v-model="title" required>
+              <input class="mdl-textfield__input" type="text" name="title" v-model="title" required>
               <label class="mdl-textfield__label" for="title">Title</label>
             </div>
           </div>
           <div>
             <div class="mdl-textfield mdl-js-textfield">
-              <textarea class="mdl-textfield__input" type="text" rows="10" id="body" v-model="body" required></textarea>
+              <textarea class="mdl-textfield__input" type="text" rows="10" name="body" v-model="body" required></textarea>
               <label class="mdl-textfield__label" for="body">Body</label>
             </div>
           </div>
           <div>
             <div class="mdl-textfield mdl-js-textfield">
-              <input class="mdl-textfield__input" type="datetime" id="createdAt" v-model="createdAt" required>
+              <input class="mdl-textfield__input" type="datetime" name="createdAt" v-model="createdAt" required>
               <label class="mdl-textfield__label" for="createdAt">Date / Time</label>
             </div>
           </div>
@@ -35,6 +35,7 @@
             Logout
           </a>
         </div>
+        <input type="hidden" name="idToken">
       </form>
 
       <article class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp">
