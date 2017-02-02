@@ -52,6 +52,8 @@ func subscribe(client *http.Client, key string, token string) (resp *http.Respon
 }
 
 func handleSubscribe(w http.ResponseWriter, r *http.Request) {
+	handleCors(w, r)
+
 	ctx := appengine.NewContext(r)
 	client := urlfetch.Client(ctx)
 
