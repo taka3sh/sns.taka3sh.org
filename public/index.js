@@ -1,52 +1,55 @@
+/* eslint-env browser */
+/* global Vue, firebase, moment */
+
 var config = {
-  apiKey: "AIzaSyB3rU05SgP6XFnQqPgrvCBLSPulxsfpwxI",
-  databaseURL: "https://sns-taka3sh-org-157419.firebaseio.com",
-  messagingSenderId: "895779023522"
+  apiKey: 'AIzaSyB3rU05SgP6XFnQqPgrvCBLSPulxsfpwxI',
+  databaseURL: 'https://sns-taka3sh-org-157419.firebaseio.com',
+  messagingSenderId: '895779023522'
 }
 firebase.initializeApp(config)
 var database = firebase.database()
 var messaging = firebase.messaging()
 
-/// Application
+// Application
 var app = new Vue({
   el: '#app',
   data: {
-    posts: [],
+    posts: []
   },
   methods: {
-    localizeDate: function(date) {
+    localizeDate: function (date) {
       return moment(date).format('LLLL')
     }
   }
 })
 
-database.ref('posts').on('child_added', function(data) {
+database.ref('posts').on('child_added', function (data) {
   app.posts.unshift(data.val())
 })
 
-/// Messaging
+// Messaging
 
-function sendTokenToServer(token) {
+function sendTokenToServer (token) {
   var endpoint = 'https://sns-taka3sh-org-157419.appspot.com/subscribe/' + token
-  fetch(endpoint, { method: "POST" })
+  fetch(endpoint, { method: 'POST' })
 }
 
-messaging.onTokenRefresh(function() {
+messaging.onTokenRefresh(function () {
   messaging.getToken()
-  .then(function(refreshedToken) {
+  .then(function (refreshedToken) {
     sendTokenToServer(refreshedToken)
   })
 })
 
-messaging.onMessage(function(payload) {
+messaging.onMessage(function (payload) {
   console.log(payload)
 })
 
-function requestPermission() {
+function requestPermission () {
   messaging.requestPermission()
-  .then(function() {
+  .then(function () {
     messaging.getToken()
-    .then(function(currentToken) {
+    .then(function (currentToken) {
       if (currentToken) {
         sendTokenToServer(currentToken)
       }
