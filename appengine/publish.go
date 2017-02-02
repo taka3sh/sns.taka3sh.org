@@ -57,12 +57,12 @@ func validateUID(publicKeys map[string]string, idToken string) error {
 	return err
 }
 
-func publish(client *http.Client, key string) (resp *http.Response, err error) {
+func publish(client *http.Client, key, title, text string) (resp *http.Response, err error) {
 	jsonStr, _ := json.Marshal(map[string]interface{}{
 		"to": "/topics/posts",
 		"notification": map[string]string{
-			"title": "The title",
-			"text":  "The text",
+			"title": title,
+			"text":  text,
 		},
 	})
 	req, err := http.NewRequest("POST", "https://fcm.googleapis.com/fcm/send", bytes.NewBuffer(jsonStr))
@@ -95,7 +95,7 @@ func handlePublish(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), 403)
 	}
 
-	resp, err := publish(client, key)
+	resp, err := publish(client, key, r.FormValue("title"), r.FormValue("body"))
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
