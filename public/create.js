@@ -139,9 +139,13 @@ dialog.addEventListener('cancel', function (e) {
 auth.onAuthStateChanged(function (user) {
   if (user) {
     app.user = user.email
-    dialog.close()
+    if (dialog.open) {
+      dialog.close()
+    }
   } else {
     app.user = null
-    dialog.showModal()
+    if (!dialog.open) {
+      dialog.showModal()
+    }
   }
 })
