@@ -34,7 +34,7 @@ function updateMDL() {
 function onSubmit(e) {
   disableForm(e.target, true)
 
-  var newPostKey = firebase.database().ref().child('posts').push().key
+  var newPostKey = database.ref().child('posts').push().key
   var updates = {}
   updates['/posts/' + newPostKey] = {
     title: this.title,
@@ -42,7 +42,7 @@ function onSubmit(e) {
     createdAt: moment(this.createdAt).toISOString(),
   }
 
-  firebase.database().ref().update(updates).then(() => {
+  database.ref().update(updates).then(() => {
     disableForm(e.target, false)
     e.target.reset()
     notify("A new post was successfully created")
@@ -59,7 +59,7 @@ function onReset() {
 }
 
 function onLogout(e) {
-  firebase.auth().signOut()
+  auth.signOut()
 }
 
 var app = new Vue({
@@ -90,7 +90,7 @@ document.forms.login.addEventListener('submit', function(e) {
   disableForm(e.target, true)
   var email = e.target.elements.email.value
   var password = e.target.elements.password.value
-  firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
+  auth.signInWithEmailAndPassword(email, password).then(function() {
     disableForm(e.target, false)
     e.target.reset()
     updateMDL()
@@ -112,7 +112,7 @@ dialog.addEventListener('cancel', function(e) {
   e.preventDefault()
 })
 
-firebase.auth().onAuthStateChanged(function(user) {
+auth.onAuthStateChanged(function(user) {
   if (user) {
     app.user = user.email
     dialog.close()
