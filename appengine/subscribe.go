@@ -7,17 +7,9 @@ import (
 	"net/url"
 	"strings"
 
-	"golang.org/x/net/context"
-
 	"google.golang.org/appengine"
-	"google.golang.org/appengine/datastore"
 	"google.golang.org/appengine/urlfetch"
 )
-
-type secret struct {
-	Name  string
-	Value string
-}
 
 func extractToken(r *http.Request) (token string, err error) {
 	components := strings.Split(r.URL.Path, "/")
@@ -27,13 +19,6 @@ func extractToken(r *http.Request) (token string, err error) {
 		err = errors.New("invalid token")
 	}
 	return
-}
-
-func getServerKey(ctx context.Context) (string, error) {
-	k := datastore.NewKey(ctx, "Secret", "fcmServerKey", 0, nil)
-	e := new(secret)
-	err := datastore.Get(ctx, k, e)
-	return e.Value, err
 }
 
 func getEndpointURL(token string) string {
@@ -57,15 +42,15 @@ func handleSubscribe(w http.ResponseWriter, r *http.Request) {
 	ctx := appengine.NewContext(r)
 	client := urlfetch.Client(ctx)
 
-	token, err := extractToken(r)
-	if err != nil {
-		http.Error(w, err.Error(), 403)
-		return
-	}
-
 	key, err := getServerKey(ctx)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	token, err := extractToken(r)
+	if err != nil {
+		http.Error(w, err.Error(), 403)
 		return
 	}
 
