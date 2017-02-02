@@ -40,6 +40,7 @@ function createPost (form) {
 function publishNotification (form) {
   return auth.currentUser.getToken(true)
   .then(function (idToken) {
+    form.elements.idToken.value = idToken
     return fetch('https://sns-taka3sh-org-157419.appspot.com/publish', {
       method: 'POST',
       body: new FormData(form)
