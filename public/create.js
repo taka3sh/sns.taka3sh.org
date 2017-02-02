@@ -1,8 +1,13 @@
-const config = {
-  apiKey: "AIzaSyCRvuGgcUMJZdptmwAGighs6gU741NLQhs",
-  authDomain: "sns-taka3sh-org.firebaseapp.com",
-  databaseURL: "https://sns-taka3sh-org.firebaseio.com",
+var config = {
+  apiKey: "AIzaSyB3rU05SgP6XFnQqPgrvCBLSPulxsfpwxI",
+  authDomain: "sns-taka3sh-org-157419.firebaseapp.com",
+  databaseURL: "https://sns-taka3sh-org-157419.firebaseio.com",
+  messagingSenderId: "895779023522"
 }
+firebase.initializeApp(config)
+var auth = firebase.auth()
+var database = firebase.database()
+var messaging = firebase.messaging()
 
 function notify(message) {
   document.querySelector('.mdl-js-snackbar').MaterialSnackbar.showSnackbar({
@@ -77,8 +82,6 @@ var app = new Vue({
     document.forms.post.reset()
   }
 })
-
-firebase.initializeApp(config)
 
 /// Login form
 

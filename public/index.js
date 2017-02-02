@@ -1,8 +1,9 @@
-firebase.initializeApp({
-  apiKey: 'AIzaSyCRvuGgcUMJZdptmwAGighs6gU741NLQhs',
-  databaseURL: 'https://sns-taka3sh-org.firebaseio.com',
-  messagingSenderId: '797345535544',
-})
+var config = {
+  apiKey: "AIzaSyB3rU05SgP6XFnQqPgrvCBLSPulxsfpwxI",
+  databaseURL: "https://sns-taka3sh-org-157419.firebaseio.com",
+  messagingSenderId: "895779023522"
+}
+firebase.initializeApp(config)
 var database = firebase.database()
 var messaging = firebase.messaging()
 
