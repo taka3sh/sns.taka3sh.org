@@ -20,9 +20,12 @@ function updateMDL () {
   })
 }
 
-function setDisabled (form, disabled) {
+function setFormLocked (form, locked) {
   form.querySelectorAll('input, textarea').forEach(function (elem) {
-    elem.disabled = disabled
+    elem.readonly = locked
+    if (elem.type === 'submit' || elem.type === 'reset') {
+      elem.disabled = locked
+    }
   })
 }
 
@@ -43,7 +46,7 @@ function publishNotification (form) {
     form.elements.idToken.value = idToken
     return fetch('https://sns-taka3sh-org-157419.appspot.com/publish', {
       method: 'POST',
-      body: new FormData(form)
+      body: new FormData(document.forms[0])
     })
   })
 }
@@ -55,7 +58,7 @@ function showToast (message) {
 }
 
 function onSubmit (e) {
-  setDisabled(e.target, true)
+  setFormLocked(e.target, true)
 
   createPost(e.target)
   .then(function () {
@@ -63,11 +66,11 @@ function onSubmit (e) {
   })
   .then(function () {
     e.target.reset()
-    setDisabled(e.target, false)
+    setFormLocked(e.target, false)
     showToast('A new post was successfully created.')
   })
   .catch(function (error) {
-    setDisabled(e.target, false)
+    setFormLocked(e.target, false)
     showToast(error.message)
     console.log(error)
   })
@@ -108,15 +111,15 @@ var app = new Vue({
 
 document.forms.login.addEventListener('submit', function (e) {
   e.preventDefault()
-  setDisabled(e.target, true)
+  setFormLocked(e.target, true)
   var email = e.target.elements.email.value
   var password = e.target.elements.password.value
   auth.signInWithEmailAndPassword(email, password).then(function () {
-    setDisabled(e.target, false)
+    setFormLocked(e.target, false)
     e.target.reset()
     updateMDL()
   }).catch(function (error) {
-    setDisabled(e.target, false)
+    setFormLocked(e.target, false)
     showToast(error.message)
   })
 })
