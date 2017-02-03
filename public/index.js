@@ -85,10 +85,6 @@ messaging.onTokenRefresh(function () {
   })
 })
 
-messaging.onMessage(function (payload) {
-  console.log(payload)
-})
-
 messaging.getToken()
 .then(function (currentToken) {
   app.messagingToken = currentToken
@@ -96,5 +92,3 @@ messaging.getToken()
 .catch(function (e) {
   console.log(e)
 })
-
-requestPermission()
