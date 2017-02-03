@@ -40,15 +40,15 @@ func handleSubscribe(w http.ResponseWriter, r *http.Request) {
 	ctx := appengine.NewContext(r)
 	client := urlfetch.Client(ctx)
 
-	key, err := getServerKey(ctx)
-	if err != nil {
-		http.Error(w, err.Error(), 500)
-		return
-	}
-
 	token, err := extractToken(r)
 	if err != nil {
 		http.Error(w, err.Error(), 403)
+		return
+	}
+
+	key, err := getServerKey(ctx)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
 		return
 	}
 
