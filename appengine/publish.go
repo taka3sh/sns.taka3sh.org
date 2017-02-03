@@ -114,6 +114,7 @@ func handlePublish(w http.ResponseWriter, r *http.Request) {
 
 	if err = v.verify(r.FormValue("idToken")); err != nil {
 		http.Error(w, err.Error(), 403)
+		return
 	}
 
 	payload := map[string]string{
