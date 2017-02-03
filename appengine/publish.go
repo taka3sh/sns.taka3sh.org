@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"encoding/pem"
 	"errors"
-	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 
@@ -101,5 +101,6 @@ func handlePublish(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprint(w, resp.Status)
+	resp.Header.Add("Content-Type", resp.Header.Get("Content-Type"))
+	io.Copy(w, resp.Body)
 }
