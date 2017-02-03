@@ -57,6 +57,7 @@ func handleSubscribe(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), 500)
 		return
 	}
+	defer resp.Body.Close()
 
 	resp.Header.Add("Content-Type", resp.Header.Get("Content-Type"))
 	io.Copy(w, resp.Body)

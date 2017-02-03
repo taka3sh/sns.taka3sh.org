@@ -25,6 +25,7 @@ func (v *uidVerifier) fetchKeys(client *http.Client) (err error) {
 	if err != nil {
 		return
 	}
+	defer resp.Body.Close()
 
 	data, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -129,6 +130,7 @@ func handlePublish(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), 500)
 		return
 	}
+	defer resp.Body.Close()
 
 	resp.Header.Add("Content-Type", resp.Header.Get("Content-Type"))
 	io.Copy(w, resp.Body)
