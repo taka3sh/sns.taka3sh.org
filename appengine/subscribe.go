@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"net/url"
 	"strings"
 
 	"google.golang.org/appengine"
@@ -22,8 +21,7 @@ func extractToken(r *http.Request) (token string, err error) {
 }
 
 func getEndpointURL(token string) string {
-	escapedToken := url.QueryEscape(token)
-	return "https://iid.googleapis.com/iid/v1/" + escapedToken + "/rel/topics/posts"
+	return "https://iid.googleapis.com/iid/v1/" + token + "/rel/topics/posts"
 }
 
 func subscribe(client *http.Client, key string, token string) (resp *http.Response, err error) {
