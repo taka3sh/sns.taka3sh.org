@@ -66,10 +66,12 @@ func (v *uidVerifier) verify(tokenString string) (err error) {
 	token, err := v.parse(tokenString)
 	if err != nil {
 		return
+	} else if !token.Valid {
+		return errors.New("invalid token")
 	}
 
-	claims, ok := token.Claims.(jwt.StandardClaims)
-	if !token.Valid || !ok {
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
 		return errors.New("malformed token")
 	}
 
