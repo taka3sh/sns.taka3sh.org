@@ -79,13 +79,10 @@ func (v *uidVerifier) verify(tokenString string) (err error) {
 	return nil
 }
 
-func publish(client *http.Client, key, title, text string) (resp *http.Response, err error) {
+func publish(client *http.Client, key string, payload map[string]string) (resp *http.Response, err error) {
 	jsonStr, _ := json.Marshal(map[string]interface{}{
-		"to": "/topics/posts",
-		"notification": map[string]string{
-			"title": title,
-			"text":  text,
-		},
+		"to":           "/topics/posts",
+		"notification": payload,
 	})
 	req, err := http.NewRequest("POST", "https://fcm.googleapis.com/fcm/send", bytes.NewBuffer(jsonStr))
 	if err == nil {
@@ -119,7 +116,11 @@ func handlePublish(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), 403)
 	}
 
-	resp, err := publish(client, key, r.FormValue("title"), r.FormValue("body"))
+	payload := map[string]string{
+		"title": r.FormValue("title"),
+		"text":  r.FormValue("body"),
+	}
+	resp, err := publish(client, key, payload)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
