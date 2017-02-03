@@ -10,15 +10,60 @@ firebase.initializeApp(config)
 var database = firebase.database()
 var messaging = firebase.messaging()
 
-// Application
+function requestPermission () {
+  return messaging.requestPermission()
+  .then(function () {
+    return messaging.getToken()
+  })
+  .then(function (currentToken) {
+    if (currentToken) {
+      sendTokenToServer(currentToken)
+      return currentToken
+    } else {
+      console.log('no permission')
+      return null
+    }
+  })
+}
+
+function deleteToken () {
+  return messaging.getToken()
+  .then(function (currentToken) {
+    return messaging.deleteToken(currentToken)
+  })
+}
+
 var app = new Vue({
   el: '#app',
   data: {
-    posts: []
+    posts: [],
+    messagingToken: null,
+    requesting: false,
+    error: null
   },
   methods: {
     localizeDate: function (date) {
       return moment(date).format('LLLL')
+    },
+    onToggleNotification: function () {
+      app.requesting = true;
+      (
+        app.messagingToken !== null
+        ? deleteToken().then(function () { return null })
+        : requestPermission()
+      )
+      .then(function (currentToken) {
+        app.messagingToken = currentToken
+      })
+      .catch(function (e) {
+        app.error = e.code
+        console.log(e)
+      })
+      .then(function () {
+        setTimeout(function () {
+          app.requesting = false
+        }, 1000)
+      })
     }
   }
 })
@@ -45,21 +90,10 @@ messaging.onMessage(function (payload) {
   console.log(payload)
 })
 
-function requestPermission () {
-  messaging.requestPermission()
-  .then(function () {
-    return messaging.getToken()
-  })
-  .then(function (currentToken) {
-    if (currentToken) {
-      sendTokenToServer(currentToken)
-    } else {
-      console.log('no permission')
-    }
-  })
-  .catch(function (error) {
-    console.log(error)
-  })
-}
-
-requestPermission()
+messaging.getToken()
+.then(function (currentToken) {
+  app.messagingToken = currentToken
+})
+.catch(function (e) {
+  console.log(e)
+})

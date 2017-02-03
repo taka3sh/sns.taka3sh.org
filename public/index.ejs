@@ -6,6 +6,20 @@
       <p class="mdl-cell mdl-cell--12-col">
         こちらは、たかさん支援隊からの連絡などを配信するサイトです。
       </p>
+      <button class="mdl-button mdl-js-button mdl-button--raised" v-bind:class="{ 'mdl-button--accent': messagingToken !== null}" v-bind:disabled="requesting" v-on:click="onToggleNotification">
+        <template v-if="messagingToken !== null">
+          通知オン
+        </template>
+        <template v-else>
+          通知オフ
+        </template>
+      </button>
+      <template v-if="error === 'messaging/permission-blocked'">
+        通知がブロックされています。
+      </template>
+      <div style='display: none' v-bind:style="{ display: requesting ? 'block' : 'none' }">
+        <div class="mdl-spinner mdl-js-spinner is-active"></div>
+      </div>
     </section>
 
     <transition-group name="posts" tag="section" class="mdl-grid" v-if="posts.length > 0">
