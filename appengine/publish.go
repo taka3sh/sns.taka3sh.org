@@ -63,9 +63,13 @@ func (v *uidVerifier) parse(tokenString string) (*jwt.Token, error) {
 
 func (v *uidVerifier) verify(tokenString string) (err error) {
 	token, err := v.parse(tokenString)
+	if err != nil {
+		return
+	}
+
 	claims, ok := token.Claims.(jwt.StandardClaims)
 	if !token.Valid || !ok {
-		return
+		return errors.New("malformed token")
 	}
 
 	if err = claims.Valid(); err != nil {
@@ -98,22 +102,21 @@ func handlePublish(w http.ResponseWriter, r *http.Request) {
 
 	ctx := appengine.NewContext(r)
 	client := urlfetch.Client(ctx)
+	v := uidVerifier{}
+
+	if err := v.fetchKeys(client); err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	if err := v.verify(r.FormValue("idToken")); err != nil {
+		http.Error(w, err.Error(), 403)
+		return
+	}
 
 	key, err := getServerKey(ctx)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
-		return
-	}
-
-	v := uidVerifier{}
-
-	if err = v.fetchKeys(client); err != nil {
-		http.Error(w, err.Error(), 500)
-		return
-	}
-
-	if err = v.verify(r.FormValue("idToken")); err != nil {
-		http.Error(w, err.Error(), 403)
 		return
 	}
 
