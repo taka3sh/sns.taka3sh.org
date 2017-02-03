@@ -41,32 +41,31 @@ var app = new Vue({
   el: '#app',
   data: {
     posts: [],
-    messagingToken: null,
     requesting: false,
-    error: null
+    error: null,
+    notifyEnabled: JSON.parse(localStorage.getItem('notifyEnabled'))
+  },
+  watch: {
+    notifyEnabled: function (value) {
+      localStorage.setItem('notifyEnabled', JSON.stringify(value))
+    }
   },
   methods: {
     localizeDate: function (date) {
       return moment(date).format('LLLL')
     },
     onToggleNotification: function () {
-      app.requesting = true;
-      (
-        app.messagingToken !== null
-        ? deleteToken().then(function () { return null })
-        : requestPermission()
-      )
-      .then(function (currentToken) {
-        app.messagingToken = currentToken
+      var self = this
+      self.requesting = true
+      var request = self.notifyEnabled ? deleteToken() : requestPermission()
+      request.then(function () {
+        self.notifyEnabled = !self.notifyEnabled
+        setTimeout(function () {
+          self.requesting = false
+        }, 1000)
       })
       .catch(function (e) {
-        app.error = e.code
         console.log(e)
-      })
-      .then(function () {
-        setTimeout(function () {
-          app.requesting = false
-        }, 1000)
       })
     }
   },
@@ -83,14 +82,6 @@ var app = new Vue({
       .catch(function (e) {
         console.log(e)
       })
-    })
-
-    messaging.getToken()
-    .then(function (currentToken) {
-      app.messagingToken = currentToken
-    })
-    .catch(function (e) {
-      console.log(e)
     })
   }
 })

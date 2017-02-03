@@ -6,8 +6,8 @@
       <p class="mdl-cell mdl-cell--12-col">
         こちらは、たかさん支援隊からの連絡などを配信するサイトです。
       </p>
-      <button class="mdl-button mdl-js-button mdl-button--raised" v-bind:class="{ 'mdl-button--accent': messagingToken !== null}" v-bind:disabled="requesting" v-on:click="onToggleNotification">
-        <template v-if="messagingToken !== null">
+      <button class="mdl-button mdl-js-button mdl-button--raised" v-bind:class="{ 'mdl-button--accent': notifyEnabled }" v-bind:disabled="requesting" v-on:click="onToggleNotification">
+        <template v-if="notifyEnabled">
           通知オン
         </template>
         <template v-else>
