@@ -16,35 +16,41 @@ import (
 	"google.golang.org/appengine/urlfetch"
 )
 
-func fetchPublicKeys(client *http.Client) (map[string]string, error) {
+type uidVerifier struct {
+	publicKeys map[string]string
+}
+
+func (v *uidVerifier) fetchKeys(client *http.Client) (err error) {
 	resp, err := client.Get("https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com")
 	if err != nil {
-		return nil, err
+		return
 	}
 
 	data, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err
+		return
 	}
 
-	var keys map[string]string
-	err = json.Unmarshal(data, &keys)
-	return keys, err
+	return json.Unmarshal(data, &v.publicKeys)
 }
 
-func validateUID(publicKeys map[string]string, idToken string) error {
-	_, err := jwt.Parse(idToken, func(token *jwt.Token) (interface{}, error) {
+func (v *uidVerifier) parse(tokenString string) (*jwt.Token, error) {
+	return jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if token.Method.Alg() != "RS256" {
+			return nil, errors.New("invalid algorithm")
+		}
+
 		kid, ok := token.Header["kid"].(string)
 		if !ok {
 			return nil, errors.New("kid was not found")
 		}
 
-		certPEM, ok := publicKeys[kid]
+		certString, ok := v.publicKeys[kid]
 		if !ok {
 			return nil, errors.New("the corresponding public key was not found")
 		}
 
-		block, _ := pem.Decode([]byte(certPEM))
+		block, _ := pem.Decode([]byte(certString))
 
 		cert, err := x509.ParseCertificate(block.Bytes)
 		if err != nil {
@@ -53,8 +59,24 @@ func validateUID(publicKeys map[string]string, idToken string) error {
 
 		return cert.PublicKey, nil
 	})
+}
 
-	return err
+func (v *uidVerifier) verify(tokenString string) (err error) {
+	token, err := v.parse(tokenString)
+	claims, ok := token.Claims.(jwt.StandardClaims)
+	if !token.Valid || !ok {
+		return
+	}
+
+	if err = claims.Valid(); err != nil {
+		return
+	}
+
+	if !claims.VerifyAudience("sns-taka3sh-org-157419", true) {
+		return errors.New("invalid aud")
+	}
+
+	return nil
 }
 
 func publish(client *http.Client, key, title, text string) (resp *http.Response, err error) {
@@ -86,12 +108,14 @@ func handlePublish(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	publicKeys, err := fetchPublicKeys(client)
-	if err != nil {
+	v := uidVerifier{}
+
+	if err = v.fetchKeys(client); err != nil {
 		http.Error(w, err.Error(), 500)
+		return
 	}
 
-	if validateUID(publicKeys, r.FormValue("idToken")) != nil {
+	if err = v.verify(r.FormValue("idToken")); err != nil {
 		http.Error(w, err.Error(), 403)
 	}
 
