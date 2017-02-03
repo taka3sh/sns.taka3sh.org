@@ -26,11 +26,13 @@ func getEndpointURL(token string) string {
 
 func subscribe(client *http.Client, key string, token string) (resp *http.Response, err error) {
 	req, err := http.NewRequest("POST", getEndpointURL(token), nil)
-	if err == nil {
-		req.Header.Add("Authorization", "key="+key)
-		req.Header.Add("Content-Type", "application/json")
-		resp, err = client.Do(req)
+	if err != nil {
+		return
 	}
+
+	req.Header.Set("Authorization", "key="+key)
+	req.Header.Set("Content-Type", "application/json")
+	resp, err = client.Do(req)
 	return
 }
 

@@ -90,11 +90,13 @@ func publish(client *http.Client, key string, payload map[string]string) (resp *
 		"notification": payload,
 	})
 	req, err := http.NewRequest("POST", "https://fcm.googleapis.com/fcm/send", bytes.NewBuffer(jsonStr))
-	if err == nil {
-		req.Header.Add("Authorization", "key="+key)
-		req.Header.Add("Content-Type", "application/json")
-		resp, err = client.Do(req)
+	if err != nil {
+		return
 	}
+
+	req.Header.Set("Authorization", "key="+key)
+	req.Header.Set("Content-Type", "application/json")
+	resp, err = client.Do(req)
 	return
 }
 
