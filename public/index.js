@@ -69,26 +69,28 @@ var app = new Vue({
         }, 1000)
       })
     }
+  },
+  created: function () {
+    database.ref('posts').on('child_added', function (data) {
+      app.posts.unshift(data.val())
+    })
+
+    messaging.onTokenRefresh(function () {
+      messaging.getToken()
+      .then(function (refreshedToken) {
+        sendTokenToServer(refreshedToken)
+      })
+      .catch(function (e) {
+        console.log(e)
+      })
+    })
+
+    messaging.getToken()
+    .then(function (currentToken) {
+      app.messagingToken = currentToken
+    })
+    .catch(function (e) {
+      console.log(e)
+    })
   }
-})
-
-database.ref('posts').on('child_added', function (data) {
-  app.posts.unshift(data.val())
-})
-
-// Messaging
-
-messaging.onTokenRefresh(function () {
-  messaging.getToken()
-  .then(function (refreshedToken) {
-    sendTokenToServer(refreshedToken)
-  })
-})
-
-messaging.getToken()
-.then(function (currentToken) {
-  app.messagingToken = currentToken
-})
-.catch(function (e) {
-  console.log(e)
 })
