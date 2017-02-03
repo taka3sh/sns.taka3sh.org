@@ -134,6 +134,7 @@ func handlePublish(w http.ResponseWriter, r *http.Request) {
 	}
 	defer resp.Body.Close()
 
-	resp.Header.Add("Content-Type", resp.Header.Get("Content-Type"))
+	w.Header().Set("Content-Type", resp.Header.Get("Content-Type"))
+	w.WriteHeader(resp.StatusCode)
 	io.Copy(w, resp.Body)
 }
