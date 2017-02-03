@@ -2,7 +2,7 @@ package appengine
 
 import (
 	"errors"
-	"fmt"
+	"io"
 	"net/http"
 	"strings"
 
@@ -58,5 +58,6 @@ func handleSubscribe(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprint(w, resp.Status)
+	resp.Header.Add("Content-Type", resp.Header.Get("Content-Type"))
+	io.Copy(w, resp.Body)
 }
