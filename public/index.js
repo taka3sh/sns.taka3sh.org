@@ -97,3 +97,5 @@ messaging.getToken()
 .catch(function (e) {
   console.log(e)
 })
+
+requestPermission()
