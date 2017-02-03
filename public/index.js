@@ -10,6 +10,11 @@ firebase.initializeApp(config)
 var database = firebase.database()
 var messaging = firebase.messaging()
 
+function sendTokenToServer (token) {
+  var endpoint = 'https://sns-taka3sh-org-157419.appspot.com/subscribe/' + token
+  return fetch(endpoint, { method: 'POST' }).then(function () { return token })
+}
+
 function requestPermission () {
   return messaging.requestPermission()
   .then(function () {
@@ -17,8 +22,7 @@ function requestPermission () {
   })
   .then(function (currentToken) {
     if (currentToken) {
-      sendTokenToServer(currentToken)
-      return currentToken
+      return sendTokenToServer(currentToken)
     } else {
       console.log('no permission')
       return null
@@ -73,11 +77,6 @@ database.ref('posts').on('child_added', function (data) {
 })
 
 // Messaging
-
-function sendTokenToServer (token) {
-  var endpoint = 'https://sns-taka3sh-org-157419.appspot.com/subscribe/' + token
-  fetch(endpoint, { method: 'POST' })
-}
 
 messaging.onTokenRefresh(function () {
   messaging.getToken()
