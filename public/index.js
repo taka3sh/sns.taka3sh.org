@@ -48,12 +48,17 @@ messaging.onMessage(function (payload) {
 function requestPermission () {
   messaging.requestPermission()
   .then(function () {
-    messaging.getToken()
-    .then(function (currentToken) {
-      if (currentToken) {
-        sendTokenToServer(currentToken)
-      }
-    })
+    return messaging.getToken()
+  })
+  .then(function (currentToken) {
+    if (currentToken) {
+      sendTokenToServer(currentToken)
+    } else {
+      console.log('no permission')
+    }
+  })
+  .catch(function (error) {
+    console.log(error)
   })
 }
 
