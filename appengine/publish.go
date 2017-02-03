@@ -107,8 +107,8 @@ func handlePublish(w http.ResponseWriter, r *http.Request) {
 
 	ctx := appengine.NewContext(r)
 	client := urlfetch.Client(ctx)
-	v := uidVerifier{}
 
+	v := uidVerifier{}
 	if err := v.fetchKeys(client); err != nil {
 		http.Error(w, err.Error(), 500)
 		return
