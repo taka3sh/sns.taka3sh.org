@@ -6,9 +6,7 @@ var config = {
   authDomain: 'sns-taka3sh-org-157419.firebaseapp.com',
   databaseURL: 'https://sns-taka3sh-org-157419.firebaseio.com'
 }
-firebase.initializeApp(config)
-var auth = firebase.auth()
-var database = firebase.database()
+var auth, database
 
 function updateMDL () {
   Vue.nextTick(function () {
@@ -17,15 +15,6 @@ function updateMDL () {
         elem.MaterialTextfield.checkDirty()
       }
     })
-  })
-}
-
-function setFormLocked (form, locked) {
-  form.querySelectorAll('input, textarea').forEach(function (elem) {
-    elem.readonly = locked
-    if (elem.type === 'submit' || elem.type === 'reset') {
-      elem.disabled = locked
-    }
   })
 }
 
@@ -60,34 +49,7 @@ function showToast (message) {
   })
 }
 
-function onSubmit (e) {
-  setFormLocked(e.target, true)
-
-  createPost(e.target)
-  .then(function () {
-    return publishNotification(e.target)
-  })
-  .then(function () {
-    e.target.reset()
-    setFormLocked(e.target, false)
-    showToast('A new post was successfully created.')
-  })
-  .catch(function (error) {
-    setFormLocked(e.target, false)
-    showToast(error.message)
-    console.log(error)
-  })
-}
-
-function onReset () {
-  this.title = this.body = ''
-  this.createdAt = moment().startOf('minute').format()
-  updateMDL()
-}
-
-function onLogout (e) {
-  auth.signOut()
-}
+moment.locale(navigator.language)
 
 var app = new Vue({
   el: '#app',
@@ -97,60 +59,90 @@ var app = new Vue({
     createdAt: '',
     user: null
   },
+  watch: {
+    title: updateMDL,
+    body: updateMDL,
+    createdAt: updateMDL
+  },
   methods: {
     localizeDate: function (date) {
       return moment(date).format('LLLL')
     },
-    onLogout: onLogout,
-    onSubmit: onSubmit,
-    onReset: onReset
+    onSubmit: function (e) {
+      this.busy = true
+      createPost(e.target)
+      .then(() => publishNotification(e.target))
+      .then(() => {
+        this.busy = false
+        e.target.reset()
+        showToast('A new post was successfully created.')
+      })
+      .catch(error => {
+        showToast(error.message)
+        console.log(error)
+      })
+      .then(() => { this.busy = false })
+    },
+    onLogout: function () {
+      auth.signOut()
+    },
+    onReset: function (e) {
+      this.title = this.body = ''
+      this.createdAt = moment().startOf('minute').toISOString()
+    }
   },
   mounted: function () {
     document.forms.post.reset()
   }
 })
 
-// Login form
-
-document.forms.login.addEventListener('submit', function (e) {
-  e.preventDefault()
-  setFormLocked(e.target, true)
-  var email = e.target.elements.email.value
-  var password = e.target.elements.password.value
-  auth.signInWithEmailAndPassword(email, password).then(function () {
-    setFormLocked(e.target, false)
-    e.target.reset()
-    updateMDL()
-  }).catch(function (error) {
-    setFormLocked(e.target, false)
-    showToast(error.message)
-  })
-})
-
-document.getElementById('cancel').addEventListener('click', function (e) {
-  e.preventDefault()
-  history.back()
-})
-
-var dialog = document.querySelector('dialog')
-dialogPolyfill.registerDialog(dialog)
-
-dialog.addEventListener('cancel', function (e) {
-  e.preventDefault()
-})
-
-auth.onAuthStateChanged(function (user) {
-  if (user) {
-    app.user = user.email
-    if (dialog.open) {
-      dialog.close()
-    }
-  } else {
-    app.user = null
-    if (!dialog.open) {
-      dialog.showModal()
+var loginform = new Vue({
+  el: '#loginform',
+  data: {
+    busy: false
+  },
+  methods: {
+    onSubmit: function (e) {
+      this.busy = true
+      var email = e.target.elements.email.value
+      var password = e.target.elements.password.value
+      auth.signInWithEmailAndPassword(email, password)
+      .then(() => {
+        e.target.reset()
+        updateMDL()
+      })
+      .catch(error => {
+        showToast(error.message)
+      })
+      .then(() => {
+        this.busy = false
+      })
     }
   }
 })
 
-moment.locale(navigator.language)
+addEventListener('load', function () {
+  firebase.initializeApp(config)
+  auth = firebase.auth()
+  database = firebase.database()
+
+  auth.onAuthStateChanged(function (user) {
+    if (user) {
+      app.user = user.email
+      if (dialog.open) {
+        dialog.close()
+      }
+    } else {
+      app.user = null
+      if (!dialog.open) {
+        dialog.showModal()
+      }
+    }
+  })
+
+  var dialog = document.querySelector('dialog')
+  dialogPolyfill.registerDialog(dialog)
+  dialog.addEventListener('cancel', function (e) {
+    e.preventDefault()
+  })
+})

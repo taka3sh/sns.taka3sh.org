@@ -1,23 +1,23 @@
 <dialog class="mdl-dialog">
-  <form id="login">
+  <form action="#" method="POST" id="loginform" v-on:submit.prevent="onSubmit">
     <h4 class="mdl-dialog__title">Login</h4>
     <div class="mdl-dialog__content">
       <div>
         <div class="mdl-textfield mdl-js-textfield">
-          <input class="mdl-textfield__input" type="email" name="email" required>
+          <input class="mdl-textfield__input" type="email" name="email" required v-bind:readonly="busy">
           <label class="mdl-textfield__label" for="email">Email</label>
         </div>
       </div>
       <div>
         <div class="mdl-textfield mdl-js-textfield">
-          <input class="mdl-textfield__input" type="password" name="password" required>
+          <input class="mdl-textfield__input" type="password" name="password" required v-bind:readonly="busy">
           <label class="mdl-textfield__label" for="password">Password</label>
         </div>
       </div>
     </div>
     <div class="mdl-dialog__actions">
-      <input type="submit" class="mdl-button" value="Login">
-      <button class="mdl-button" id="cancel">Cancel</button>
+      <input type="submit" class="mdl-button" value="Login" v-bind:disabled="busy">
+      <button class="mdl-button" id="cancel" v-on:click.prevent="history.back()">Cancel</button>
     </div>
   </form>
 </dialog>
