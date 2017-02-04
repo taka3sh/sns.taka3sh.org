@@ -114,6 +114,7 @@ addEventListener('load', function () {
   database = firebase.database()
   messaging = firebase.messaging()
 
+  Post.store()
   database.ref('posts').on('child_added', function (snapshot) {
     Post.add(snapshot.key, snapshot.val())
     Post.store()
