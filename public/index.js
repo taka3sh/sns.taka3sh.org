@@ -89,5 +89,9 @@ var app = new Vue({
         console.log(e)
       })
     })
+
+    if (Notification.permission === 'denied') {
+      this.notifyEnabled = false
+    }
   }
 })
