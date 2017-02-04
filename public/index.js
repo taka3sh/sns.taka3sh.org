@@ -90,7 +90,7 @@ var app = new Vue({
       })
     })
 
-    if (Notification.permission === 'denied') {
+    if (Notification.permission !== 'granted') {
       this.notifyEnabled = false
     }
   }
