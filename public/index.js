@@ -95,3 +95,6 @@ var app = new Vue({
     }
   }
 })
+
+
+moment.locale(navigator.language)

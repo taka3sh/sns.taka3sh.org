@@ -149,3 +149,5 @@ auth.onAuthStateChanged(function (user) {
     }
   }
 })
+
+moment.locale(navigator.language)
