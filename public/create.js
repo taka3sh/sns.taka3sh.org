@@ -8,6 +8,10 @@ var config = {
 }
 var auth, database
 
+Vue.filter('data-localize', function (value) {
+  return moment(value).format('LLLL')
+})
+
 function updateMDL () {
   Vue.nextTick(function () {
     document.querySelectorAll('.mdl-js-textfield').forEach(function (elem) {
@@ -66,9 +70,6 @@ var app = new Vue({
     createdAt: updateMDL
   },
   methods: {
-    localizeDate: function (date) {
-      return moment(date).format('LLLL')
-    },
     onSubmit: function (e) {
       this.busy = true
       createPost(e.target)

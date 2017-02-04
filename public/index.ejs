@@ -29,7 +29,7 @@
         </div>
         <div class="mdl-card__supporting-text">
           <p v-for="line in post.body.split('\n')" v-text="line"></p>
-          <p>{{ localizeDate(post.createdAt) }}</p>
+          <p>{{ post.createdAt | date-localize }}</p>
         </div>
       </div>
     </transition-group>

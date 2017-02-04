@@ -8,6 +8,10 @@ var config = {
 }
 var database, messaging
 
+Vue.filter('date-localize', function (value) {
+  return moment(value).format('LLLL')
+})
+
 function sendTokenToServer (token) {
   var endpoint = 'https://sns-taka3sh-org-157419.appspot.com/subscribe/' + token
   return fetch(endpoint, { method: 'POST' }).then(function () { return token })
@@ -75,9 +79,6 @@ var app = new Vue({
     }
   },
   methods: {
-    localizeDate: function (date) {
-      return moment(date).format('LLLL')
-    },
     onToggleNotification: function () {
       var self = this
       if (self.notifyEnabled) {
