@@ -31,7 +31,7 @@ function createPost (form) {
 
 function publishNotification (form) {
   return auth.currentUser.getToken(true)
-  .then(function (idToken) {
+  .then(idToken => {
     form.elements.idToken.value = idToken
     return new Promise(function (resolve, reject) {
       var xhr = new XMLHttpRequest()
