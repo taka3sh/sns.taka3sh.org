@@ -43,7 +43,7 @@
           <h2 class="mdl-card__title-text">{{ title || 'Preview' }}</h2>
         </div>
         <div class="mdl-card__supporting-text">
-          {{ body }}
+          <p v-for="line in post.body.split('\n')" v-text="line"></p>
           <p>{{ localizeDate(createdAt) }}</p>
         </div>
       </article>
