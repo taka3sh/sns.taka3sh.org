@@ -35,10 +35,34 @@ function deleteToken () {
   })
 }
 
+var Post = {
+  _keys: {},
+  _posts: [],
+  add: function (key, post) {
+    this._keys[key] = true
+    this._posts.unshift(post)
+  },
+  store: function () {
+    localStorage.setItem('postKeys', JSON.stringify(this._keys))
+    localStorage.setItem('posts', JSON.stringify(this._posts))
+  },
+  fetchCachedPosts: function () {
+    var posts = JSON.parse(localStorage.getItem('posts'))
+    if (!(posts instanceof Array)) return []
+    return posts
+  },
+  fetchCachedKeys: function () {
+    var posts = JSON.parse(localStorage.getItem('postKeys'))
+    if (!posts) return {}
+    return posts
+  }
+}
+
 var app = new Vue({
   el: '#app',
   data: {
     posts: [],
+    postKeys: {},
     requesting: false,
     error: null,
     notifyEnabled: JSON.parse(localStorage.getItem('notifyEnabled'))
@@ -77,8 +101,12 @@ var app = new Vue({
     if (Notification.permission !== 'granted') {
       this.notifyEnabled = false
     }
+
+    this.posts = Post.fetchCachedPosts()
+    this.postKeys = Post.fetchCachedKeys()
   }
 })
+
 
 addEventListener('load', function () {
   moment.locale(navigator.language)
@@ -87,15 +115,19 @@ addEventListener('load', function () {
   database = firebase.database()
   messaging = firebase.messaging()
 
-  database.ref('posts').on('child_added', function (data) {
-    app.posts.unshift(data.val())
+  database.ref('posts').on('child_added', function (snapshot) {
+    Post.add(snapshot.key, snapshot.val())
+    Post.store()
+
+    if (!app.postKeys[snapshot.key]) {
+      app.posts.unshift(snapshot.val())
+      app.postKeys[snapshot.key] = true
+    }
   })
 
   messaging.onTokenRefresh(function () {
     messaging.getToken()
-    .then(function (refreshedToken) {
-      sendTokenToServer(refreshedToken)
-    })
+    .then(sendTokenToServer)
     .catch(function (e) {
       console.log(e)
     })
