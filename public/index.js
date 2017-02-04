@@ -58,6 +58,8 @@ var Post = {
   }
 }
 
+moment.locale(navigator.language)
+
 var app = new Vue({
   el: '#app',
   data: {
@@ -107,10 +109,7 @@ var app = new Vue({
   }
 })
 
-
 addEventListener('load', function () {
-  moment.locale(navigator.language)
-
   firebase.initializeApp(config)
   database = firebase.database()
   messaging = firebase.messaging()
