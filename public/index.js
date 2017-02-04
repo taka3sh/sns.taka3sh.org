@@ -56,17 +56,23 @@ var app = new Vue({
     },
     onToggleNotification: function () {
       var self = this
-      self.requesting = true
-      var request = self.notifyEnabled ? deleteToken() : requestPermission()
-      request.then(function () {
-        self.notifyEnabled = !self.notifyEnabled
-        setTimeout(function () {
+      if (self.notifyEnabled) {
+        deleteToken()
+        .catch(console.log)
+        .then(function () {
+          self.notifyEnabled = false
+        })
+      } else {
+        self.requesting = true
+        requestPermission()
+        .then(function () {
+          self.notifyEnabled = true
+        })
+        .catch(console.log)
+        .then(function () {
           self.requesting = false
-        }, 1000)
-      })
-      .catch(function (e) {
-        console.log(e)
-      })
+        })
+      }
     }
   },
   created: function () {
