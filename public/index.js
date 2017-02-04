@@ -80,7 +80,7 @@ var app = new Vue({
   }
 })
 
-addEventListener('DOMContentLoaded', function () {
+addEventListener('load', function () {
   moment.locale(navigator.language)
 
   firebase.initializeApp(config)
