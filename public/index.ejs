@@ -22,7 +22,7 @@
       </div>
     </section>
 
-    <transition-group name="posts" tag="section" class="mdl-grid" v-if="posts.length > 0">
+    <transition-group name="posts" tag="section" class="mdl-grid" v-show="posts.length > 0">
       <div v-for="post in posts" class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp" v-bind:key="post">
         <div class="mdl-card__title">
           <h2 class="mdl-card__title-text">{{ post.title }}</h2>
@@ -33,7 +33,7 @@
         </div>
       </div>
     </transition-group>
-    <section class="mdl-grid" v-else>
+    <section class="mdl-grid" v-show="posts.length == 0">
       <div class="loading mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp">
         <div class="mdl-card__title">
           <h2 class="mdl-card__title-text">Loading...</h2>
