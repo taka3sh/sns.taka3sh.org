@@ -149,5 +149,3 @@ auth.onAuthStateChanged(function (user) {
     }
   }
 })
-
-moment.locale('ja')
