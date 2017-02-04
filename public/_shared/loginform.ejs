@@ -1,5 +1,5 @@
-<dialog class="mdl-dialog">
-  <form action="#" method="POST" id="loginform" v-on:submit.prevent="onSubmit">
+<dialog class="mdl-dialog" id="loginform">
+  <form action="#" method="POST" v-on:submit.prevent="onSubmit">
     <h4 class="mdl-dialog__title">Login</h4>
     <div class="mdl-dialog__content">
       <div>
@@ -20,4 +20,9 @@
       <button class="mdl-button" id="cancel" v-on:click.prevent="history.back()">Cancel</button>
     </div>
   </form>
+
+  <div class="mdl-js-snackbar mdl-snackbar">
+    <div class="mdl-snackbar__text"></div>
+    <button class="mdl-snackbar__action" type="button"></button>
+  </div>
 </dialog>

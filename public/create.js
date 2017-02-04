@@ -43,8 +43,8 @@ function publishNotification (form) {
   })
 }
 
-function showToast (message) {
-  document.querySelector('.mdl-js-snackbar').MaterialSnackbar.showSnackbar({
+function showToast (parent, message) {
+  parent.querySelector('.mdl-js-snackbar').MaterialSnackbar.showSnackbar({
     message: message
   })
 }
@@ -75,10 +75,10 @@ var app = new Vue({
       .then(() => {
         this.busy = false
         e.target.reset()
-        showToast('A new post was successfully created.')
+        showToast(this.$el, 'A new post was successfully created.')
       })
       .catch(error => {
-        showToast(error.message)
+        showToast(this.$el, error.message)
         console.log(error)
       })
       .then(() => { this.busy = false })
@@ -112,7 +112,8 @@ var loginform = new Vue({
         updateMDL()
       })
       .catch(error => {
-        showToast(error.message)
+        showToast(loginform.$el, error.message)
+        console.log(error)
       })
       .then(() => {
         this.busy = false

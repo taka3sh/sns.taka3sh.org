@@ -1,7 +1,7 @@
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header" id="app">
   <%- partial('/_shared/header') %>
 
-  <main class="mdl-layout__content" id="app">
+  <main class="mdl-layout__content">
     <section class="mdl-grid">
       <form action="#" method="POST" class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp" id="post" v-on:submit.prevent="onSubmit" v-on:reset.prevent="onReset">
         <div class="mdl-card__title">
@@ -51,6 +51,11 @@
 
     <%- partial('/_shared/footer') %>
   </main>
+
+  <div class="mdl-js-snackbar mdl-snackbar">
+    <div class="mdl-snackbar__text"></div>
+    <button class="mdl-snackbar__action" type="button"></button>
+  </div>
 </div>
 
 <%- partial('/_shared/loginform') %>
