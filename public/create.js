@@ -57,7 +57,8 @@ var app = new Vue({
     title: '',
     body: '',
     createdAt: '',
-    user: null
+    user: null,
+    busy: false
   },
   watch: {
     title: updateMDL,
