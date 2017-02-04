@@ -6,9 +6,7 @@ var config = {
   databaseURL: 'https://sns-taka3sh-org-157419.firebaseio.com',
   messagingSenderId: '895779023522'
 }
-firebase.initializeApp(config)
-var database = firebase.database()
-var messaging = firebase.messaging()
+var database, messaging
 
 function sendTokenToServer (token) {
   var endpoint = 'https://sns-taka3sh-org-157419.appspot.com/subscribe/' + token
@@ -76,25 +74,30 @@ var app = new Vue({
     }
   },
   created: function () {
-    database.ref('posts').on('child_added', function (data) {
-      app.posts.unshift(data.val())
-    })
-
-    messaging.onTokenRefresh(function () {
-      messaging.getToken()
-      .then(function (refreshedToken) {
-        sendTokenToServer(refreshedToken)
-      })
-      .catch(function (e) {
-        console.log(e)
-      })
-    })
-
     if (Notification.permission !== 'granted') {
       this.notifyEnabled = false
     }
   }
 })
 
+addEventListener('DOMContentLoaded', function () {
+  moment.locale(navigator.language)
 
-moment.locale(navigator.language)
+  firebase.initializeApp(config)
+  database = firebase.database()
+  messaging = firebase.messaging()
+
+  database.ref('posts').on('child_added', function (data) {
+    app.posts.unshift(data.val())
+  })
+
+  messaging.onTokenRefresh(function () {
+    messaging.getToken()
+    .then(function (refreshedToken) {
+      sendTokenToServer(refreshedToken)
+    })
+    .catch(function (e) {
+      console.log(e)
+    })
+  })
+})
