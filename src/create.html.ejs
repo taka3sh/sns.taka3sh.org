@@ -3,7 +3,7 @@ layout: layout.html
 title: 新規作成 - 支援隊ヌーボー
 ---
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header" id="app">
-  <% include ../partials/header.ejs %>
+  <%- include('../partials/header.ejs') %>
 
   <main class="mdl-layout__content">
     <section class="mdl-grid">
@@ -53,7 +53,7 @@ title: 新規作成 - 支援隊ヌーボー
       </article>
     </section>
 
-    <% include ../partials/footer.ejs %>
+    <%- include('../partials/footer.ejs') %>
   </main>
 
   <div class="mdl-js-snackbar mdl-snackbar">
@@ -62,6 +62,6 @@ title: 新規作成 - 支援隊ヌーボー
   </div>
 </div>
 
-<% include ../partials/loginform.ejs %>
+<%- include('../partials/loginform.ejs') %>
 
-<script><% include ../partials/create.js %></script>
+<script><% include('../js/create.js') %></script>

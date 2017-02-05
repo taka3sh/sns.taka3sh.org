@@ -2,7 +2,9 @@
   "scripts": {
     "build": "metalsmith"
   },
-  "dependencies": {
+  "devDependencies": {
+    "babel-core": "^6.22.1",
+    "babel-preset-babili": "^0.0.10",
     "jstransformer-ejs": "^0.0.3",
     "metalsmith": "^2.3.0",
     "metalsmith-html-minifier": "^2.2.0",
