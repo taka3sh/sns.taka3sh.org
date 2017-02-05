@@ -11,7 +11,7 @@ dialogPolyfill: false
       <p class="mdl-cell mdl-cell--12-col">
         こちらは、たかさん支援隊からの連絡などを配信するサイトです。
       </p>
-      <button class="mdl-button mdl-js-button mdl-button--raised" :class="{ 'mdl-button--accent': notify }" :disabled="requesting" @click="onToggle">
+      <button class="mdl-button mdl-js-button mdl-button--raised" :class="{ 'mdl-button--accent': notify }" :disabled="busy" @click="onToggle">
         <template v-if="notify">
           通知オン
         </template>
@@ -22,7 +22,7 @@ dialogPolyfill: false
       <template v-if="error === 'messaging/permission-blocked'">
         通知がブロックされています。
       </template>
-      <div style='display: none' :style="{ display: requesting ? 'block' : 'none' }">
+      <div style='display: none' :style="{ display: busy ? 'block' : 'none' }">
         <div class="mdl-spinner mdl-js-spinner is-active"></div>
       </div>
     </section>

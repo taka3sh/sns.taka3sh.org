@@ -45,7 +45,7 @@ var app = ((JSON, localStorage) => {
     data: {
       posts: [],
       postKeys: {},
-      requesting: false,
+      busy: false,
       error: null,
       notify: JSON.parse(localStorage.getItem('notify'))
     },
@@ -59,11 +59,11 @@ var app = ((JSON, localStorage) => {
           .catch(console.log)
           .then(() => { app.notify = false })
         } else {
-          app.requesting = true
+          app.busy = true
           requestPermission()
           .then(() => { app.notify = true })
           .catch(console.log)
-          .then(() => { app.requesting = false })
+          .then(() => { app.busy = false })
         }
       }
     },
