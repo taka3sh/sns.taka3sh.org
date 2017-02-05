@@ -47,21 +47,21 @@ var app = ((JSON, localStorage) => {
       postKeys: {},
       requesting: false,
       error: null,
-      notifyEnabled: JSON.parse(localStorage.getItem('notifyEnabled'))
+      notify: JSON.parse(localStorage.getItem('notify'))
     },
     watch: {
-      notifyEnabled: value => { localStorage.setItem('notifyEnabled', JSON.stringify(value)) }
+      notify: value => { localStorage.setItem('notify', JSON.stringify(value)) }
     },
     methods: {
       onToggle: () => {
-        if (app.notifyEnabled) {
+        if (app.notify) {
           deleteToken()
           .catch(console.log)
-          .then(() => { app.notifyEnabled = false })
+          .then(() => { app.notify = false })
         } else {
           app.requesting = true
           requestPermission()
-          .then(() => { app.notifyEnabled = true })
+          .then(() => { app.notify = true })
           .catch(console.log)
           .then(() => { app.requesting = false })
         }
@@ -71,7 +71,7 @@ var app = ((JSON, localStorage) => {
       moment.locale(navigator.language)
 
       if (Notification.permission !== 'granted') {
-        this.notifyEnabled = false
+        this.notify = false
       }
 
       this.posts = Post._fetchCachedPosts()
