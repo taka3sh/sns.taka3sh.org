@@ -10,7 +10,7 @@ title: 支援隊ヌーボー
       <p class="mdl-cell mdl-cell--12-col">
         こちらは、たかさん支援隊からの連絡などを配信するサイトです。
       </p>
-      <button class="mdl-button mdl-js-button mdl-button--raised" v-bind:class="{ 'mdl-button--accent': notifyEnabled }" v-bind:disabled="requesting" v-on:click="onToggleNotification">
+      <button class="mdl-button mdl-js-button mdl-button--raised" v-bind:class="{ 'mdl-button--accent': notifyEnabled }" v-bind:disabled="requesting" v-on:click="onToggle">
         <template v-if="notifyEnabled">
           通知オン
         </template>

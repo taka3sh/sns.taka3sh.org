@@ -53,7 +53,7 @@ var app = ((JSON, localStorage) => {
       notifyEnabled: value => { localStorage.setItem('notifyEnabled', JSON.stringify(value)) }
     },
     methods: {
-      onToggleNotification: () => {
+      onToggle: () => {
         if (app.notifyEnabled) {
           deleteToken()
           .catch(console.log)
