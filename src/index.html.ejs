@@ -10,7 +10,7 @@ title: 支援隊ヌーボー
       <p class="mdl-cell mdl-cell--12-col">
         こちらは、たかさん支援隊からの連絡などを配信するサイトです。
       </p>
-      <button class="mdl-button mdl-js-button mdl-button--raised" v-bind:class="{ 'mdl-button--accent': notify }" v-bind:disabled="requesting" v-on:click="onToggle">
+      <button class="mdl-button mdl-js-button mdl-button--raised" :class="{ 'mdl-button--accent': notify }" :disabled="requesting" @click="onToggle">
         <template v-if="notify">
           通知オン
         </template>
@@ -21,13 +21,13 @@ title: 支援隊ヌーボー
       <template v-if="error === 'messaging/permission-blocked'">
         通知がブロックされています。
       </template>
-      <div style='display: none' v-bind:style="{ display: requesting ? 'block' : 'none' }">
+      <div style='display: none' :style="{ display: requesting ? 'block' : 'none' }">
         <div class="mdl-spinner mdl-js-spinner is-active"></div>
       </div>
     </section>
 
     <transition-group name="posts" tag="section" class="mdl-grid" v-show="posts.length > 0">
-      <div v-for="post in posts" class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp" v-bind:key="post">
+      <div v-for="post in posts" class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp" :key="post">
         <div class="mdl-card__title">
           <h2 class="mdl-card__title-text">{{ post.title }}</h2>
         </div>
