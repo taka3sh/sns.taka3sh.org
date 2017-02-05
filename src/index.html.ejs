@@ -22,7 +22,7 @@ dialogPolyfill: false
       <template v-if="error === 'messaging/permission-blocked'">
         通知がブロックされています。
       </template>
-      <div style='display: none' :style="{ display: busy ? 'block' : 'none' }">
+      <div style='display: none' v-show="busy">
         <div class="mdl-spinner mdl-js-spinner is-active"></div>
       </div>
     </section>
