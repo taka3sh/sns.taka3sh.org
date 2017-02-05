@@ -1,5 +1,9 @@
+---
+layout: layout.html
+title: 支援隊ヌーボー
+---
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-  <%- partial('/_shared/header') %>
+  <% include ../partials/header.ejs %>
 
   <main class="mdl-layout__content" id="app">
     <section class="mdl-grid">
@@ -44,8 +48,8 @@
       </div>
     </section>
 
-    <%- partial('/_shared/footer') %>
+    <% include ../partials/footer.ejs %>
   </main>
 </div>
 
-<script><%- include('index.js') %></script>
+<script><% include ../partials/index.js %></script>

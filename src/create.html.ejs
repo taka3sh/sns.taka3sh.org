@@ -1,5 +1,9 @@
+---
+layout: layout.html
+title: 新規作成 - 支援隊ヌーボー
+---
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header" id="app">
-  <%- partial('/_shared/header') %>
+  <% include ../partials/header.ejs %>
 
   <main class="mdl-layout__content">
     <section class="mdl-grid">
@@ -49,7 +53,7 @@
       </article>
     </section>
 
-    <%- partial('/_shared/footer') %>
+    <% include ../partials/footer.ejs %>
   </main>
 
   <div class="mdl-js-snackbar mdl-snackbar">
@@ -58,7 +62,6 @@
   </div>
 </div>
 
-<%- partial('/_shared/loginform') %>
-<%- partial('/_shared/snackbar') %>
+<% include ../partials/loginform.ejs %>
 
-<script><%- include('create.js') %></script>
+<script><% include ../partials/create.js %></script>

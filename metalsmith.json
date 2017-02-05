@@ -1,0 +1,17 @@
+{
+  "plugins": [
+    {
+      "metalsmith-in-place": {},
+      "metalsmith-layouts": {
+        "engine": "ejs"
+      }
+    },
+    {
+      "metalsmith-html-minifier": {
+        "minifyCSS": true,
+        "minifyJS": true,
+        "pattern": "*.html"
+      }
+    }
+  ]
+}
