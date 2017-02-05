@@ -8,9 +8,7 @@ var config = {
 }
 var auth, database
 
-Vue.filter('data-localize', function (value) {
-  return moment(value).format('LLLL')
-})
+Vue.filter('data-localize', value => moment(value).format('LLLL'))
 
 function updateMDL () {
   Vue.nextTick(function () {
@@ -35,16 +33,14 @@ function createPost (form) {
 
 function publishNotification (form) {
   return auth.currentUser.getToken(true)
-  .then(idToken => {
+  .then(idToken => new Promise(function (resolve, reject) {
+    var xhr = new XMLHttpRequest()
+    xhr.onload = resolve
+    xhr.onerror = reject
+    xhr.open('POST', 'https://sns-taka3sh-org-157419.appspot.com/publish')
     form.elements.idToken.value = idToken
-    return new Promise(function (resolve, reject) {
-      var xhr = new XMLHttpRequest()
-      xhr.onload = resolve
-      xhr.onerror = reject
-      xhr.open('POST', 'https://sns-taka3sh-org-157419.appspot.com/publish')
-      xhr.send(new FormData(form))
-    })
-  })
+    xhr.send(new FormData(form))
+  }))
 }
 
 function showToast (parent, message) {
