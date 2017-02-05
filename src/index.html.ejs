@@ -12,19 +12,12 @@ dialogPolyfill: false
         こちらは、たかさん支援隊からの連絡などを配信するサイトです。
       </p>
       <button class="mdl-button mdl-js-button mdl-button--raised" :class="{ 'mdl-button--accent': notify }" :disabled="busy" @click="onToggle">
-        <template v-if="notify">
-          通知オン
-        </template>
-        <template v-else>
-          通知オフ
-        </template>
+        {{ notify ? '通知オン' : '通知オフ' }}
       </button>
       <template v-if="error === 'messaging/permission-blocked'">
         通知がブロックされています。
       </template>
-      <div style='display: none' v-show="busy">
-        <div class="mdl-spinner mdl-js-spinner is-active"></div>
-      </div>
+      <div class="mdl-spinner mdl-js-spinner is-active" v-show="busy"></div>
     </section>
 
     <transition-group name="posts" tag="section" class="mdl-grid" v-show="posts.length > 0">
