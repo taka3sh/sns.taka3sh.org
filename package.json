@@ -3,8 +3,7 @@
     "build": "metalsmith"
   },
   "devDependencies": {
-    "babel-core": "^6.22.1",
-    "babel-preset-babili": "^0.0.10",
+    "uglify-js": "mishoo/UglifyJS2#harmony",
     "jstransformer-ejs": "^0.0.3",
     "metalsmith": "^2.3.0",
     "metalsmith-html-minifier": "^2.2.0",

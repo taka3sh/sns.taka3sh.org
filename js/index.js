@@ -1,142 +1,116 @@
 /* eslint-env browser */
 /* global Vue, firebase, moment */
 
-var config = {
-  apiKey: 'AIzaSyB3rU05SgP6XFnQqPgrvCBLSPulxsfpwxI',
-  databaseURL: 'https://sns-taka3sh-org-157419.firebaseio.com',
-  messagingSenderId: '895779023522'
-}
-var database, messaging
+var app = ((JSON, localStorage) => {
+  var database, messaging
 
-Vue.filter('date-localize', function (value) {
-  return moment(value).format('LLLL')
-})
+  var Post = {
+    _keys: {},
+    _posts: [],
+    _add: (key, post) => {
+      Post._keys[key] = true
+      Post._posts.unshift(post)
+    },
+    _store: () => {
+      localStorage.setItem('postKeys', JSON.stringify(Post._keys))
+      localStorage.setItem('posts', JSON.stringify(Post._posts))
+    },
+    _fetchCachedPosts: () => JSON.parse(localStorage.getItem('posts')) || [],
+    _fetchCachedKeys: () => JSON.parse(localStorage.getItem('postKeys')) || {}
+  }
 
-function sendTokenToServer (token) {
-  var endpoint = 'https://sns-taka3sh-org-157419.appspot.com/subscribe/' + token
-  return fetch(endpoint, { method: 'POST' }).then(function () { return token })
-}
+  function sendTokenToServer (token) {
+    return fetch('https://sns-taka3sh-org-157419.appspot.com/subscribe/' + token, { method: 'POST' })
+    .then(() => token)
+  }
 
-function requestPermission () {
-  return messaging.requestPermission()
-  .then(function () {
+  function requestPermission () {
+    return messaging.requestPermission()
+    .then(() => messaging.getToken())
+    .then(currentToken => currentToken
+      ? sendTokenToServer(currentToken)
+      : console.log('no permission')
+    )
+  }
+
+  function deleteToken () {
     return messaging.getToken()
-  })
-  .then(function (currentToken) {
-    if (currentToken) {
-      return sendTokenToServer(currentToken)
-    } else {
-      console.log('no permission')
-      return null
-    }
-  })
-}
-
-function deleteToken () {
-  return messaging.getToken()
-  .then(function (currentToken) {
-    return messaging.deleteToken(currentToken)
-  })
-}
-
-var Post = {
-  _keys: {},
-  _posts: [],
-  add: function (key, post) {
-    this._keys[key] = true
-    this._posts.unshift(post)
-  },
-  store: function () {
-    localStorage.setItem('postKeys', JSON.stringify(this._keys))
-    localStorage.setItem('posts', JSON.stringify(this._posts))
-  },
-  fetchCachedPosts: function () {
-    var posts = JSON.parse(localStorage.getItem('posts'))
-    if (!(posts instanceof Array)) return []
-    return posts
-  },
-  fetchCachedKeys: function () {
-    var posts = JSON.parse(localStorage.getItem('postKeys'))
-    if (!posts) return {}
-    return posts
+    .then(currentToken => messaging.deleteToken(currentToken))
   }
-}
 
-moment.locale(navigator.language)
+  Vue.filter('date-localize', value => moment(value).format('LLLL'))
 
-var app = new Vue({
-  el: '#app',
-  data: {
-    posts: [],
-    postKeys: {},
-    requesting: false,
-    error: null,
-    notifyEnabled: JSON.parse(localStorage.getItem('notifyEnabled'))
-  },
-  watch: {
-    notifyEnabled: function (value) {
-      localStorage.setItem('notifyEnabled', JSON.stringify(value))
-    }
-  },
-  methods: {
-    onToggleNotification: function () {
-      var self = this
-      if (self.notifyEnabled) {
-        deleteToken()
-        .catch(console.log)
-        .then(function () {
-          self.notifyEnabled = false
-        })
-      } else {
-        self.requesting = true
-        requestPermission()
-        .then(function () {
-          self.notifyEnabled = true
-        })
-        .catch(console.log)
-        .then(function () {
-          self.requesting = false
-        })
+  return new Vue({
+    el: '#app',
+    data: {
+      posts: [],
+      postKeys: {},
+      requesting: false,
+      error: null,
+      notifyEnabled: JSON.parse(localStorage.getItem('notifyEnabled'))
+    },
+    watch: {
+      notifyEnabled: value => { localStorage.setItem('notifyEnabled', JSON.stringify(value)) }
+    },
+    methods: {
+      onToggleNotification: () => {
+        if (app.notifyEnabled) {
+          deleteToken()
+          .catch(console.log)
+          .then(() => { app.notifyEnabled = false })
+        } else {
+          app.requesting = true
+          requestPermission()
+          .then(() => { app.notifyEnabled = true })
+          .catch(console.log)
+          .then(() => { app.requesting = false })
+        }
       }
-    }
-  },
-  created: function () {
-    if (Notification.permission !== 'granted') {
-      this.notifyEnabled = false
-    }
+    },
+    created: function () {
+      moment.locale(navigator.language)
 
-    this.posts = Post.fetchCachedPosts()
-    this.postKeys = Post.fetchCachedKeys()
-  }
-})
+      if (Notification.permission !== 'granted') {
+        this.notifyEnabled = false
+      }
 
-addEventListener('load', function () {
-  firebase.initializeApp(config)
-  database = firebase.database()
-  messaging = firebase.messaging()
+      this.posts = Post._fetchCachedPosts()
+      this.postKeys = Post._fetchCachedKeys()
 
-  database.ref('posts').limitToLast(1).once('value', function (snapshot) {
-    if (snapshot.val() === null) {
-      app.posts = []
-      Post.store()
+      addEventListener('load', () => {
+        firebase.initializeApp({
+          apiKey: 'AIzaSyB3rU05SgP6XFnQqPgrvCBLSPulxsfpwxI',
+          databaseURL: 'https://sns-taka3sh-org-157419.firebaseio.com',
+          messagingSenderId: '895779023522'
+        })
+        database = firebase.database()
+        messaging = firebase.messaging()
+
+        database.ref('posts').limitToLast(1).once('value', snapshot => {
+          if (snapshot.val() === null) {
+            app.posts = []
+            Post._store()
+          }
+        })
+
+        database.ref('posts').on('child_added', snapshot => {
+          Post._add(snapshot.key, snapshot.val())
+          Post._store()
+
+          if (!app.postKeys[snapshot.key]) {
+            app.posts.unshift(snapshot.val())
+            app.postKeys[snapshot.key] = true
+          }
+        })
+
+        messaging.onTokenRefresh(() => {
+          messaging.getToken()
+          .then(sendTokenToServer)
+          .catch(e => {
+            console.log(e)
+          })
+        })
+      })
     }
   })
-
-  database.ref('posts').on('child_added', function (snapshot) {
-    Post.add(snapshot.key, snapshot.val())
-    Post.store()
-
-    if (!app.postKeys[snapshot.key]) {
-      app.posts.unshift(snapshot.val())
-      app.postKeys[snapshot.key] = true
-    }
-  })
-
-  messaging.onTokenRefresh(function () {
-    messaging.getToken()
-    .then(sendTokenToServer)
-    .catch(function (e) {
-      console.log(e)
-    })
-  })
-})
+})(JSON, localStorage)

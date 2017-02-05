@@ -4,16 +4,28 @@ const htmlMinifier = require('metalsmith-html-minifier')
 const inPlace = require('metalsmith-in-place')
 const layouts = require('metalsmith-layouts')
 
-const transform = require('babel-core').transform
+const UglifyJS = require('uglify-js')
 
 Metalsmith(__dirname)
 .clean(false)
 .use(inPlace())
-.use(layouts({ engine: 'ejs' }))
+.use(layouts({
+  engine: 'ejs'
+}))
 .use(htmlMinifier({
   minifyCSS: true,
   minifyJS: function (text, inline) {
-    return transform(text, { presets: 'babili' }).code
+    return UglifyJS.minify(text, {
+      fromString: true,
+      mangle: {
+        toplevel: true
+      },
+      mangleProperties: {
+        regex: /^_/
+      }
+    }).code
   }
 }))
-.build(function (err) { if (err) throw err })
+.build(function (err) {
+  if (err) throw err
+})
