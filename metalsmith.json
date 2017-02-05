@@ -9,8 +9,11 @@
     {
       "metalsmith-html-minifier": {
         "minifyCSS": true,
-        "minifyJS": true,
-        "pattern": "*.html"
+        "minifyJS": {
+          "mangle": {
+            "toplevel": true
+          }
+        }
       }
     }
   ]
