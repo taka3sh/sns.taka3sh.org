@@ -8,6 +8,7 @@
     "metalsmith-html-minifier": "^2.2.0",
     "metalsmith-in-place": "^2.0.1",
     "metalsmith-layouts": "^1.8.0",
+    "standard": "^8.6.0",
     "uglify-js": "mishoo/UglifyJS2#harmony"
   }
 }
