@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 
 const ejs = require('ejs')
 const minify = require('html-minifier').minify
@@ -8,10 +9,10 @@ function compile (filename) {
   return ejs.compile(String(fs.readFileSync(filename)), { filename: filename })
 }
 
-exports.srcdir = './public'
-exports.destdir = './www'
-exports.data = require(`./${this.srcdir}/_data.json`)
-exports.layout = compile(`./${this.srcdir}/_layout.ejs`)
+exports.srcdir = path.join(__dirname, '../public')
+exports.destdir = path.join(__dirname, '../www')
+exports.data = require(path.join(exports.srcdir, '_data.json'))
+exports.layout = compile(path.join(this.srcdir, '_layout.ejs'))
 
 exports.render = function (source, template) {
   let context = Object.create(this.data[source])
@@ -31,7 +32,7 @@ exports.render = function (source, template) {
   })
 }
 
-exports.build = function () {
+exports.update = function () {
   try {
     fs.mkdirSync(this.destdir)
   } catch (e) {}
@@ -39,7 +40,7 @@ exports.build = function () {
   for (let basename of fs.readdirSync(this.srcdir)) {
     if (basename.startsWith('_')) continue
 
-    const filename = `${this.srcdir}/${basename}`
+    const filename = path.join(this.srcdir, basename)
     let contents
     if (basename.endsWith('.ejs')) {
       const source = basename.replace(/\.[^.]+$/, '')
@@ -49,10 +50,8 @@ exports.build = function () {
       contents = fs.readFileSync(filename)
     }
 
-    fs.writeFileSync(`${this.destdir}/${basename}`, contents)
+    fs.writeFileSync(path.join(this.destdir, basename), contents)
   }
 }
 
-if (require.main === module) {
-  exports.build()
-}
+exports.update()
