@@ -1,5 +1,5 @@
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header" id="app">
-  <%- include('../partials/header.ejs') %>
+  <%- include('_partial/header.ejs') %>
 
   <main class="mdl-layout__content">
     <section class="mdl-grid">
@@ -49,7 +49,7 @@
       </article>
     </section>
 
-    <%- include('../partials/footer.ejs') %>
+    <%- include('_partial/footer.ejs') %>
   </main>
 
   <div class="mdl-js-snackbar mdl-snackbar">
@@ -58,6 +58,6 @@
   </div>
 </div>
 
-<%- include('../partials/loginform.ejs') %>
+<%- include('_partial/loginform.ejs') %>
 
 <script><%- include('../js/create.js') %></script>
