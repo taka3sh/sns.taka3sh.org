@@ -2,10 +2,10 @@ const fs = require('fs')
 
 const build = require('./build')
 
-build.build()
+build.update()
 fs.watch(build.srcdir, function (eventType, filename) {
   console.log(filename)
-  build.build()
+  build.update()
 })
 
 const app = require('connect')()
