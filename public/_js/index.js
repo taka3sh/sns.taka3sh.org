@@ -1,44 +1,57 @@
 /* eslint-env browser */
 /* global Vue, firebase, moment */
 
-var app = ((JSON, localStorage) => {
+var app = (function (JSON, localStorage) {
   var database, messaging
 
   var Post = {
     _keys: {},
     _posts: [],
-    _add: (key, post) => {
+    _add: function (key, post) {
       Post._keys[key] = true
       Post._posts.unshift(post)
     },
-    _store: () => {
+    _store: function () {
       localStorage.setItem('postKeys', JSON.stringify(Post._keys))
       localStorage.setItem('posts', JSON.stringify(Post._posts))
     },
-    _fetchCachedPosts: () => JSON.parse(localStorage.getItem('posts')) || [],
-    _fetchCachedKeys: () => JSON.parse(localStorage.getItem('postKeys')) || {}
+    _fetchCachedPosts: function () {
+      return JSON.parse(localStorage.getItem('posts')) || []
+    },
+    _fetchCachedKeys: function () {
+      return JSON.parse(localStorage.getItem('postKeys')) || {}
+    }
   }
 
   function sendTokenToServer (token) {
     return fetch('https://sns-taka3sh-org-157419.appspot.com/subscribe/' + token, { method: 'POST' })
-    .then(() => token)
+    .then(function () {
+      return token
+    })
   }
 
   function requestPermission () {
     return messaging.requestPermission()
-    .then(() => messaging.getToken())
-    .then(currentToken => currentToken
+    .then(function () {
+      return messaging.getToken()
+    })
+    .then(function (currentToken) {
+      return currentToken
       ? sendTokenToServer(currentToken)
       : console.log('no permission')
-    )
+    })
   }
 
   function deleteToken () {
     return messaging.getToken()
-    .then(currentToken => messaging.deleteToken(currentToken))
+    .then(function (currentToken) {
+      messaging.deleteToken(currentToken)
+    })
   }
 
-  Vue.filter('date-localize', value => moment(value).format('LLLL'))
+  Vue.filter('date-localize', function (value) {
+    return moment(value).format('LLLL')
+  })
 
   return new Vue({
     el: '#app',
@@ -50,20 +63,28 @@ var app = ((JSON, localStorage) => {
       notify: JSON.parse(localStorage.getItem('notify'))
     },
     watch: {
-      notify: value => { localStorage.setItem('notify', JSON.stringify(value)) }
+      notify: function (value) {
+        localStorage.setItem('notify', JSON.stringify(value))
+      }
     },
     methods: {
-      onToggle: () => {
+      onToggle: function () {
         if (app.notify) {
           deleteToken()
           .catch(console.log)
-          .then(() => { app.notify = false })
+          .then(function () {
+            app.notify = false
+          })
         } else {
           app.busy = true
           requestPermission()
-          .then(() => { app.notify = true })
+          .then(function () {
+            app.notify = true
+          })
           .catch(console.log)
-          .then(() => { app.busy = false })
+          .then(function () {
+            app.busy = false
+          })
         }
       }
     },
@@ -77,7 +98,7 @@ var app = ((JSON, localStorage) => {
       this.posts = Post._fetchCachedPosts()
       this.postKeys = Post._fetchCachedKeys()
 
-      addEventListener('load', () => {
+      addEventListener('load', function () {
         firebase.initializeApp({
           apiKey: 'AIzaSyB3rU05SgP6XFnQqPgrvCBLSPulxsfpwxI',
           databaseURL: 'https://sns-taka3sh-org-157419.firebaseio.com',
@@ -86,14 +107,14 @@ var app = ((JSON, localStorage) => {
         database = firebase.database()
         messaging = firebase.messaging()
 
-        database.ref('posts').limitToLast(1).once('value', snapshot => {
+        database.ref('posts').limitToLast(1).once('value', function (snapshot) {
           if (snapshot.val() === null) {
             app.posts = []
             Post._store()
           }
         })
 
-        database.ref('posts').on('child_added', snapshot => {
+        database.ref('posts').on('child_added', function (snapshot) {
           Post._add(snapshot.key, snapshot.val())
           Post._store()
 
@@ -103,10 +124,10 @@ var app = ((JSON, localStorage) => {
           }
         })
 
-        messaging.onTokenRefresh(() => {
+        messaging.onTokenRefresh(function () {
           messaging.getToken()
           .then(sendTokenToServer)
-          .catch(e => {
+          .catch(function (e) {
             console.log(e)
           })
         })
