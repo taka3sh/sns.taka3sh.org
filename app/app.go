@@ -3,7 +3,11 @@ package app
 import (
 	"net/http"
 
+	prerender "github.com/umireon/goprerender"
+
 	"golang.org/x/net/context"
+
+	"net/url"
 
 	"google.golang.org/appengine/datastore"
 )
@@ -16,6 +20,19 @@ type secret struct {
 func init() {
 	http.HandleFunc("/subscribe/", handleSubscribe)
 	http.HandleFunc("/publish", handlePublish)
+
+	opt := prerender.Options{
+		PrerenderURL: &url.URL{
+			Scheme: "https",
+			Host:   "service.prerender.io",
+		},
+		UsingAppEngine: true,
+	}
+
+	http.Handle("/", staticServer{
+		handler:   http.FileServer(http.Dir("www")),
+		prerender: opt.NewPrerender(),
+	})
 }
 
 func handleCors(w http.ResponseWriter, r *http.Request) {
