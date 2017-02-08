@@ -1,6 +1,7 @@
 /* eslint-env browser */
 /* global Vue, firebase, moment */
 
+window.prerenderReady = false
 var app = (function (JSON, localStorage) {
   var database, messaging
 
@@ -89,14 +90,16 @@ var app = (function (JSON, localStorage) {
       }
     },
     created: function () {
+      var app = this
+
       moment.locale(navigator.language)
 
       if (Notification.permission !== 'granted') {
-        this.notify = false
+        app.notify = false
       }
 
-      this.posts = Post._fetchCachedPosts()
-      this.postKeys = Post._fetchCachedKeys()
+      app.posts = Post._fetchCachedPosts()
+      app.postKeys = Post._fetchCachedKeys()
 
       addEventListener('load', function () {
         firebase.initializeApp({
@@ -107,21 +110,18 @@ var app = (function (JSON, localStorage) {
         database = firebase.database()
         messaging = firebase.messaging()
 
-        database.ref('posts').limitToLast(1).once('value', function (snapshot) {
-          if (snapshot.val() === null) {
-            app.posts = []
+        database.ref('posts').once('value', function (snapshot) {
+          snapshot.forEach(function (childSnapshot) {
+            Post._add(childSnapshot.key, childSnapshot.val())
             Post._store()
-          }
-        })
 
-        database.ref('posts').on('child_added', function (snapshot) {
-          Post._add(snapshot.key, snapshot.val())
-          Post._store()
+            if (!app.postKeys[childSnapshot.key]) {
+              app.posts.unshift(childSnapshot.val())
+              app.postKeys[childSnapshot.key] = true
+            }
+          })
 
-          if (!app.postKeys[snapshot.key]) {
-            app.posts.unshift(snapshot.val())
-            app.postKeys[snapshot.key] = true
-          }
+          window.prerenderReady = true
         })
 
         messaging.onTokenRefresh(function () {
