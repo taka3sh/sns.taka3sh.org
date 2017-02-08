@@ -1,4 +1,4 @@
-package appengine
+package app
 
 import (
 	"errors"
