@@ -60,12 +60,16 @@ var app = (function (JSON, localStorage) {
       posts: [],
       postKeys: {},
       busy: false,
+      loaded: false,
       error: null,
       notify: JSON.parse(localStorage.getItem('notify'))
     },
     watch: {
       notify: function (value) {
         localStorage.setItem('notify', JSON.stringify(value))
+      },
+      loaded: function (value) {
+        window.prerenderReady = value
       }
     },
     methods: {
@@ -101,6 +105,10 @@ var app = (function (JSON, localStorage) {
       app.posts = Post._fetchCachedPosts()
       app.postKeys = Post._fetchCachedKeys()
 
+      if (app.posts.length > 0) {
+        app.loaded = true
+      }
+
       addEventListener('load', function () {
         firebase.initializeApp({
           apiKey: 'AIzaSyB3rU05SgP6XFnQqPgrvCBLSPulxsfpwxI',
@@ -120,8 +128,7 @@ var app = (function (JSON, localStorage) {
               app.postKeys[childSnapshot.key] = true
             }
           })
-
-          window.prerenderReady = true
+          app.loaded = true
         })
 
         messaging.onTokenRefresh(function () {
