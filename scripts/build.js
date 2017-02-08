@@ -32,7 +32,7 @@ exports.render = function (source, template) {
   })
 }
 
-exports.update = function () {
+exports.build = function () {
   try {
     fs.mkdirSync(this.destdir)
   } catch (e) {}
@@ -54,4 +54,4 @@ exports.update = function () {
   }
 }
 
-exports.update()
+exports.build()

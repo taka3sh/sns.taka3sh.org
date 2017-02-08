@@ -1,22 +1,29 @@
 const fs = require('fs')
+const http = require('http')
+
+const compression = require('compression')
+const connect = require('connect')
+const serveStatic = require('serve-static')
 
 const build = require('./build')
 
-build.update()
-fs.watch(build.srcdir, function (eventType, filename) {
-  console.log(filename)
-  build.update()
-})
+const app = connect()
+app.use(compression())
+app.use(serveStatic(build.destdir))
 
-const app = require('connect')()
-app.use(require('compression')())
-app.use(require('serve-static')(build.destdir))
-const host = process.argv[2] || '127.0.0.1'
-console.log(`Listening on https://${host}:8443`)
-require('https').createServer({
-  cert: fs.readFileSync('test/localhost.crt'),
-  key: fs.readFileSync('test/localhost.key')
-}, app).listen({
-  host: host,
-  port: 8443
-})
+exports.start = (port, listener) => {
+  fs.watch(build.srcdir, function (eventType, filename) {
+    console.log(filename)
+    build.build()
+  })
+
+  build.build()
+  return http.createServer(app).listen(port, listener)
+}
+
+if (require.main === module) {
+  exports.start(8000, function (err) {
+    if (err) throw err
+    console.log(`http://localhost:${this.address().port}`)
+  })
+}
