@@ -7,15 +7,5 @@ skip_files:
 
 handlers:
 
-- url: /publish/.*
+- url: /.*
   script: _go_app
-
-- url: /subscribe/.*
-  script: _go_app
-
-- url: /
-  static_files: www/index.html
-  upload: www/index.html
-
-- url: /
-  static_dir: www
