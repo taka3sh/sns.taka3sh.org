@@ -128,7 +128,10 @@ var app = (function (JSON, localStorage) {
               app.postKeys[childSnapshot.key] = true
             }
           })
-          app.loaded = true
+
+          Vue.nextTick(function () {
+            app.loaded = true
+          })
         })
 
         messaging.onTokenRefresh(function () {
