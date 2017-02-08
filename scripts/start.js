@@ -12,7 +12,10 @@ app.use(compression())
 app.use(serveStatic(build.destdir))
 
 exports.start = (port, listener) => {
-  fs.watch(build.srcdir, function (eventType, filename) {
+  console.log(build.srcdir)
+  fs.watch(build.srcdir, {
+    recursive: true
+  }, function (eventType, filename) {
     console.log(filename)
     build.build()
   })
