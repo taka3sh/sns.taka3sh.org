@@ -96,7 +96,7 @@ var app = (function (JSON, localStorage) {
     created: function () {
       var app = this
 
-      moment.locale(navigator.language)
+      moment.locale('ja')
 
       if (Notification.permission !== 'granted') {
         app.notify = false
