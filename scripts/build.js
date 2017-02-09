@@ -2,8 +2,6 @@ const fs = require('fs')
 const path = require('path')
 
 const ejs = require('ejs')
-const minify = require('html-minifier').minify
-const UglifyJS = require('uglify-js')
 
 function compile (filename) {
   return ejs.compile(String(fs.readFileSync(filename)), { filename: filename })
@@ -18,18 +16,7 @@ exports.render = function (source, template) {
   let context = Object.create(this.data[source])
   context.current = { source: source }
   context.yield = template(context)
-  const rendered = this.layout(context)
-  return minify(rendered, {
-    collapseBooleanAttributes: true,
-    collapseWhitespace: true,
-    removeAttributeQuotes: true,
-    minifyCSS: true,
-    minifyJS: (text, inline) => UglifyJS.minify(text, {
-      fromString: true,
-      mangle: { toplevel: true },
-      mangleProperties: { regex: /^_/ }
-    }).code
-  })
+  return this.layout(context)
 }
 
 exports.build = function () {
