@@ -11,8 +11,6 @@ var app = (function (JSON, localStorage) {
     _add: function (key, post) {
       Post._keys[key] = true
       Post._posts.unshift(post)
-    },
-    _store: function () {
       localStorage.setItem('postKeys', JSON.stringify(Post._keys))
       localStorage.setItem('posts', JSON.stringify(Post._posts))
     },
@@ -121,7 +119,6 @@ var app = (function (JSON, localStorage) {
         database.ref('posts').once('value', function (snapshot) {
           snapshot.forEach(function (childSnapshot) {
             Post._add(childSnapshot.key, childSnapshot.val())
-            Post._store()
 
             if (!app.postKeys[childSnapshot.key]) {
               app.posts.unshift(childSnapshot.val())
