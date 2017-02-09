@@ -16,6 +16,11 @@ type secret struct {
 func init() {
 	http.HandleFunc("/subscribe/", handleSubscribe)
 	http.HandleFunc("/publish", handlePublish)
+	http.HandleFunc("/index.html", handleIndex)
+}
+
+func handleIndex(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "/", 302)
 }
 
 func handleCors(w http.ResponseWriter, r *http.Request) {
