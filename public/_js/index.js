@@ -1,14 +1,6 @@
 /* eslint-env browser */
 /* global Vue, firebase, moment */
 
-Vue.component('sns-posts', {
-  template: '#sns-posts',
-  props: {
-    posts: Array,
-    loaded: Boolean
-  }
-})
-
 window.prerenderReady = false
 var app = (function (JSON, localStorage) {
   var database, messaging
