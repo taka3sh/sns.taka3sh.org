@@ -5,13 +5,7 @@
     "watch": "node scripts/watch.js"
   },
   "devDependencies": {
-    "compression": "^1.6.2",
-    "connect": "^3.5.0",
     "ejs": "^2.5.5",
-    "html-minifier": "^3.3.0",
-    "ngrok": "^2.2.6",
-    "serve-static": "^1.11.2",
-    "standard": "^8.6.0",
-    "uglify-js": "mishoo/UglifyJS2#harmony"
+    "standard": "^8.6.0"
   }
 }
