@@ -1,4 +1,7 @@
 {
+  "name": "sns.taka3sh.org",
+  "version": "0",
+  "private": true,
   "scripts": {
     "build": "node scripts/build.js",
     "start": "goapp serve",
