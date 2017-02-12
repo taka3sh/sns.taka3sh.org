@@ -5,7 +5,6 @@ const ejs = require('ejs')
 
 exports.srcdir = path.join(__dirname, '../public')
 exports.destdir = path.join(__dirname, '../www')
-exports.data = require(path.join(exports.srcdir, '_data.json'))
 
 exports.build = function () {
   try {
@@ -19,8 +18,7 @@ exports.build = function () {
     let contents
     if (basename.endsWith('.ejs')) {
       const source = basename.replace(/\.[^.]+$/, '')
-      let context = Object.create(this.data[source])
-      contents = ejs.compile(String(fs.readFileSync(filename)), { filename: filename })(context)
+      contents = ejs.compile(String(fs.readFileSync(filename)), { filename: filename })()
       basename = `${source}.html`
     } else {
       contents = fs.readFileSync(filename)
