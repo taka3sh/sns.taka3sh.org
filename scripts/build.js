@@ -3,21 +3,9 @@ const path = require('path')
 
 const ejs = require('ejs')
 
-function compile (filename) {
-  return ejs.compile(String(fs.readFileSync(filename)), { filename: filename })
-}
-
 exports.srcdir = path.join(__dirname, '../public')
 exports.destdir = path.join(__dirname, '../www')
 exports.data = require(path.join(exports.srcdir, '_data.json'))
-exports.layout = compile(path.join(this.srcdir, '_layout.ejs'))
-
-exports.render = function (source, template) {
-  let context = Object.create(this.data[source])
-  context.current = { source: source }
-  context.yield = template(context)
-  return this.layout(context)
-}
 
 exports.build = function () {
   try {
@@ -31,7 +19,8 @@ exports.build = function () {
     let contents
     if (basename.endsWith('.ejs')) {
       const source = basename.replace(/\.[^.]+$/, '')
-      contents = this.render(source, compile(filename))
+      let context = Object.create(this.data[source])
+      contents = ejs.compile(String(fs.readFileSync(filename)), { filename: filename })(context)
       basename = `${source}.html`
     } else {
       contents = fs.readFileSync(filename)
