@@ -1,9 +1,10 @@
 /* globals addEventListener firebase moment Vue */
 
 import { CachedPosts } from './CachedPosts'
+import { PostReceiver } from './PostReceiver'
 import { PushService } from './PushService'
 
-function onFirebaseLoaded () {
+function initFirebase () {
   firebase.initializeApp({
     apiKey: 'AIzaSyB3rU05SgP6XFnQqPgrvCBLSPulxsfpwxI',
     databaseURL: 'https://sns-taka3sh-org-157419.firebaseio.com',
@@ -18,11 +19,8 @@ function onFirebaseLoaded () {
     PushService.subscribe()
   })
 
-  return database.ref('/posts').once('value', function (snapshot) {
-    snapshot.forEach(function (child) {
-      CachedPosts.add(child.key, child.val())
-    })
-  })
+  PostReceiver.init(database.ref('/posts'))
+  return PostReceiver.loadAll()
 }
 
 Vue.filter('date-localize', function (value) {
@@ -49,13 +47,26 @@ export default new Vue({
   created: function () {
     var app = this
 
+    moment.locale('ja')
+
     app.posts = CachedPosts.getPosts()
     app.postKeys = CachedPosts.getKeys()
 
-    moment.locale('ja')
+    PostReceiver.onChildAdded = function (key, val) {
+      CachedPosts.add(key, val)
+
+      if (!app.postKeys[key]) {
+        app.posts.unshift(val)
+        app.postKeys[key] = true
+      }
+    }
 
     addEventListener('load', function () {
-      onFirebaseLoaded()
+      initFirebase()
+      .then(function (lastKey) {
+        app.ready = true
+        PostReceiver.listen()
+      })
     })
   }
 })
