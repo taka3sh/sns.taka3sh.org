@@ -6,6 +6,33 @@ import PostReceiver from './PostReceiver'
 import PushService from './PushService'
 import ShownPosts from './ShownPosts'
 
+Vue.component('post-cards', PostCards)
+
+Vue.filter('date-localize', function (value) {
+  return moment(value).format('LLLL')
+})
+
+function initVue () {
+  var app = this
+
+  moment.locale('ja')
+
+  ShownPosts.init(app.postKeys, app.posts)
+
+  PostReceiver.onChildAdded = function (key, val) {
+    CachedPosts.add(key, val)
+    ShownPosts.add(key, val)
+  }
+
+  addEventListener('load', function () {
+    initFirebase()
+    .then(function (lastKey) {
+      app.ready = true
+      PostReceiver.listen()
+    })
+  })
+}
+
 function initFirebase () {
   firebase.initializeApp({
     apiKey: 'AIzaSyB3rU05SgP6XFnQqPgrvCBLSPulxsfpwxI',
@@ -25,10 +52,6 @@ function initFirebase () {
   return PostReceiver.loadAll()
 }
 
-Vue.filter('date-localize', function (value) {
-  return moment(value).format('LLLL')
-})
-
 export default new Vue({
   el: '#app',
   data: {
@@ -39,32 +62,9 @@ export default new Vue({
     error: null,
     notify: false
   },
-  watch: {},
   methods: {
     onToggle: function () {
     }
   },
-  components: {
-    'post-cards': PostCards
-  },
-  created: function () {
-    var app = this
-
-    moment.locale('ja')
-
-    ShownPosts.init(app.postKeys, app.posts)
-
-    PostReceiver.onChildAdded = function (key, val) {
-      CachedPosts.add(key, val)
-      ShownPosts.add(key, val)
-    }
-
-    addEventListener('load', function () {
-      initFirebase()
-      .then(function (lastKey) {
-        app.ready = true
-        PostReceiver.listen()
-      })
-    })
-  }
+  created: initVue
 })
