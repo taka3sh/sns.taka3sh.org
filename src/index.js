@@ -58,7 +58,7 @@ export default new Vue({
     posts: CachedPosts.getPosts(),
     postKeys: CachedPosts.getKeys(),
     busy: false,
-    loaded: true,
+    ready: false,
     error: null,
     notify: false
   },
