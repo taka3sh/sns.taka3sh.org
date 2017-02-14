@@ -52,6 +52,20 @@ function firebaseLoaded () {
   return PostReceiver.loadAll()
 }
 
+function onNotifyToggle () {
+  var self = this
+
+  if (self.notify) {
+    PushService.unsubscribe()
+    self.notify = false
+  } else {
+    PushService.subscribe()
+    .then(function () {
+      self.notify = true
+    })
+  }
+}
+
 export default new Vue({
   el: '#app',
   data: {
@@ -60,11 +74,10 @@ export default new Vue({
     busy: false,
     ready: false,
     error: null,
-    notify: false
+    notify: PushService.isEnabled()
   },
   methods: {
-    onToggle: function () {
-    }
+    onNotifyToggle: onNotifyToggle
   },
   created: vueCreated
 })

@@ -1,4 +1,4 @@
-/* globals fetch */
+/* globals fetch localStorage Notification */
 
 export default {
   init: function (messaging, projectid) {
@@ -7,36 +7,56 @@ export default {
     self.projectid = projectid
   },
 
+  isEnabled: function () {
+    return Notification.permission === 'granted' &&
+           navigator.serviceWorker.controller &&
+           localStorage.getItem('PushService.tokenSent') === 'true'
+  },
+
   subscribe: function () {
     var self = this
 
-    return self.messaging.requestPermission()
+    return Promise.all([
+      self.installServiceWorker(),
+      self.messaging.requestPermission()
+    ])
     .then(function () {
-      return self.getToken()
+      return self.messaging.getToken()
     })
     .then(function (currentToken) {
       return fetch('https://' + self.projectid + '.appspot.com/subscribe/' + currentToken, { method: 'POST' })
+    })
+    .then(function () {
+      localStorage.setItem('PushService.tokenSent', 'true')
     })
   },
 
   unsubscribe: function () {
     var self = this
 
-    return self.getToken()
+    return self.installServiceWorker()
+    .then(function () {
+      return self.messaging.getToken()
+    })
     .then(function (currentToken) {
       return self.messaging.deleteToken(currentToken)
     })
+    .then(function () {
+      localStorage.removeItem('PushService.tokenSent')
+    })
   },
 
-  getToken: function () {
-    var self = this
+  installServiceWorker: function () {
+    var messaging = this.messaging
 
-    if (!self.registration) {
-      self.registration = navigator.serviceWorker.register('firebase-messaging-sw.js')
+    if (!this.registration) {
+      this.registration = navigator.serviceWorker.register('sw.js')
+      .then(function (swReg) {
+        messaging.useServiceWorker(swReg)
+        return swReg
+      })
     }
 
-    self.registration.then(function () {
-      return self.messaging.getToken()
-    })
+    return this.registration
   }
 }
