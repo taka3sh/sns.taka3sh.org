@@ -3,6 +3,7 @@
 import AuthService from './service/AuthService'
 import LoginForm from './LoginForm.vue'
 import StoredPost from './model/StoredPost'
+import PushService from './service/PushService'
 
 moment.locale('ja')
 
@@ -23,12 +24,12 @@ addEventListener('load', function () {
   var database = firebase.database()
 
   AuthService.init(auth)
+  PushService.init(auth, 'sns-taka3sh-org-157419')
+  StoredPost.init(database.ref('/posts-stage'))
 
   auth.onAuthStateChanged(function (user) {
     app.user = logindialog.user = user && user.email
   })
-
-  StoredPost.init(database.ref('/posts-stage'))
 })
 
 function updateMDL () {
@@ -49,8 +50,11 @@ function onCreate (e) {
   self.busy = true
   StoredPost.create(this.title, this.body, this.createdAt)
   .then(function () {
-    self.busy = false
+    return PushService.publish(e.target)
+  })
+  .then(function () {
     e.target.reset()
+    self.busy = false
   })
 }
 
