@@ -41,6 +41,12 @@ export default new Vue({
   data: data,
   watch: {},
   methods: {
+    addPost: function (key, value) {
+      if (!this.postKeys[key]) {
+        this.posts.unshift(value)
+        this.postKeys[key] = true
+      }
+    },
     onToggle: function () {
     }
   },
@@ -54,11 +60,7 @@ export default new Vue({
 
     PostReceiver.onChildAdded = function (key, val) {
       CachedPosts.add(key, val)
-
-      if (!app.postKeys[key]) {
-        app.posts.unshift(val)
-        app.postKeys[key] = true
-      }
+      app.addPost(key, val)
     }
 
     addEventListener('load', function () {
