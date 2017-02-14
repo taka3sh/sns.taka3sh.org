@@ -5,6 +5,9 @@
   <title>新規作成 - 支援隊ヌーボー</title>
 
   <%- include('_partial/head.ejs') %>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.7/dialog-polyfill.min.css">
+  <script async defer src="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.7/dialog-polyfill.min.js"></script>
 </head>
 <body>
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header" id="app">
@@ -67,8 +70,8 @@
   </div>
 </div>
 
-<%- include('_partial/loginform.ejs') %>
+<div id="logindialog"></div>
 
-<script><%- include('_js/create.js') %></script>
+<script src="create.js"></script>
 </body>
 </html>
