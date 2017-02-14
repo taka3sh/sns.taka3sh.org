@@ -3,7 +3,7 @@
 import CachedPosts from './model/CachedPosts'
 import PostCards from './PostCards.vue'
 import PostReceiver from './service/PostReceiver'
-import PushService from './service/PushService'
+import NotifyService from './service/NotifyService'
 import ShownPosts from './model/ShownPosts'
 
 moment.locale('ja')
