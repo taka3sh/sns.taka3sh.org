@@ -20,6 +20,7 @@ for (let name of all) {
       moduleName: 'app'
     })
   })
+  .catch(console.log)
 
   ejs.renderFile(`./src/${name}.ejs`, function (err, data) {
     if (err) throw err
