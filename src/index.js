@@ -3,6 +3,7 @@
 import { CachedPosts } from './CachedPosts'
 import { PostReceiver } from './PostReceiver'
 import { PushService } from './PushService'
+import PostCards from './PostCards.vue'
 
 function initFirebase () {
   firebase.initializeApp({
@@ -49,6 +50,9 @@ export default new Vue({
     },
     onToggle: function () {
     }
+  },
+  components: {
+    'post-cards': PostCards
   },
   created: function () {
     var app = this
