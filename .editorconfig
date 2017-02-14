@@ -1,3 +1,5 @@
-[*.{js,json}]
+root = true
+
+[*.{js,json,vue}]
 indent_style = space
 indent_size = 2
