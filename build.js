@@ -21,7 +21,7 @@ for (let name of all) {
     })
   })
 
-  ejs.renderFile(`./public/${name}.ejs`, function (err, data) {
+  ejs.renderFile(`./src/${name}.ejs`, function (err, data) {
     if (err) throw err
     fs.writeFileSync(`./www/${name}.html`, data)
   })
