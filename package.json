@@ -9,6 +9,8 @@
   },
   "devDependencies": {
     "ejs": "^2.5.5",
+    "rollup": "^0.41.4",
+    "rollup-plugin-vue": "^2.2.20",
     "standard": "^8.6.0"
   }
 }
