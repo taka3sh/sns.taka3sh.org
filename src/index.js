@@ -29,7 +29,7 @@ Vue.filter('date-localize', function (value) {
   return moment(value).format('LLLL')
 })
 
- export default new Vue({
+export default new Vue({
   el: '#app',
   data: {
     posts: CachedPosts.getPosts(),
