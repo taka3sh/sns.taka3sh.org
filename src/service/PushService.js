@@ -1,4 +1,4 @@
-/* globals FormData XMLHttpRequest */
+/* globals fetch FormData XMLHttpRequest */
 
 export default {
   init: function (auth, projectid) {
@@ -7,15 +7,17 @@ export default {
   },
 
   publish: function (form) {
+    var url = 'https://' + this.projectid + '.appspot.com/publish'
     return this.auth.currentUser.getToken(true)
     .then(function (idToken) {
       form.elements.idToken.value = idToken
-      return new Promise(function (resolve, reject) {
-        var xhr = new XMLHttpRequest()
-        xhr.onload = resolve
-        xhr.onerror = reject
-        xhr.open('POST', 'https://sns-taka3sh-org-157419.appspot.com/publish')
-        xhr.send(new FormData(form))
+      return fetch(url, {
+        method: 'POST',
+        mode: 'cors',
+        body: new FormData(form)
+      })
+      .then(function (response) {
+        if (!response.ok) throw new Error('Failed to publish')
       })
     })
   }
