@@ -43,7 +43,7 @@ function firebaseLoaded () {
 
   AuthService.init(auth)
   PushService.init(auth, 'sns-taka3sh-org-157419')
-  StoredPost.init(database.ref('/posts-stage'))
+  StoredPost.init(database.ref('/posts'))
 }
 
 function onCreate (e) {
