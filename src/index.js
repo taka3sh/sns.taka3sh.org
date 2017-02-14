@@ -23,14 +23,6 @@ function vueCreated () {
     CachedPosts.add(key, val)
     ShownPosts.add(key, val)
   }
-
-  addEventListener('load', function () {
-    firebaseLoaded()
-    .then(function (lastKey) {
-      app.ready = true
-      PostReceiver.listen()
-    })
-  })
 }
 
 function firebaseLoaded () {
@@ -68,7 +60,7 @@ function onNotifyToggle () {
   }
 }
 
-export default new Vue({
+var app = new Vue({
   el: '#app',
   data: {
     posts: CachedPosts.getPosts(),
@@ -83,3 +75,13 @@ export default new Vue({
   },
   created: vueCreated
 })
+
+addEventListener('load', function () {
+  firebaseLoaded()
+  .then(function () {
+    app.ready = true
+    PostReceiver.listen()
+  })
+})
+
+export default app
