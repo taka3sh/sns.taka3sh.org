@@ -1,15 +1,15 @@
 /* globals localStorage */
 
-export var CachedPosts = {
+export default {
   keys: {},
   posts: [],
 
   add: function (key, post) {
-    CachedPosts.keys[key] = true
-    localStorage.setItem('postKeys', JSON.stringify(CachedPosts.keys))
+    this.keys[key] = true
+    localStorage.setItem('postKeys', JSON.stringify(this.keys))
 
-    CachedPosts.posts.unshift(post)
-    localStorage.setItem('posts', JSON.stringify(CachedPosts.posts))
+    this.posts.unshift(post)
+    localStorage.setItem('posts', JSON.stringify(this.posts))
   },
 
   getPosts: function () {
