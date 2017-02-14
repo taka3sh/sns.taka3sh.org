@@ -1,3 +1,7 @@
 node_modules
 www
 yarn.lock
+
+public/*.html
+public/*.js
+!public/sw.js

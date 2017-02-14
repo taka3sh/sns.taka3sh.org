@@ -4,7 +4,7 @@ const ejs = require('ejs')
 const rollup = require('rollup')
 const vue = require('rollup-plugin-vue')
 
-const all = ['index']
+const all = ['index', 'create']
 
 for (let name of all) {
   rollup.rollup({
@@ -16,13 +16,13 @@ for (let name of all) {
   .then(bundle => {
     bundle.write({
       format: 'iife',
-      dest: `./www/${name}.js`,
+      dest: `./public/${name}.js`,
       moduleName: 'app'
     })
   })
 
   ejs.renderFile(`./src/${name}.ejs`, function (err, data) {
     if (err) throw err
-    fs.writeFileSync(`./www/${name}.html`, data)
+    fs.writeFileSync(`./public/${name}.html`, data)
   })
 }
