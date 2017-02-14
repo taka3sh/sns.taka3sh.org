@@ -5,5 +5,9 @@ export default {
 
   login: function (email, password) {
     return this.auth.signInWithEmailAndPassword(email, password)
+  },
+
+  logout: function () {
+    this.auth.signOut()
   }
 }
