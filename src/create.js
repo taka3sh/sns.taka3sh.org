@@ -52,11 +52,13 @@ function onCreate (e) {
   self.busy = true
   StoredPost.create(this.title, this.body, this.createdAt)
   .then(function () {
+    showMessage(self.$el, 'The new post was successfully created.')
     return PushService.publish(e.target)
   })
   .then(function () {
     self.busy = false
     e.target.reset()
+    showMessage(self.$el, 'The new post was successfully published.')
   })
   .catch(function (err) {
     self.busy = false
