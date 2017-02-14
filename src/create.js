@@ -13,7 +13,19 @@ Vue.filter('date-localize', function (value) {
 
 Vue.component('login-form', LoginForm)
 
-addEventListener('load', function () {
+function updateMDL () {
+  this.$el.querySelectorAll('.mdl-js-textfield').forEach(function (elem) {
+    if (elem.MaterialTextfield) {
+      elem.MaterialTextfield.checkDirty()
+    }
+  })
+}
+
+function vueMounted () {
+  this.$el.querySelector('form').reset()
+}
+
+function firebaseLoaded () {
   firebase.initializeApp({
     apiKey: 'AIzaSyB3rU05SgP6XFnQqPgrvCBLSPulxsfpwxI',
     databaseURL: 'https://sns-taka3sh-org-157419.firebaseio.com',
@@ -26,22 +38,6 @@ addEventListener('load', function () {
   AuthService.init(auth)
   PushService.init(auth, 'sns-taka3sh-org-157419')
   StoredPost.init(database.ref('/posts-stage'))
-
-  auth.onAuthStateChanged(function (user) {
-    app.user = logindialog.user = user && user.email
-  })
-})
-
-function updateMDL () {
-  this.$el.querySelectorAll('.mdl-js-textfield').forEach(function (elem) {
-    if (elem.MaterialTextfield) {
-      elem.MaterialTextfield.checkDirty()
-    }
-  })
-}
-
-function vueMounted () {
-  this.$el.querySelector('form').reset()
 }
 
 function onCreate (e) {
@@ -98,6 +94,14 @@ var logindialog = new Vue({
   methods: {
     onLogin: onLogin
   }
+})
+
+addEventListener('load', function () {
+  firebaseLoaded()
+
+  firebase.auth().onAuthStateChanged(function (user) {
+    app.user = logindialog.user = user && user.email
+  })
 })
 
 export default {
