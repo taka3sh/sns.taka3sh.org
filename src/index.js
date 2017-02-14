@@ -1,9 +1,9 @@
 /* globals addEventListener firebase moment Vue */
 
 import CachedPosts from './CachedPosts'
+import PostCards from './PostCards.vue'
 import PostReceiver from './PostReceiver'
 import PushService from './PushService'
-import PostCards from './PostCards.vue'
 
 function initFirebase () {
   firebase.initializeApp({
