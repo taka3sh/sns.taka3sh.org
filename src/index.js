@@ -43,9 +43,9 @@ function firebaseLoaded () {
   var database = firebase.database()
   var messaging = firebase.messaging()
 
-  PushService.init(messaging, 'sns-taka3sh-org-157419')
+  NotifyService.init(messaging, 'sns-taka3sh-org-157419')
   messaging.onTokenRefresh(function () {
-    PushService.subscribe()
+    NotifyService.subscribe()
   })
 
   PostReceiver.init(database.ref('/posts'))
@@ -56,11 +56,11 @@ function onNotifyToggle () {
   var self = this
 
   if (self.notify) {
-    PushService.unsubscribe()
+    NotifyService.unsubscribe()
     self.notify = false
   } else {
     self.busy = true
-    PushService.subscribe()
+    NotifyService.subscribe()
     .then(function () {
       self.busy = false
       self.notify = true
@@ -76,7 +76,7 @@ export default new Vue({
     busy: false,
     ready: false,
     error: null,
-    notify: PushService.isEnabled()
+    notify: NotifyService.isEnabled()
   },
   methods: {
     onNotifyToggle: onNotifyToggle
