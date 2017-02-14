@@ -1,20 +1,24 @@
-export var PostReceiver = {
+export default {
   init: function (ref) {
-    PostReceiver.ref = ref
+    this.ref = ref
   },
 
   loadAll: function () {
-    return PostReceiver.ref.once('value', function (snapshot) {
+    var self = this
+
+    return self.ref.once('value', function (snapshot) {
       snapshot.forEach(function (childSnapshot) {
-        PostReceiver.lastKey = childSnapshot.key
-        PostReceiver.onChildAdded(childSnapshot.key, childSnapshot.val())
+        self.lastKey = childSnapshot.key
+        self.onChildAdded(childSnapshot.key, childSnapshot.val())
       })
     })
   },
 
   listen: function () {
-    PostReceiver.ref.startAt(PostReceiver.lastKey).on('child_added', function (snapshot) {
-      PostReceiver.onChildAdded(snapshot.key, snapshot.val())
+    var self = this
+
+    self.ref.startAt(self.lastKey).on('child_added', function (snapshot) {
+      self.onChildAdded(snapshot.key, snapshot.val())
     })
   }
 }

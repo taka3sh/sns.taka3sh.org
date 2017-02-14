@@ -1,6 +1,6 @@
 /* globals fetch */
 
-export var PushService = {
+export default {
   init: function (messaging, projectid) {
     var self = this
     self.messaging = messaging
