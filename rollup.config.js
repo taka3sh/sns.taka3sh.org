@@ -6,6 +6,6 @@ export default {
   moduleName: 'app',
   dest: './www/index.js',
   plugins: [
-    vue
+    vue()
   ]
 }
