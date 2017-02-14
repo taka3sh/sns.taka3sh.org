@@ -4,6 +4,7 @@ import CachedPosts from './CachedPosts'
 import PostCards from './PostCards.vue'
 import PostReceiver from './PostReceiver'
 import PushService from './PushService'
+import ShownPosts from './ShownPosts'
 
 function initFirebase () {
   firebase.initializeApp({
@@ -28,26 +29,18 @@ Vue.filter('date-localize', function (value) {
   return moment(value).format('LLLL')
 })
 
-var data = {
-  posts: [],
-  postKeys: {},
-  busy: false,
-  loaded: true,
-  error: null,
-  notify: false
-}
-
-export default new Vue({
+ export default new Vue({
   el: '#app',
-  data: data,
+  data: {
+    posts: CachedPosts.getPosts(),
+    postKeys: CachedPosts.getKeys(),
+    busy: false,
+    loaded: true,
+    error: null,
+    notify: false
+  },
   watch: {},
   methods: {
-    addPost: function (key, value) {
-      if (!this.postKeys[key]) {
-        this.posts.unshift(value)
-        this.postKeys[key] = true
-      }
-    },
     onToggle: function () {
     }
   },
@@ -59,12 +52,11 @@ export default new Vue({
 
     moment.locale('ja')
 
-    app.posts = CachedPosts.getPosts()
-    app.postKeys = CachedPosts.getKeys()
+    ShownPosts.init(app.postKeys, app.posts)
 
     PostReceiver.onChildAdded = function (key, val) {
       CachedPosts.add(key, val)
-      app.addPost(key, val)
+      ShownPosts.add(key, val)
     }
 
     addEventListener('load', function () {
