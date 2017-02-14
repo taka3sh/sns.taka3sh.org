@@ -22,7 +22,7 @@ for (let name of all) {
   })
   .catch(console.log)
 
-  ejs.renderFile(`./src/${name}.ejs`, function (err, data) {
+  ejs.renderFile(`./src/${name}.html.ejs`, function (err, data) {
     if (err) throw err
     fs.writeFileSync(`./public/${name}.html`, data)
   })
