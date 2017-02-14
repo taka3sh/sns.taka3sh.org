@@ -4,12 +4,8 @@ export default {
   keys: {},
   posts: [],
 
-  add: function (key, post) {
-    this.keys[key] = true
-    localStorage.setItem('CachedPosts.keys', JSON.stringify(this.keys))
-
-    this.posts.unshift(post)
-    localStorage.setItem('CachedPosts.posts', JSON.stringify(this.posts))
+  isExist: function () {
+    return this.getPosts() !== null
   },
 
   getPosts: function () {
@@ -26,5 +22,13 @@ export default {
     } catch (err) {
       console.log(err)
     }
+  },
+  
+  add: function (key, post) {
+    this.keys[key] = true
+    localStorage.setItem('CachedPosts.keys', JSON.stringify(this.keys))
+
+    this.posts.unshift(post)
+    localStorage.setItem('CachedPosts.posts', JSON.stringify(this.posts))
   }
 }

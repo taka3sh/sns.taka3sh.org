@@ -65,10 +65,10 @@ var app = new Vue({
   data: {
     posts: CachedPosts.getPosts(),
     postKeys: CachedPosts.getKeys(),
+    ready: CachedPosts.isExist(),
+    notify: NotifyService.isEnabled(),
     busy: false,
-    ready: false,
-    error: null,
-    notify: NotifyService.isEnabled()
+    error: null
   },
   methods: {
     onNotifyToggle: onNotifyToggle
