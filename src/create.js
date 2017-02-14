@@ -74,7 +74,7 @@ var app = new Vue({
     title: '',
     body: '',
     createdAt: '',
-    user: null,
+    user: AuthService.getUser(),
     busy: false
   },
   methods: {
@@ -89,7 +89,7 @@ var logindialog = new Vue({
   el: '#logindialog',
   template: '<login-form :user="user" @login="onLogin">',
   data: {
-    user: null
+    user: AuthService.getUser()
   },
   methods: {
     onLogin: onLogin
