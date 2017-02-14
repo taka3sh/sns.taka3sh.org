@@ -1,7 +1,7 @@
 /* globals addEventListener firebase moment Vue */
 
 import AuthService from './service/AuthService'
-import LoginForm from './LoginForm.vue'
+import LoginForm from './partial/LoginForm.vue'
 import StoredPost from './model/StoredPost'
 import PushService from './service/PushService'
 
