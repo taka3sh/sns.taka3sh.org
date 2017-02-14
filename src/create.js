@@ -23,13 +23,25 @@ addEventListener('load', function () {
   AuthService.init(auth)
 
   auth.onAuthStateChanged(function (user) {
-    logindialog.user = user
+    app.user = logindialog.user = user && user.email
   })
 })
 
-function onLogin (email, password) {
-  AuthService.login(email, password)
-}
+var app = new Vue({
+  el: '#app',
+  data: {
+    title: '',
+    body: '',
+    createdAt: '',
+    user: null,
+    busy: false
+  },
+  methods: {
+    onLogout: function () {
+      AuthService.logout()
+    }
+  }
+})
 
 var logindialog = new Vue({
   el: '#logindialog',
@@ -38,11 +50,13 @@ var logindialog = new Vue({
     user: null
   },
   methods: {
-    onLogin: onLogin
+    onLogin: function (email, password) {
+      AuthService.login(email, password)
+    }
   }
 })
 
 export default {
-  app: {},
+  app: app,
   logindialog: logindialog
 }
