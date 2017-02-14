@@ -2,8 +2,8 @@
 
 import CachedPosts from './model/CachedPosts'
 import PostCards from './PostCards.vue'
-import PostReceiver from './PostReceiver'
-import PushService from './PushService'
+import PostReceiver from './service/PostReceiver'
+import PushService from './service/PushService'
 import ShownPosts from './model/ShownPosts'
 
 moment.locale('ja')
