@@ -2,7 +2,7 @@
 
 import AuthService from './AuthService'
 import LoginForm from './LoginForm.vue'
-import StoredPost from './post/StoredPost'
+import StoredPost from './model/StoredPost'
 
 moment.locale('ja')
 
