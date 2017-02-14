@@ -6,16 +6,16 @@ import PostReceiver from './PostReceiver'
 import PushService from './PushService'
 import ShownPosts from './ShownPosts'
 
+moment.locale('ja')
+
 Vue.component('post-cards', PostCards)
 
 Vue.filter('date-localize', function (value) {
   return moment(value).format('LLLL')
 })
 
-function initVue () {
+function vueCreated () {
   var app = this
-
-  moment.locale('ja')
 
   ShownPosts.init(app.postKeys, app.posts)
 
@@ -25,7 +25,7 @@ function initVue () {
   }
 
   addEventListener('load', function () {
-    initFirebase()
+    firebaseLoaded()
     .then(function (lastKey) {
       app.ready = true
       PostReceiver.listen()
@@ -33,7 +33,7 @@ function initVue () {
   })
 }
 
-function initFirebase () {
+function firebaseLoaded () {
   firebase.initializeApp({
     apiKey: 'AIzaSyB3rU05SgP6XFnQqPgrvCBLSPulxsfpwxI',
     databaseURL: 'https://sns-taka3sh-org-157419.firebaseio.com',
@@ -66,5 +66,5 @@ export default new Vue({
     onToggle: function () {
     }
   },
-  created: initVue
+  created: vueCreated
 })
