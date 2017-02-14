@@ -14,7 +14,7 @@ export var PostReceiver = {
 
   listen: function () {
     PostReceiver.ref.startAt(PostReceiver.lastKey).on('child_added', function (snapshot) {
-      PostReceiver.onChildAdded(childSnapshot.key, childSnapshot.val())
+      PostReceiver.onChildAdded(snapshot.key, snapshot.val())
     })
   }
 }
