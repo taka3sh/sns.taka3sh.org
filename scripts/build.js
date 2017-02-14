@@ -1,30 +1,32 @@
 const fs = require('fs')
-const path = require('path')
 
 const ejs = require('ejs')
+const rollup = require('rollup')
+const vue = require('rollup-plugin-vue')
 
-exports.srcdir = path.join(__dirname, '../public')
-exports.destdir = path.join(__dirname, '../www')
+const all = ['index', 'create']
 
 exports.build = function () {
-  try {
-    fs.mkdirSync(this.destdir)
-  } catch (e) {}
+  for (let name of all) {
+    rollup.rollup({
+      entry: `./src/${name}.js`,
+      plugins: [
+        vue()
+      ]
+    })
+    .then(bundle => {
+      bundle.write({
+        format: 'iife',
+        dest: `./public/${name}.js`,
+        moduleName: 'app'
+      })
+    })
+    .catch(console.log)
 
-  for (let basename of fs.readdirSync(this.srcdir)) {
-    if (basename.startsWith('_')) continue
-
-    const filename = path.join(this.srcdir, basename)
-    let contents
-    if (basename.endsWith('.ejs')) {
-      const source = basename.replace(/\.[^.]+$/, '')
-      contents = ejs.compile(String(fs.readFileSync(filename)), { filename: filename })()
-      basename = `${source}.html`
-    } else {
-      contents = fs.readFileSync(filename)
-    }
-
-    fs.writeFileSync(path.join(this.destdir, basename), contents)
+    ejs.renderFile(`./src/${name}.html.ejs`, function (err, data) {
+      if (err) throw err
+      fs.writeFileSync(`./public/${name}.html`, data)
+    })
   }
 }
 
