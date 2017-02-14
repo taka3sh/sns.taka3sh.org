@@ -2,6 +2,7 @@
 
 import AuthService from './AuthService'
 import LoginForm from './LoginForm.vue'
+import StoredPost from './post/StoredPost'
 
 moment.locale('ja')
 
@@ -19,13 +20,53 @@ addEventListener('load', function () {
   })
 
   var auth = firebase.auth()
+  var database = firebase.database()
 
   AuthService.init(auth)
 
   auth.onAuthStateChanged(function (user) {
     app.user = logindialog.user = user && user.email
   })
+
+  StoredPost.init(database.ref('/posts-stage'))
 })
+
+function updateMDL () {
+  this.$el.querySelectorAll('.mdl-js-textfield').forEach(function (elem) {
+    if (elem.MaterialTextfield) {
+      elem.MaterialTextfield.checkDirty()
+    }
+  })
+}
+
+function vueMounted () {
+  this.$el.querySelector('form').reset()
+}
+
+function onCreate (e) {
+  var self = this
+
+  self.busy = true
+  StoredPost.create(this.title, this.body, this.createdAt)
+  .then(function () {
+    self.busy = false
+    e.target.reset()
+  })
+}
+
+function onReset (e) {
+  this.title = this.body = ''
+  this.createdAt = moment().startOf('minute').toISOString()
+  this.$nextTick(updateMDL)
+}
+
+function onLogin (email, password) {
+  AuthService.login(email, password)
+}
+
+function onLogout () {
+  AuthService.logout()
+}
 
 var app = new Vue({
   el: '#app',
@@ -37,10 +78,11 @@ var app = new Vue({
     busy: false
   },
   methods: {
-    onLogout: function () {
-      AuthService.logout()
-    }
-  }
+    onCreate: onCreate,
+    onLogout: onLogout,
+    onReset: onReset
+  },
+  mounted: vueMounted
 })
 
 var logindialog = new Vue({
@@ -50,9 +92,7 @@ var logindialog = new Vue({
     user: null
   },
   methods: {
-    onLogin: function (email, password) {
-      AuthService.login(email, password)
-    }
+    onLogin: onLogin
   }
 })
 
