@@ -13,6 +13,12 @@ Vue.filter('date-localize', function (value) {
 
 Vue.component('login-form', LoginForm)
 
+function showMessage (el, message) {
+  el.querySelector('.mdl-js-snackbar').MaterialSnackbar.showSnackbar({
+    message: message
+  })
+}
+
 function updateMDL () {
   this.$el.querySelectorAll('.mdl-js-textfield').forEach(function (elem) {
     if (elem.MaterialTextfield) {
@@ -49,8 +55,13 @@ function onCreate (e) {
     return PushService.publish(e.target)
   })
   .then(function () {
-    e.target.reset()
     self.busy = false
+    e.target.reset()
+  })
+  .catch(function (err) {
+    self.busy = false
+    console.error(err)
+    showMessage(self.$el, err.message)
   })
 }
 
@@ -61,7 +72,13 @@ function onReset (e) {
 }
 
 function onLogin (email, password) {
+  var el = this.$el
+
   AuthService.login(email, password)
+  .catch(function (err) {
+    console.error(err)
+    showMessage(el, err.message)
+  })
 }
 
 function onLogout () {
