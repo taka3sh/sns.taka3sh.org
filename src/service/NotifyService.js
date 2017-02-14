@@ -7,8 +7,14 @@ export default {
     self.projectid = projectid
   },
 
+  isSupported: function () {
+    return 'Notification' in window &&
+           'serviceWorker' in navigator
+  },
+
   isEnabled: function () {
-    return Notification.permission === 'granted' &&
+    return this.isSupported() &&
+           Notification.permission === 'granted' &&
            navigator.serviceWorker.controller &&
            localStorage.getItem('PushService.tokenSent') === 'true'
   },
