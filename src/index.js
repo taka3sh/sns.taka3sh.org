@@ -59,8 +59,10 @@ function onNotifyToggle () {
     PushService.unsubscribe()
     self.notify = false
   } else {
+    self.busy = true
     PushService.subscribe()
     .then(function () {
+      self.busy = false
       self.notify = true
     })
   }
