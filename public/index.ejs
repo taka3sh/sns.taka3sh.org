@@ -15,7 +15,7 @@
       <p class="mdl-cell mdl-cell--12-col">
         こちらは、たかさん支援隊からの連絡などを配信するサイトです。
       </p>
-      <button class="mdl-button mdl-js-button mdl-button--raised" :class="{ 'mdl-button--accent': notify }" :disabled="busy" @click="onToggle">
+      <button class="mdl-button mdl-js-button mdl-button--raised" :class="{ 'mdl-button--accent': notify }" :disabled="busy" @click="onNotifyToggle">
         {{ notify ? '通知オン' : '通知オフ' }}
       </button>
       <template v-if="error === 'messaging/permission-blocked'">
