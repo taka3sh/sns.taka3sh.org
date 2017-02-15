@@ -28,17 +28,17 @@ export default {
     var self = this
 
     return self.installServiceWorker()
-    .then(function () {
-      return self.messaging.requestPermission()
-    })
     .then(function (swReg) {
-      return self.messaging.getToken()
+      return self.messaging.requestPermission()
+      .then(function () {
+        return self.messaging.getToken()
+      })
       .then(function (currentToken) {
         return fetch(self.endpoint + currentToken, { method: 'POST' })
       })
       .then(function () {
         localStorage.setItem('PushService.tokenSent', 'true')
-        self.showGreeting(swReg[0])
+        self.showGreeting(swReg)
       })
     })
   },
