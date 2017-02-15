@@ -26,9 +26,11 @@ function vueCreated () {
     ShownPosts.add(key, val)
   }
 
-  NotifyService.isEnabled().then(function (value) {
-    app.notify = value
-  })
+  if (NotifyService.isSupported()) {
+    NotifyService.isEnabled().then(function (value) {
+      app.notify = value
+    })
+  }
 }
 
 function firebaseLoaded () {
@@ -52,6 +54,8 @@ function firebaseLoaded () {
 
 function onNotifyToggle () {
   var self = this
+
+  if (!NotifyService.isSupported()) return
 
   if (self.notify) {
     NotifyService.unsubscribe()

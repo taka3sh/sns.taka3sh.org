@@ -7,14 +7,10 @@ export default {
   },
 
   isEnabled: function () {
-    if (this.isSupported()) {
-      return navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope')
-      .then(function (swReg) {
-        return swReg && Notification.permission === 'granted' && localStorage.getItem('PushService.tokenSent') === 'true'
-      })
-    } else {
-      return Promise.resolve(false)
-    }
+    return navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope')
+    .then(function (swReg) {
+      return swReg && Notification.permission === 'granted' && localStorage.getItem('PushService.tokenSent') === 'true'
+    })
   },
 
   init: function (messaging, endpoint) {
