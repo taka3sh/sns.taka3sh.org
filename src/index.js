@@ -35,7 +35,7 @@ function firebaseLoaded () {
   var database = firebase.database()
   var messaging = firebase.messaging()
 
-  NotifyService.init(messaging, 'sns-taka3sh-org-157419')
+  NotifyService.init(messaging, 'https://sns-taka3sh-org-157419.appspot.com/subscribe/')
   messaging.onTokenRefresh(function () {
     NotifyService.subscribe()
   })

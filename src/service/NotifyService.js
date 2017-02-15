@@ -1,10 +1,9 @@
 /* globals fetch localStorage Notification */
 
 export default {
-  init: function (messaging, projectid) {
-    var self = this
-    self.messaging = messaging
-    self.projectid = projectid
+  init: function (messaging, endpoint) {
+    this.messaging = messaging
+    this.endpoint = endpoint
   },
 
   isSupported: function () {
@@ -20,17 +19,18 @@ export default {
   },
 
   subscribe: function () {
-    var self = this
+    var messaging = this.messaging
+    var endpoint = this.endpoint
 
     return Promise.all([
-      self.installServiceWorker(),
-      self.messaging.requestPermission()
+      this.installServiceWorker(),
+      messaging.requestPermission()
     ])
     .then(function () {
-      return self.messaging.getToken()
+      return messaging.getToken()
     })
     .then(function (currentToken) {
-      return fetch('https://' + self.projectid + '.appspot.com/subscribe/' + currentToken, { method: 'POST' })
+      return fetch(endpoint + currentToken, { method: 'POST' })
     })
     .then(function () {
       localStorage.setItem('PushService.tokenSent', 'true')
@@ -38,14 +38,14 @@ export default {
   },
 
   unsubscribe: function () {
-    var self = this
+    var messaging = this.messaging
 
-    return self.installServiceWorker()
+    return this.installServiceWorker()
     .then(function () {
-      return self.messaging.getToken()
+      return messaging.getToken()
     })
     .then(function (currentToken) {
-      return self.messaging.deleteToken(currentToken)
+      return messaging.deleteToken(currentToken)
     })
     .then(function () {
       localStorage.removeItem('PushService.tokenSent')
