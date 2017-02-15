@@ -1,15 +1,21 @@
 /* globals fetch localStorage Notification */
 
 export default {
+  isTokenSent: function () {
+    return localStorage.getItem('PushService.tokenSent') === 'true'
+  },
+
   isSupported: function () {
     return 'Notification' in window &&
            'serviceWorker' in navigator
   },
 
   isEnabled: function () {
+    var self = this
+
     return navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope')
     .then(function (swReg) {
-      return swReg && Notification.permission === 'granted' && localStorage.getItem('PushService.tokenSent') === 'true'
+      return swReg && Notification.permission === 'granted' && self.isTokenSent()
     })
   },
 

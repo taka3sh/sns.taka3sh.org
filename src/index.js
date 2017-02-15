@@ -80,7 +80,7 @@ var app = new Vue({
     posts: CachedPosts.getPosts(),
     postKeys: CachedPosts.getKeys(),
     ready: CachedPosts.isExist(),
-    notify: NotifyService.isSupported(),
+    notify: NotifyService.isTokenSent(),
     busy: false,
     error: null
   },
