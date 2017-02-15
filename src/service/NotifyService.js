@@ -1,21 +1,25 @@
 /* globals fetch localStorage Notification */
 
 export default {
-  init: function (messaging, endpoint) {
-    this.messaging = messaging
-    this.endpoint = endpoint
-  },
-
   isSupported: function () {
     return 'Notification' in window &&
            'serviceWorker' in navigator
   },
 
   isEnabled: function () {
-    return this.isSupported() &&
-           Notification.permission === 'granted' &&
-           navigator.serviceWorker.controller &&
-           localStorage.getItem('PushService.tokenSent') === 'true'
+    if (this.isSupported()) {
+      return navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope')
+      .then(function (swReg) {
+        return swReg && Notification.permission === 'granted' && localStorage.getItem('PushService.tokenSent') === 'true'
+      })
+    } else {
+      return Promise.resolve(false)
+    }
+  },
+
+  init: function (messaging, endpoint) {
+    this.messaging = messaging
+    this.endpoint = endpoint
   },
 
   subscribe: function () {

@@ -25,6 +25,10 @@ function vueCreated () {
     CachedPosts.add(key, val)
     ShownPosts.add(key, val)
   }
+
+  NotifyService.isEnabled().then(function (value) {
+    app.notify = value
+  })
 }
 
 function firebaseLoaded () {
@@ -68,7 +72,7 @@ var app = new Vue({
     posts: CachedPosts.getPosts(),
     postKeys: CachedPosts.getKeys(),
     ready: CachedPosts.isExist(),
-    notify: NotifyService.isEnabled(),
+    notify: NotifyService.isSupported(),
     busy: false,
     error: null
   },
