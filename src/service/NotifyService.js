@@ -1,15 +1,21 @@
 /* globals fetch localStorage Notification */
 
 export default {
+  isTokenSent: function () {
+    return localStorage.getItem('PushService.tokenSent') === 'true'
+  },
+
   isSupported: function () {
     return 'Notification' in window &&
            'serviceWorker' in navigator
   },
 
   isEnabled: function () {
+    var self = this
+
     return navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope')
     .then(function (swReg) {
-      return swReg && Notification.permission === 'granted' && localStorage.getItem('PushService.tokenSent') === 'true'
+      return swReg && Notification.permission === 'granted' && self.isTokenSent()
     })
   },
 
@@ -22,17 +28,17 @@ export default {
     var self = this
 
     return self.installServiceWorker()
-    .then(function () {
-      return self.messaging.requestPermission()
-    })
     .then(function (swReg) {
-      return self.messaging.getToken()
+      return self.messaging.requestPermission()
+      .then(function () {
+        return self.messaging.getToken()
+      })
       .then(function (currentToken) {
         return fetch(self.endpoint + currentToken, { method: 'POST' })
       })
       .then(function () {
         localStorage.setItem('PushService.tokenSent', 'true')
-        self.showGreeting(swReg[0])
+        self.showGreeting(swReg)
       })
     })
   },
