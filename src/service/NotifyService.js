@@ -19,21 +19,21 @@ export default {
   },
 
   subscribe: function () {
-    var messaging = this.messaging
-    var endpoint = this.endpoint
+    var self = this
 
     return Promise.all([
-      this.installServiceWorker(),
-      messaging.requestPermission()
+      self.installServiceWorker(),
+      self.messaging.requestPermission()
     ])
-    .then(function () {
-      return messaging.getToken()
-    })
-    .then(function (currentToken) {
-      return fetch(endpoint + currentToken, { method: 'POST' })
-    })
-    .then(function () {
-      localStorage.setItem('PushService.tokenSent', 'true')
+    .then(function (swReg) {
+      return self.messaging.getToken()
+      .then(function (currentToken) {
+        return fetch(self.endpoint + currentToken, { method: 'POST' })
+      })
+      .then(function () {
+        localStorage.setItem('PushService.tokenSent', 'true')
+        self.showGreeting(swReg[0])
+      })
     })
   },
 
@@ -64,5 +64,12 @@ export default {
     }
 
     return this.registration
+  },
+
+  showGreeting: function (swReg) {
+    swReg.showNotification('Greeting', {
+      body: 'Hey! The notification service is now working!',
+      icon: '/icon.png'
+    })
   }
 }
