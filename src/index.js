@@ -1,10 +1,12 @@
 /* globals addEventListener firebase moment Vue */
 
 import CachedPosts from './model/CachedPosts'
-import PostCards from './partial/PostCards.vue'
+import ShownPosts from './model/ShownPosts'
+
 import PostReceiver from './service/PostReceiver'
 import NotifyService from './service/NotifyService'
-import ShownPosts from './model/ShownPosts'
+
+import PostCards from './partial/PostCards.vue'
 
 moment.locale('ja')
 
