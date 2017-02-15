@@ -4,4 +4,4 @@ yarn.lock
 
 public/*.html
 public/*.js
-!public/sw.js
+!public/firebase-messaging-sw.js

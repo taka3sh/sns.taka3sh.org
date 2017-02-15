@@ -1,10 +1,12 @@
 /* globals addEventListener firebase moment Vue */
 
 import CachedPosts from './model/CachedPosts'
-import PostCards from './partial/PostCards.vue'
+import ShownPosts from './model/ShownPosts'
+
 import PostReceiver from './service/PostReceiver'
 import NotifyService from './service/NotifyService'
-import ShownPosts from './model/ShownPosts'
+
+import PostCards from './partial/PostCards.vue'
 
 moment.locale('ja')
 
@@ -23,6 +25,12 @@ function vueCreated () {
     CachedPosts.add(key, val)
     ShownPosts.add(key, val)
   }
+
+  if (NotifyService.isSupported()) {
+    NotifyService.isEnabled().then(function (value) {
+      app.notify = value
+    })
+  }
 }
 
 function firebaseLoaded () {
@@ -35,7 +43,7 @@ function firebaseLoaded () {
   var database = firebase.database()
   var messaging = firebase.messaging()
 
-  NotifyService.init(messaging, 'sns-taka3sh-org-157419')
+  NotifyService.init(messaging, 'https://sns-taka3sh-org-157419.appspot.com/subscribe/')
   messaging.onTokenRefresh(function () {
     NotifyService.subscribe()
   })
@@ -47,6 +55,8 @@ function firebaseLoaded () {
 function onNotifyToggle () {
   var self = this
 
+  if (!NotifyService.isSupported()) return
+
   if (self.notify) {
     NotifyService.unsubscribe()
     self.notify = false
@@ -57,6 +67,10 @@ function onNotifyToggle () {
       self.busy = false
       self.notify = true
     })
+    .catch(function (err) {
+      self.busy = false
+      console.error(err)
+    })
   }
 }
 
@@ -66,7 +80,7 @@ var app = new Vue({
     posts: CachedPosts.getPosts(),
     postKeys: CachedPosts.getKeys(),
     ready: CachedPosts.isExist(),
-    notify: NotifyService.isEnabled(),
+    notify: NotifyService.isSupported(),
     busy: false,
     error: null
   },
