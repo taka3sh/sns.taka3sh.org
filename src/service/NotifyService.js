@@ -56,7 +56,9 @@ export default {
     var messaging = this.messaging
 
     if (!this.registration) {
-      this.registration = navigator.serviceWorker.register('sw.js')
+      this.registration = navigator.serviceWorker.register('firebase-messaging-sw.js', {
+        scope: '/firebase-cloud-messaging-push-scope'
+      })
       .then(function (swReg) {
         messaging.useServiceWorker(swReg)
         return swReg
