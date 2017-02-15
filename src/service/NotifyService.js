@@ -25,10 +25,10 @@ export default {
   subscribe: function () {
     var self = this
 
-    return Promise.all([
-      self.installServiceWorker(),
-      self.messaging.requestPermission()
-    ])
+    return self.installServiceWorker()
+    .then(function () {
+      return self.messaging.requestPermission()
+    })
     .then(function (swReg) {
       return self.messaging.getToken()
       .then(function (currentToken) {
@@ -58,6 +58,10 @@ export default {
 
   installServiceWorker: function () {
     var messaging = this.messaging
+
+    if (!this.isSupported()) {
+      return Promise.reject(new Error('Service Worker is not supported.'))
+    }
 
     if (!this.registration) {
       this.registration = navigator.serviceWorker.register('firebase-messaging-sw.js', {

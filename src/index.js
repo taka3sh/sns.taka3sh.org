@@ -63,6 +63,10 @@ function onNotifyToggle () {
       self.busy = false
       self.notify = true
     })
+    .catch(function (err) {
+      self.busy = false
+      console.error(err)
+    })
   }
 }
 
