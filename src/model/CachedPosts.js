@@ -5,7 +5,7 @@ export default {
   posts: [],
 
   isExist: function () {
-    return this.getPosts() !== null
+    return this.getPosts().length > 0
   },
 
   getPosts: function () {
