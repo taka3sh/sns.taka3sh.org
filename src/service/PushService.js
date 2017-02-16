@@ -1,17 +1,17 @@
-/* globals fetch FormData XMLHttpRequest */
+/* globals fetch FormData */
 
 export default {
-  init: function (auth, projectid) {
+  init: function (auth, endpoint) {
     this.auth = auth
-    this.projectid = projectid
+    this.endpoint = endpoint
   },
 
   publish: function (form) {
-    var url = 'https://' + this.projectid + '.appspot.com/publish'
+    var endpoint = this.endpoint
     return this.auth.currentUser.getToken(true)
     .then(function (idToken) {
       form.elements.idToken.value = idToken
-      return fetch(url, {
+      return fetch(endpoint, {
         method: 'POST',
         mode: 'cors',
         body: new FormData(form)

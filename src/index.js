@@ -8,6 +8,14 @@ import NotifyService from './service/NotifyService'
 
 import PostCards from './partial/PostCards.vue'
 
+import {
+  firebaseApiKey,
+  firebaseDatabaseURL,
+  firebaseMessagingSenderId,
+  notifyEndpoint,
+  postPrefix
+} from './Constants'
+
 moment.locale('ja')
 
 Vue.component('post-cards', PostCards)
@@ -35,20 +43,20 @@ function vueCreated () {
 
 function firebaseLoaded () {
   firebase.initializeApp({
-    apiKey: 'AIzaSyB3rU05SgP6XFnQqPgrvCBLSPulxsfpwxI',
-    databaseURL: 'https://sns-taka3sh-org-157419.firebaseio.com',
-    messagingSenderId: '895779023522'
+    apiKey: firebaseApiKey,
+    databaseURL: firebaseDatabaseURL,
+    messagingSenderId: firebaseMessagingSenderId
   })
 
   var database = firebase.database()
   var messaging = firebase.messaging()
 
-  NotifyService.init(messaging, 'https://sns-taka3sh-org-157419.appspot.com/subscribe/')
+  NotifyService.init(messaging, notifyEndpoint)
   messaging.onTokenRefresh(function () {
     NotifyService.subscribe()
   })
 
-  PostReceiver.init(database.ref('/posts'))
+  PostReceiver.init(database.ref(postPrefix))
   return PostReceiver.loadAll()
 }
 
