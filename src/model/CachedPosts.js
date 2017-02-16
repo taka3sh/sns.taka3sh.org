@@ -15,7 +15,7 @@ export default {
 
   getKeys: function () {
     var keys = JSON.parse(localStorage.getItem('CachedPosts.keys'))
-    return keys && {}
+    return typeof keys === 'object' && keys || {}
   },
 
   add: function (key, post) {
