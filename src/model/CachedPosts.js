@@ -9,21 +9,15 @@ export default {
   },
 
   getPosts: function () {
-    try {
-      return JSON.parse(localStorage.getItem('CachedPosts.posts')) || []
-    } catch (err) {
-      console.log(err)
-    }
+    var posts = JSON.parse(localStorage.getItem('CachedPosts.posts'))
+    return posts instanceof Array && posts || []
   },
 
   getKeys: function () {
-    try {
-      return JSON.parse(localStorage.getItem('CachedPosts.keys')) || {}
-    } catch (err) {
-      console.log(err)
-    }
+    var keys = JSON.parse(localStorage.getItem('CachedPosts.keys'))
+    return keys && {}
   },
-  
+
   add: function (key, post) {
     this.keys[key] = true
     localStorage.setItem('CachedPosts.keys', JSON.stringify(this.keys))
