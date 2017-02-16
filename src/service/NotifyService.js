@@ -36,7 +36,8 @@ export default {
       .then(function (currentToken) {
         return fetch(self.endpoint + currentToken, { method: 'POST' })
       })
-      .then(function () {
+      .then(function (response) {
+        if (!response.ok) throw new Error(response.statusText)
         localStorage.setItem('PushService.tokenSent', 'true')
         self.showGreeting(swReg)
       })
