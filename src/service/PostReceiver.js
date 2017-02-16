@@ -17,7 +17,7 @@ export default {
   listen: function () {
     var self = this
 
-    self.ref.startAt(self.lastKey).on('child_added', function (snapshot) {
+    self.ref.endAt(self.lastKey).on('child_added', function (snapshot) {
       self.onChildAdded(snapshot.key, snapshot.val())
     })
   }
