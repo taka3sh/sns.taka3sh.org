@@ -35,7 +35,7 @@ function vueCreated () {
   }
 
   if (NotifyService.isSupported()) {
-    NotifyService.isEnabled().then(function (value) {
+    NotifyService.getEnabled().then(function (value) {
       app.notify = value
     })
   }
@@ -95,7 +95,7 @@ var app = new Vue({
     posts: CachedPosts.getPosts(),
     postKeys: CachedPosts.getKeys(),
     ready: CachedPosts.isExist(),
-    notify: NotifyService.isTokenSent(),
+    notify: NotifyService.isPreviouslyEnabled(),
     busy: false,
     error: null
   },
