@@ -18,7 +18,9 @@ export default {
     var self = this
 
     self.ref.endAt(self.lastKey).on('child_added', function (snapshot) {
-      self.onChildAdded(snapshot.key, snapshot.val())
+      var post = snapshot.val()
+      post.key = snapshot.key
+      self.onChildAdded(snapshot.key, post)
     })
   }
 }
