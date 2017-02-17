@@ -6,7 +6,8 @@ const rollup = require('rollup')
 const alias = require('rollup-plugin-alias')
 const vue = require('rollup-plugin-vue')
 
-const all = ['index', 'create']
+const html = ['index', 'create']
+const js = ['firebase-messaging-sw', 'index', 'create']
 
 exports.build = function () {
   let plugins = [vue()]
@@ -17,7 +18,14 @@ exports.build = function () {
     }))
   }
 
-  for (let name of all) {
+  for (let name of html) {
+    ejs.renderFile(`./src/${name}.html.ejs`, function (err, data) {
+      if (err) throw err
+      fs.writeFileSync(`./public/${name}.html`, data)
+    })
+  }
+
+  for (let name of js) {
     rollup.rollup({
       entry: `./src/${name}.js`,
       plugins: plugins
@@ -30,11 +38,6 @@ exports.build = function () {
       })
     })
     .catch(console.log)
-
-    ejs.renderFile(`./src/${name}.html.ejs`, function (err, data) {
-      if (err) throw err
-      fs.writeFileSync(`./public/${name}.html`, data)
-    })
   }
 }
 
