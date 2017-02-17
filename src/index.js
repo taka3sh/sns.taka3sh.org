@@ -1,4 +1,4 @@
-/* globals addEventListener firebase moment Vue */
+/* globals addEventListener firebase location moment Vue */
 
 import CachedPosts from './model/CachedPosts'
 import ShownPosts from './model/ShownPosts'
@@ -23,6 +23,15 @@ Vue.component('post-cards', PostCards)
 Vue.filter('date-localize', function (value) {
   return moment(value).format('LLLL')
 })
+
+setTimeout(function () {
+  var hash = location.hash
+
+  if (hash) {
+    location.hash = ''
+    location.hash = hash
+  }
+}, 20)
 
 function vueCreated () {
   var app = this
