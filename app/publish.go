@@ -126,10 +126,8 @@ func handlePublish(w http.ResponseWriter, r *http.Request) {
 	}
 
 	payload := map[string]string{
-		"title":        r.FormValue("title"),
-		"body":         r.FormValue("body"),
-		"icon":         "/icon.png",
-		"click_action": "https://sns.taka3sh.org",
+		"title": r.FormValue("title"),
+		"body":  r.FormValue("body"),
 	}
 	resp, err := publish(client, key, payload)
 	if err != nil {
