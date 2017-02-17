@@ -1,15 +1,4 @@
-/* global addEventListener clients firebase importScripts registration */
-
-import {
-  firebaseMessagingSenderId
-} from './constants/development'
-
-importScripts('https://www.gstatic.com/firebasejs/3.6.8/firebase-app.js')
-importScripts('https://www.gstatic.com/firebasejs/3.6.8/firebase-messaging.js')
-
-firebase.initializeApp({
-  messagingSenderId: firebaseMessagingSenderId
-})
+/* global addEventListener clients registration */
 
 addEventListener('push', function (e) {
   var data = e.data.json()
@@ -23,6 +12,7 @@ addEventListener('push', function (e) {
 })
 
 addEventListener('notificationclick', function (e) {
+  console.log(e)
   e.notification.close()
   e.waitUntil(clients.openWindow('/#' + e.notification.data.key))
 })
