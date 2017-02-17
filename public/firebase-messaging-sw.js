@@ -7,14 +7,13 @@ firebase.initializeApp({
   messagingSenderId: '895779023522'
 })
 
+addEventListener('notificationclick', function (e) {
+  e.notification.close()
+  e.waitUntil(clients.openWindow('/'))
+})
+
 var messaging = firebase.messaging()
 
 messaging.setBackgroundMessageHandler(function () {
 
-})
-
-addEventListener('notificationclick', function (e) {
-  console.log('notificationclick')
-  e.notification.close()
-  e.waitUntil(clients.openWindow('/'))
 })
