@@ -1,6 +1,6 @@
 <template>
   <transition-group name="card" tag="section" class="mdl-grid" v-show="ready">
-    <div v-for="post in posts" class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp" :id="post.key" :key="post.key">
+    <div v-for="post in posts" class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp" :id="post.key" :key="post">
       <div class="mdl-card__title">
         <h2 class="mdl-card__title-text">{{ post.title }}</h2>
       </div>
