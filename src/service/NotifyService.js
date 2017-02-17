@@ -44,30 +44,24 @@ export default {
   subscribe: function () {
     var self = this
 
-    return self.installServiceWorker()
-    .then(function (swReg) {
-      return self.messaging.requestPermission()
-      .then(function () {
-        return self.messaging.getToken()
-      })
-      .then(function (currentToken) {
-        return fetch(self.endpoint + currentToken, { method: 'POST' })
-      })
-      .then(function (response) {
-        if (!response.ok) throw new Error(response.statusText)
-        setEnabled()
-        self.showGreeting(swReg)
-      })
+    return self.messaging.requestPermission()
+    .then(function () {
+      return self.messaging.getToken()
+    })
+    .then(function (currentToken) {
+      return fetch(self.endpoint + currentToken, { method: 'POST' })
+    })
+    .then(function (response) {
+      if (!response.ok) throw new Error(response.statusText)
+      setEnabled()
+      return self.showGreeting()
     })
   },
 
   unsubscribe: function () {
     var messaging = this.messaging
 
-    return this.installServiceWorker()
-    .then(function () {
-      return messaging.getToken()
-    })
+    return messaging.getToken()
     .then(function (currentToken) {
       return messaging.deleteToken(currentToken)
     })
@@ -76,30 +70,13 @@ export default {
     })
   },
 
-  installServiceWorker: function () {
-    var messaging = this.messaging
-
-    if (!this.isSupported()) {
-      return Promise.reject(new Error('Service Worker is not supported.'))
-    }
-
-    if (!this.registration) {
-      this.registration = navigator.serviceWorker.register('firebase-messaging-sw.js', {
-        scope: '/firebase-cloud-messaging-push-scope'
+  showGreeting: function () {
+    navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope')
+    .then(function (swReg) {
+      return swReg.showNotification('Greeting', {
+        body: 'Hey! The notification service is now working!',
+        icon: '/icon.png'
       })
-      .then(function (swReg) {
-        messaging.useServiceWorker(swReg)
-        return swReg
-      })
-    }
-
-    return this.registration
-  },
-
-  showGreeting: function (swReg) {
-    swReg.showNotification('Greeting', {
-      body: 'Hey! The notification service is now working!',
-      icon: '/icon.png'
     })
   }
 }
