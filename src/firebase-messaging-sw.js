@@ -14,5 +14,16 @@ addEventListener('push', function (e) {
 addEventListener('notificationclick', function (e) {
   console.log(e)
   e.notification.close()
-  e.waitUntil(clients.openWindow('/#' + e.notification.data.key))
+  e.waitUntil(
+    clients.matchAll({
+      type: 'window',
+      includeUncontrolled: true
+    })
+    .then(function (clientList) {
+      for (var client of clientList) {
+        return client.focus()
+      }
+      return clients.openWindow('/#' + e.notification.data.key)
+    })
+  )
 })
