@@ -1,27 +1,36 @@
 /* globals fetch localStorage Notification */
 
-export default {
-  isTokenSent: function () {
-    return localStorage.getItem('NotifyService.tokenSent') === 'true'
-  },
+function getEnabled () {
+  return localStorage.getItem('NotifyService.enabled') === 'true'
+}
 
+function setEnabled () {
+  localStorage.setItem('NotifyService.enabled', 'true')
+}
+
+function unsetEnabled () {
+  localStorage.removeItem('NotifyService.enabled')
+}
+
+export default {
   isSupported: function () {
     return 'Notification' in window &&
            'serviceWorker' in navigator
   },
 
   isPreviouslyEnabled: function () {
-    return localStorage.getItem('NotifyService.enabled') === 'true'
+    return getEnabled()
   },
 
   getEnabled: function () {
-    var self = this
-
     return navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope')
     .then(function (swReg) {
-      var value = !!swReg && Notification.permission === 'granted' && self.isTokenSent()
-      localStorage.setItem('NotifyService.enabled', value)
-      return value
+      var tokenSent = getEnabled()
+      var notifyAllowed = !!swReg && Notification.permission === 'granted'
+      if (tokenSent && !notifyAllowed) {
+        setEnabled()
+      }
+      return tokenSent && notifyAllowed
     })
   },
 
@@ -44,7 +53,7 @@ export default {
       })
       .then(function (response) {
         if (!response.ok) throw new Error(response.statusText)
-        localStorage.setItem('NotifyService.tokenSent', 'true')
+        setEnabled()
         self.showGreeting(swReg)
       })
     })
@@ -61,7 +70,7 @@ export default {
       return messaging.deleteToken(currentToken)
     })
     .then(function () {
-      localStorage.removeItem('NotifyService.tokenSent')
+      unsetEnabled()
     })
   },
 
