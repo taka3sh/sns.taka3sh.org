@@ -16,12 +16,14 @@ addEventListener('push', function (e) {
   e.waitUntil(
     registration.showNotification(data.notification.title, {
       body: data.notification.body,
-      icon: '/icon.png'
+      icon: '/icon.png',
+      data: data
     })
   )
 })
 
 addEventListener('notificationclick', function (e) {
+  console.log(e.notification.data.from)
   e.notification.close()
   e.waitUntil(clients.openWindow('/'))
 })
