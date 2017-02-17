@@ -55,6 +55,13 @@ function firebaseLoaded () {
   messaging.onTokenRefresh(function () {
     NotifyService.subscribe()
   })
+  messaging.onMessage(function (message) {
+    NotifyService.installServiceWorker().then(function (swReg) {
+      swReg.showNotification(message.notification.title, {
+        icon: '/icon.png'
+      })
+    })
+  })
 
   PostReceiver.init(database.ref(postPrefix))
   return PostReceiver.loadAll()
