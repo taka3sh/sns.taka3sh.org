@@ -1,4 +1,4 @@
-/* global addEventListener clients firebase importScripts */
+/* global addEventListener clients firebase importScripts registration */
 
 import {
   firebaseMessagingSenderId
@@ -11,11 +11,17 @@ firebase.initializeApp({
   messagingSenderId: firebaseMessagingSenderId
 })
 
+addEventListener('push', function (e) {
+  var data = e.data.json()
+  e.waitUntil(
+    registration.showNotification(data.notification.title, {
+      body: data.notification.body,
+      icon: '/icon.png'
+    })
+  )
+})
+
 addEventListener('notificationclick', function (e) {
   e.notification.close()
   e.waitUntil(clients.openWindow('/'))
 })
-
-var messaging = firebase.messaging()
-
-messaging.setBackgroundMessageHandler(function () {})

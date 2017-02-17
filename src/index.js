@@ -56,6 +56,7 @@ function firebaseLoaded () {
     NotifyService.subscribe()
   })
   messaging.onMessage(function (message) {
+    console.log(message)
     NotifyService.installServiceWorker().then(function (swReg) {
       swReg.showNotification(message.notification.title, {
         icon: '/icon.png'
