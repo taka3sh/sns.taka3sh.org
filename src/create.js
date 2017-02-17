@@ -63,8 +63,9 @@ function onCreate (e) {
 
   self.busy = true
   StoredPost.create(this.title, this.body, this.createdAt)
-  .then(function () {
+  .then(function (post) {
     showMessage(self.$el, 'The new post was successfully created.')
+    e.target.elements.key.value = post.key
     return PushService.publish(e.target)
   })
   .then(function () {

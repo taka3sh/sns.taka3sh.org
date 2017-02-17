@@ -23,7 +23,7 @@ addEventListener('push', function (e) {
 })
 
 addEventListener('notificationclick', function (e) {
-  console.log(e.notification.data.from)
+  console.log(e.notification.data)
   e.notification.close()
   e.waitUntil(clients.openWindow('/'))
 })

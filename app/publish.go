@@ -86,12 +86,8 @@ func (v *uidVerifier) verify(tokenString string) (err error) {
 	return nil
 }
 
-func publish(client *http.Client, key string, payload map[string]string) (resp *http.Response, err error) {
-	jsonStr, _ := json.Marshal(map[string]interface{}{
-		"to":           "/topics/posts",
-		"notification": payload,
-	})
-	req, err := http.NewRequest("POST", "https://fcm.googleapis.com/fcm/send", bytes.NewBuffer(jsonStr))
+func publish(client *http.Client, key string, payload *bytes.Buffer) (resp *http.Response, err error) {
+	req, err := http.NewRequest("POST", "https://fcm.googleapis.com/fcm/send", payload)
 	if err != nil {
 		return
 	}
@@ -125,12 +121,18 @@ func handlePublish(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	payload := map[string]string{
-		"title": r.FormValue("title"),
-		"body":  r.FormValue("body"),
-		"icon":  "/icon.png",
-	}
-	resp, err := publish(client, key, payload)
+	payload, _ := json.Marshal(map[string]interface{}{
+		"to": "/topics/posts",
+		"notification": map[string]interface{}{
+			"title": r.FormValue("title"),
+			"body":  r.FormValue("body"),
+			"icon":  "/icon.png",
+		},
+		"data": map[string]interface{}{
+			"key": r.FormValue("key"),
+		},
+	})
+	resp, err := publish(client, key, bytes.NewBuffer(payload))
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
