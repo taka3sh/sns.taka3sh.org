@@ -8,6 +8,14 @@ import NotifyService from './service/NotifyService'
 
 import PostCards from './partial/PostCards.vue'
 
+import {
+  firebaseApiKey,
+  firebaseDatabaseURL,
+  firebaseMessagingSenderId,
+  notifyEndpoint,
+  postPrefix
+} from './constants/development'
+
 moment.locale('ja')
 
 Vue.component('post-cards', PostCards)
@@ -27,7 +35,7 @@ function vueCreated () {
   }
 
   if (NotifyService.isSupported()) {
-    NotifyService.isEnabled().then(function (value) {
+    NotifyService.getEnabled().then(function (value) {
       app.notify = value
     })
   }
@@ -35,20 +43,27 @@ function vueCreated () {
 
 function firebaseLoaded () {
   firebase.initializeApp({
-    apiKey: 'AIzaSyB3rU05SgP6XFnQqPgrvCBLSPulxsfpwxI',
-    databaseURL: 'https://sns-taka3sh-org-157419.firebaseio.com',
-    messagingSenderId: '895779023522'
+    apiKey: firebaseApiKey,
+    databaseURL: firebaseDatabaseURL,
+    messagingSenderId: firebaseMessagingSenderId
   })
 
   var database = firebase.database()
   var messaging = firebase.messaging()
 
-  NotifyService.init(messaging, 'https://sns-taka3sh-org-157419.appspot.com/subscribe/')
+  NotifyService.init(messaging, notifyEndpoint)
   messaging.onTokenRefresh(function () {
     NotifyService.subscribe()
   })
+  messaging.onMessage(function (message) {
+    NotifyService.installServiceWorker().then(function (swReg) {
+      swReg.showNotification(message.notification.title, {
+        icon: '/icon.png'
+      })
+    })
+  })
 
-  PostReceiver.init(database.ref('/posts'))
+  PostReceiver.init(database.ref(postPrefix))
   return PostReceiver.loadAll()
 }
 
@@ -80,7 +95,7 @@ var app = new Vue({
     posts: CachedPosts.getPosts(),
     postKeys: CachedPosts.getKeys(),
     ready: CachedPosts.isExist(),
-    notify: NotifyService.isTokenSent(),
+    notify: NotifyService.isPreviouslyEnabled(),
     busy: false,
     error: null
   },

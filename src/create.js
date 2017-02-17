@@ -1,9 +1,20 @@
 /* globals addEventListener firebase moment Vue */
 
-import AuthService from './service/AuthService'
-import LoginForm from './partial/LoginForm.vue'
-import StoredPost from './model/StoredPost'
 import PushService from './service/PushService'
+import StoredPost from './model/StoredPost'
+
+import AuthService from './service/AuthService'
+
+import LoginForm from './partial/LoginForm.vue'
+
+import {
+  firebaseApiKey,
+  firebaseAuthDomain,
+  firebaseDatabaseURL,
+  firebaseMessagingSenderId,
+  pushEndpoint,
+  postPrefix
+} from './constants/development'
 
 moment.locale('ja')
 
@@ -33,17 +44,18 @@ function vueMounted () {
 
 function firebaseLoaded () {
   firebase.initializeApp({
-    apiKey: 'AIzaSyB3rU05SgP6XFnQqPgrvCBLSPulxsfpwxI',
-    databaseURL: 'https://sns-taka3sh-org-157419.firebaseio.com',
-    messagingSenderId: '895779023522'
+    apiKey: firebaseApiKey,
+    authDomain: firebaseAuthDomain,
+    databaseURL: firebaseDatabaseURL,
+    messagingSenderId: firebaseMessagingSenderId
   })
 
   var auth = firebase.auth()
   var database = firebase.database()
 
   AuthService.init(auth)
-  PushService.init(auth, 'sns-taka3sh-org-157419')
-  StoredPost.init(database.ref('/posts'))
+  PushService.init(auth, pushEndpoint)
+  StoredPost.init(database.ref(postPrefix))
 }
 
 function onCreate (e) {

@@ -10,37 +10,19 @@ section {
   background: rgb(255, 175, 57);
 }
 
-/* if (current.source === "index") { */
-.loading > .mdl-card__supporting-text {
-  position: absolute;
-  top: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.mdl-layout__title {
+  font-size: 32px;
 }
 
-.posts-enter-active, .posts-leave-active {
+.card-enter-active {
   transition: all 0.5s;
 }
 
-.posts-enter, .posts-leave-to {
+.card-enter {
   opacity: 0.3;
   transform: translateX(-1em);
 }
 
-.posts-move {
+.card-move {
   transition: transform 0.5s;
-}
-/* } */
-
-transition-group {
-  display: none !important;
-}
-
-.mdl-layout__title {
-  font-size: 32px;
 }

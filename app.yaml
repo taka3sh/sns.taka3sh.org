@@ -7,7 +7,7 @@ skip_files:
 
 handlers:
 
-- url: /publish/.*
+- url: /publish
   script: _go_app
 
 - url: /subscribe/.*

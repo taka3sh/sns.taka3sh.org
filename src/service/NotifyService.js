@@ -2,7 +2,7 @@
 
 export default {
   isTokenSent: function () {
-    return localStorage.getItem('PushService.tokenSent') === 'true'
+    return localStorage.getItem('NotifyService.tokenSent') === 'true'
   },
 
   isSupported: function () {
@@ -10,12 +10,18 @@ export default {
            'serviceWorker' in navigator
   },
 
-  isEnabled: function () {
+  isPreviouslyEnabled: function () {
+    return localStorage.getItem('NotifyService.enabled') === 'true'
+  },
+
+  getEnabled: function () {
     var self = this
 
     return navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope')
     .then(function (swReg) {
-      return swReg && Notification.permission === 'granted' && self.isTokenSent()
+      var value = !!swReg && Notification.permission === 'granted' && self.isTokenSent()
+      localStorage.setItem('NotifyService.enabled', value)
+      return value
     })
   },
 
@@ -36,8 +42,9 @@ export default {
       .then(function (currentToken) {
         return fetch(self.endpoint + currentToken, { method: 'POST' })
       })
-      .then(function () {
-        localStorage.setItem('PushService.tokenSent', 'true')
+      .then(function (response) {
+        if (!response.ok) throw new Error(response.statusText)
+        localStorage.setItem('NotifyService.tokenSent', 'true')
         self.showGreeting(swReg)
       })
     })
@@ -54,7 +61,7 @@ export default {
       return messaging.deleteToken(currentToken)
     })
     .then(function () {
-      localStorage.removeItem('PushService.tokenSent')
+      localStorage.removeItem('NotifyService.tokenSent')
     })
   },
 
