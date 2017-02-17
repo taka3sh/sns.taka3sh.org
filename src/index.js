@@ -14,7 +14,7 @@ import {
   firebaseMessagingSenderId,
   notifyEndpoint,
   postPrefix
-} from './Constants'
+} from './constants/development'
 
 moment.locale('ja')
 

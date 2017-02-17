@@ -7,4 +7,4 @@ export var notifyEndpoint = 'https://sns-taka3sh-org-157419.appspot.com/subscrib
 
 export var pushEndpoint = 'https://sns-taka3sh-org-157419.appspot.com/publish'
 
-export var postPrefix = '/posts-stage'
+export var postPrefix = 'posts'
