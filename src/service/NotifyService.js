@@ -1,15 +1,17 @@
 /* globals fetch localStorage Notification */
 
+var NOTIFYSERVICE_ENABLED = 'NotifyService:enabled'
+
 function getEnabled () {
-  return localStorage.getItem('NotifyService.enabled') === 'true'
+  return localStorage.getItem(NOTIFYSERVICE_ENABLED) === 'true'
 }
 
 function setEnabled () {
-  localStorage.setItem('NotifyService.enabled', 'true')
+  localStorage.setItem(NOTIFYSERVICE_ENABLED, 'true')
 }
 
 function unsetEnabled () {
-  localStorage.removeItem('NotifyService.enabled')
+  localStorage.removeItem(NOTIFYSERVICE_ENABLED)
 }
 
 export default {
