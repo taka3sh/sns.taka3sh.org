@@ -47,12 +47,6 @@ function vueCreated () {
     CachedPosts.add(key, val)
     ShownPosts.add(key, val)
   }
-
-  if (NotifyService.isSupported()) {
-    NotifyService.getEnabled().then(function (value) {
-      app.notify = value
-    })
-  }
 }
 
 function firebaseLoaded () {
@@ -69,6 +63,16 @@ function firebaseLoaded () {
   messaging.onTokenRefresh(function () {
     NotifyService.subscribe()
   })
+
+  if (NotifyService.isSupported()) {
+    NotifyService.getEnabled().then(function (value) {
+      app.notify = value
+
+      if (value) {
+        messaging.getToken()
+      }
+    })
+  }
 
   var postsRef = database.ref(postPrefix)
   postsRef.on('child_removed', function () {
