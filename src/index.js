@@ -39,6 +39,8 @@ setTimeout(function () {
 function vueCreated () {
   var app = this
 
+  CachedPosts.invalidateCache()
+
   ShownPosts.init(app.postKeys, app.posts)
 
   PostReceiver.onChildAdded = function (key, val) {

@@ -27,5 +27,10 @@ export default {
 
     this.posts.unshift(post)
     localStorage.setItem(CACHEDPOSTS_POSTS, JSON.stringify(this.posts))
+  },
+
+  invalidateCache: function () {
+    localStorage.removeItem(CACHEDPOSTS_KEYS)
+    localStorage.removeItem(CACHEDPOSTS_POSTS)
   }
 }
