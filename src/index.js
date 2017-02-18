@@ -39,6 +39,8 @@ setTimeout(function () {
 function vueCreated () {
   var app = this
 
+  CachedPosts.invalidateCache()
+
   ShownPosts.init(app.postKeys, app.posts)
 
   PostReceiver.onChildAdded = function (key, val) {
@@ -68,7 +70,12 @@ function firebaseLoaded () {
     NotifyService.subscribe()
   })
 
-  PostReceiver.init(database.ref(postPrefix))
+  var postsRef = database.ref(postPrefix)
+  postsRef.on('child_removed', function () {
+    CachedPosts.invalidateCache()
+  })
+
+  PostReceiver.init(postsRef)
   return PostReceiver.loadAll()
 }
 
