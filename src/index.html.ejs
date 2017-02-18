@@ -19,7 +19,7 @@
       <notify-switch :busy="busy" :enabled="notify" @click="onNotifyToggle" style="margin-top: 0; margin-bottom: 0"></notify-switch>
     </section>
 
-    <post-cards :posts="posts" :ready="ready"></post-cards>
+    <post-cards style="padding-top: 0" :posts="posts" :ready="ready"></post-cards>
 
     <section class="mdl-grid" v-show="!ready">
       <div class="mdl-spinner mdl-js-spinner is-active" style="margin: auto"></div>
