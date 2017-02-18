@@ -37,7 +37,6 @@ export default {
   },
   mounted: function () {
     this.switch = this.$el.querySelector('.mdl-js-switch')
-    console.log(this.switch)
     componentHandler.upgradeElement(this.switch)
   }
 }
