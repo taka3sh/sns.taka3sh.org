@@ -17,6 +17,7 @@ export default {
     busy: function (value) {
       if (value) {
         this.switch.MaterialSwitch.disable()
+        this.switch.classList.remove('is-focused')
       } else {
         this.switch.MaterialSwitch.enable()
       }
