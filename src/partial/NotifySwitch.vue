@@ -1,7 +1,7 @@
 <template>
   <div class="mdl-cell mdl-cell--12-col">
     <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-      <input type="checkbox" class="mdl-switch__input" @click="onClick">
+      <input type="checkbox" class="mdl-switch__input" :checked="enabled" @click="onClick">
       <span class="mdl-switch__label">{{ enabled ? '通知オン' : '通知オフ' }}</span>
     </label>
   </div>
