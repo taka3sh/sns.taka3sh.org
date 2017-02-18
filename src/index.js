@@ -6,6 +6,7 @@ import ShownPosts from './model/ShownPosts'
 import PostReceiver from './service/PostReceiver'
 import NotifyService from './service/NotifyService'
 
+import NotifySwitch from './partial/NotifySwitch.vue'
 import PostCards from './partial/PostCards.vue'
 
 import {
@@ -19,6 +20,8 @@ import {
 moment.locale('ja')
 
 Vue.component('post-cards', PostCards)
+
+Vue.component('notify-switch', NotifySwitch)
 
 Vue.filter('date-localize', function (value) {
   return moment(value).format('LLLL')

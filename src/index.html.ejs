@@ -11,17 +11,12 @@
   <%- include('partial/header.ejs') %>
 
   <main class="mdl-layout__content" id="app" style="overflow: visible">
-    <section class="mdl-grid">
-      <p class="mdl-cell mdl-cell--12-col">
+    <section class="mdl-grid" style="padding-bottom: 0">
+      <div class="mdl-cell mdl-cell--12-col" style="margin-top: 0; margin-bottom: 0">
         こちらは、たかさん支援隊からの連絡などを配信するサイトです。
-      </p>
-      <button class="mdl-button mdl-js-button mdl-button--raised" :class="{ 'mdl-button--accent': notify }" :disabled="busy" @click="onNotifyToggle">
-        {{ notify ? '通知オン' : '通知オフ' }}
-      </button>
-      <template v-if="error === 'messaging/permission-blocked'">
-        通知がブロックされています。
-      </template>
-      <div class="mdl-spinner mdl-js-spinner is-active" v-show="busy"></div>
+      </div>
+
+      <notify-switch :busy="busy" :enabled="notify" @click="onNotifyToggle" style="margin-top: 0; margin-bottom: 0"></notify-switch>
     </section>
 
     <post-cards :posts="posts" :ready="ready"></post-cards>
