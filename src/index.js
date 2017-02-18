@@ -70,7 +70,12 @@ function firebaseLoaded () {
     NotifyService.subscribe()
   })
 
-  PostReceiver.init(database.ref(postPrefix))
+  var postsRef = database.ref(postPrefix)
+  postsRef.on('child_removed', function () {
+    CachedPosts.invalidateCache()
+  })
+
+  PostReceiver.init(postsRef)
   return PostReceiver.loadAll()
 }
 
