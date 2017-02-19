@@ -14,8 +14,10 @@ type secret struct {
 }
 
 func init() {
-	http.HandleFunc("/subscribe/", handleSubscribe)
-	http.HandleFunc("/publish", handlePublish)
+	http.Handle("/subscribe/", subscribeServer{topic: "/rel/topics/posts"})
+	http.Handle("/subscribe.dev/", subscribeServer{topic: "/rel/topics/posts.dev"})
+	http.Handle("/publish", publishServer{topic: "/topics/posts"})
+	http.Handle("/publish.dev", publishServer{topic: "/topics/posts.dev"})
 	http.HandleFunc("/index.html", handleIndex)
 }
 

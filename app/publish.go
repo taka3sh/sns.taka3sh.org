@@ -98,7 +98,11 @@ func publish(client *http.Client, key string, payload *bytes.Buffer) (resp *http
 	return
 }
 
-func handlePublish(w http.ResponseWriter, r *http.Request) {
+type publishServer struct {
+	topic string
+}
+
+func (s publishServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	handleCors(w, r)
 
 	ctx := appengine.NewContext(r)
@@ -122,7 +126,7 @@ func handlePublish(w http.ResponseWriter, r *http.Request) {
 	}
 
 	payload, _ := json.Marshal(map[string]interface{}{
-		"to": "/topics/posts",
+		"to": s.topic,
 		"notification": map[string]interface{}{
 			"title": r.FormValue("title"),
 			"body":  r.FormValue("body"),

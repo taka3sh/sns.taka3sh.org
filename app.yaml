@@ -7,10 +7,10 @@ skip_files:
 
 handlers:
 
-- url: /publish
+- url: /publish(\.dev)?
   script: _go_app
 
-- url: /subscribe/.*
+- url: /subscribe(\.dev)?/.*
   script: _go_app
 
 - url: /index\.html
