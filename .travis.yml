@@ -9,6 +9,9 @@ install:
   - nvm install 7
   - npm install
 
+before_script:
+  - node --version
+
 script:
   - npm run build
 
