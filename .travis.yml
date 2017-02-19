@@ -2,7 +2,6 @@ language: go
 
 cache:
   directories:
-    - $GOPATH/src
     - node_modules
 
 install:
@@ -25,6 +24,3 @@ deploy:
   provider: script
   script: bash scripts/travis_deploy.sh
   skip_cleanup: true
-
-before_cache:
-  - ls
