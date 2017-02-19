@@ -10,7 +10,7 @@ import (
 	"google.golang.org/appengine/urlfetch"
 )
 
-func extractToken(r *http.Request) (token string, err error) {
+func (s subscribeServer) extractToken(r *http.Request) (token string, err error) {
 	components := strings.Split(r.URL.Path, "/")
 	if len(components) == 3 && components[2] != "" {
 		token = components[2]
@@ -20,12 +20,12 @@ func extractToken(r *http.Request) (token string, err error) {
 	return
 }
 
-func getEndpointURL(token string) string {
-	return "https://iid.googleapis.com/iid/v1/" + token + "/rel/topics/posts"
+func (s subscribeServer) getEndpointURL(token string) string {
+	return "https://iid.googleapis.com/iid/v1/" + token + s.topic
 }
 
-func subscribe(client *http.Client, key string, token string) (resp *http.Response, err error) {
-	req, err := http.NewRequest("POST", getEndpointURL(token), nil)
+func (s subscribeServer) subscribe(client *http.Client, key string, token string) (resp *http.Response, err error) {
+	req, err := http.NewRequest("POST", s.getEndpointURL(token), nil)
 	if err != nil {
 		return
 	}
@@ -36,13 +36,17 @@ func subscribe(client *http.Client, key string, token string) (resp *http.Respon
 	return
 }
 
-func handleSubscribe(w http.ResponseWriter, r *http.Request) {
+type subscribeServer struct {
+	topic string
+}
+
+func (s subscribeServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	handleCors(w, r)
 
 	ctx := appengine.NewContext(r)
 	client := urlfetch.Client(ctx)
 
-	token, err := extractToken(r)
+	token, err := s.extractToken(r)
 	if err != nil {
 		http.Error(w, err.Error(), 403)
 		return
@@ -54,7 +58,7 @@ func handleSubscribe(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp, err := subscribe(client, key, token)
+	resp, err := s.subscribe(client, key, token)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
