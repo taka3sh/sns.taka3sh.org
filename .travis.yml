@@ -14,13 +14,12 @@ before_script:
 
 script:
   - npm run build
+  - ( cd app && go get )
 
 after_success:
+  - PATH=/tmp/google-cloud-sdk/bin:/tmp/go_appengine:"$PATH"
   - if [[ $TRAVIS_BRANCH = master ]]; then curl -fsSL https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-144.0.0-linux-x86_64.tar.gz | tar -xz -C /tmp; fi
-  - if [[ $TRAVIS_BRANCH = master ]]; then ( cd /tmp && curl -fsSLO https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_linux_amd64-1.9.48.zip ); fi
-  - if [[ $TRAVIS_BRANCH = master ]]; then unzip -q /tmp/go_appengine_sdk_linux_amd64-1.9.48.zip -d /tmp; fi
-  - if [[ $TRAVIS_BRANCH = master ]]; then PATH=/tmp/google-cloud-sdk/bin:/tmp/go_appengine:"$PATH"; fi
-  - if [[ $TRAVIS_BRANCH = master ]]; then ( cd app && goapp get -d -u ); fi
+  - if [[ $TRAVIS_BRANCH = master ]]; then ( cd /tmp && curl -fsSL https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_linux_amd64-1.9.48.zip >go_appengine.zip; unzip -q /tmp/go_appengine.zip ); fi
 
 deploy:
   provider: script
