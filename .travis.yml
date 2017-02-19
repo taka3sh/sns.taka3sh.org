@@ -2,7 +2,6 @@ language: go
 
 cache:
   directories:
-    - $GOPATH/src
     - node_modules
 
 install:
