@@ -17,7 +17,7 @@ func init() {
 	http.Handle("/subscribe/", subscribeServer{topic: "/rel/topics/posts"})
 	http.Handle("/subscribe.dev/", subscribeServer{topic: "/rel/topics/posts.dev"})
 	http.Handle("/publish", publishServer{topic: "/topics/posts"})
-	http.Handle("/publish.dev", publishServer{topic: "/topics/posts-dev"})
+	http.Handle("/publish.dev", publishServer{topic: "/topics/posts.dev"})
 	http.HandleFunc("/index.html", handleIndex)
 }
 
