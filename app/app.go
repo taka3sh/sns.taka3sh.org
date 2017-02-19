@@ -15,7 +15,8 @@ type secret struct {
 
 func init() {
 	http.HandleFunc("/subscribe/", handleSubscribe)
-	http.HandleFunc("/publish", handlePublish)
+	http.Handle("/publish", publishServer{topic: "/topics/posts"})
+	http.Handle("/publish.dev", publishServer{topic: "/topics/posts-dev"})
 	http.HandleFunc("/index.html", handleIndex)
 }
 
