@@ -1,8 +1,9 @@
 <template>
-  <div class="mdl-cell mdl-cell--12-col">
-    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
-      <input type="checkbox" class="mdl-switch__input" :checked="enabled" @click="onClick">
-      <span class="mdl-switch__label">{{ enabled ? '通知オン' : '通知オフ' }}</span>
+  <div class="switch">
+    <label>
+      <input type="checkbox" :checked="enabled" @click="onClick">
+      <span class="lever"></span>
+      {{ enabled ? '通知オン' : '通知オフ' }}
     </label>
   </div>
 </template>
@@ -37,7 +38,7 @@ export default {
   },
   mounted: function () {
     this.switch = this.$el.querySelector('.mdl-js-switch')
-    componentHandler.upgradeElement(this.switch)
+    //componentHandler.upgradeElement(this.switch)
   }
 }
 </script>
