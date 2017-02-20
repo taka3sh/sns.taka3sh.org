@@ -73,8 +73,8 @@ export default {
   showGreeting: function () {
     navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope')
     .then(function (swReg) {
-      return swReg.showNotification('Greeting', {
-        body: 'Hey! The notification service is now working!',
+      return swReg.showNotification('通知設定が完了しました', {
+        body: '新しい投稿がある時、このアイコンの通知が配信されます。',
         icon: '/icon.png'
       })
     })
