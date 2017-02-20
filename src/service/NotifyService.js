@@ -1,4 +1,4 @@
-/* globals fetch localStorage Notification */
+/* globals fetch localStorage FormData Notification */
 
 var NOTIFYSERVICE_ENABLED = 'NotifyService:enabled'
 
@@ -49,7 +49,12 @@ export default {
       return self.messaging.getToken()
     })
     .then(function (currentToken) {
-      return fetch(self.endpoint + currentToken, { method: 'POST' })
+      var body = new FormData()
+      body.append('token', currentToken)
+      return fetch(self.endpoint, {
+        method: 'POST',
+        body: body
+      })
     })
     .then(function (response) {
       if (!response.ok) throw new Error(response.statusText)

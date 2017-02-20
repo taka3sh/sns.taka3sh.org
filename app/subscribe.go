@@ -1,23 +1,15 @@
 package app
 
 import (
-	"errors"
 	"io"
 	"net/http"
-	"strings"
 
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/urlfetch"
 )
 
-func (s subscribeServer) extractToken(r *http.Request) (token string, err error) {
-	components := strings.Split(r.URL.Path, "/")
-	if len(components) == 3 && components[2] != "" {
-		token = components[2]
-	} else {
-		err = errors.New("invalid token")
-	}
-	return
+type subscribeServer struct {
+	topic string
 }
 
 func (s subscribeServer) getEndpointURL(token string) string {
@@ -36,19 +28,15 @@ func (s subscribeServer) subscribe(client *http.Client, key string, token string
 	return
 }
 
-type subscribeServer struct {
-	topic string
-}
-
 func (s subscribeServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	handleCors(w, r)
 
 	ctx := appengine.NewContext(r)
 	client := urlfetch.Client(ctx)
 
-	token, err := s.extractToken(r)
-	if err != nil {
-		http.Error(w, err.Error(), 403)
+	token := r.FormValue("token")
+	if token == "" {
+		http.Error(w, "token was empty", 403)
 		return
 	}
 
