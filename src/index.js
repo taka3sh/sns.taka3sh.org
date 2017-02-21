@@ -1,5 +1,8 @@
 /* globals addEventListener firebase location Vue */
 
+import NotifySwitch from './component/NotifySwitch.vue'
+import PostCards from './component/PostCards.vue'
+
 import {
   firebaseApiKey,
   firebaseDatabaseURL,
@@ -11,15 +14,8 @@ import {
 import CachedPosts from './model/CachedPosts'
 import ShownPosts from './model/ShownPosts'
 
-import NotifySwitch from './partial/NotifySwitch.vue'
-import PostCards from './partial/PostCards.vue'
-
 import PostReceiver from './service/PostReceiver'
 import NotifyService from './service/NotifyService'
-
-Vue.component('post-cards', PostCards)
-
-Vue.component('notify-switch', NotifySwitch)
 
 setTimeout(function () {
   var hash = location.hash
@@ -112,7 +108,11 @@ var app = new Vue({
   methods: {
     onNotifyToggle: onNotifyToggle
   },
-  created: vueCreated
+  created: vueCreated,
+  components: {
+    'post-cards': PostCards,
+    'notify-switch': NotifySwitch
+  }
 })
 
 addEventListener('load', function () {
