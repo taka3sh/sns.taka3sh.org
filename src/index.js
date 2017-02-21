@@ -1,13 +1,7 @@
-/* globals addEventListener firebase location moment Vue */
+/* globals addEventListener firebase location Vue */
 
-import CachedPosts from './model/CachedPosts'
-import ShownPosts from './model/ShownPosts'
-
-import PostReceiver from './service/PostReceiver'
-import NotifyService from './service/NotifyService'
-
-import NotifySwitch from './partial/NotifySwitch.vue'
-import PostCards from './partial/PostCards.vue'
+import NotifySwitch from './component/NotifySwitch.vue'
+import PostCards from './component/PostCards.vue'
 
 import {
   firebaseApiKey,
@@ -17,15 +11,11 @@ import {
   postPrefix
 } from './constants/development'
 
-moment.locale('ja')
+import CachedPosts from './model/CachedPosts'
+import ShownPosts from './model/ShownPosts'
 
-Vue.component('post-cards', PostCards)
-
-Vue.component('notify-switch', NotifySwitch)
-
-Vue.filter('date-localize', function (value) {
-  return moment(value).format('LLLL')
-})
+import PostReceiver from './service/PostReceiver'
+import NotifyService from './service/NotifyService'
 
 setTimeout(function () {
   var hash = location.hash
@@ -118,7 +108,11 @@ var app = new Vue({
   methods: {
     onNotifyToggle: onNotifyToggle
   },
-  created: vueCreated
+  created: vueCreated,
+  components: {
+    'post-cards': PostCards,
+    'notify-switch': NotifySwitch
+  }
 })
 
 addEventListener('load', function () {

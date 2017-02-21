@@ -1,11 +1,6 @@
 /* globals addEventListener firebase moment Vue */
 
-import PushService from './service/PushService'
-import StoredPost from './model/StoredPost'
-
-import AuthService from './service/AuthService'
-
-import LoginForm from './partial/LoginForm.vue'
+import LoginForm from './component/LoginForm.vue'
 
 import {
   firebaseApiKey,
@@ -15,6 +10,12 @@ import {
   pushEndpoint,
   postPrefix
 } from './constants/development'
+
+import StoredPost from './model/StoredPost'
+
+import PushService from './service/PushService'
+
+import AuthService from './service/AuthService'
 
 moment.locale('ja')
 

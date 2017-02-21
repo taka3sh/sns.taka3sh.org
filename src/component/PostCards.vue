@@ -11,10 +11,15 @@
 </template>
 
 <script>
+import DateLocalize from '../filter/DateLocalize'
+
 export default {
   props: {
     posts: Array,
     ready: Boolean
+  },
+  filters: {
+    'date-localize': DateLocalize
   }
 }
 </script>
