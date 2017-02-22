@@ -11,19 +11,13 @@ import {
   postPrefix
 } from './constants/development'
 
+import DateLocalize from './filter/DateLocalize'
+
 import StoredPost from './model/StoredPost'
 
 import PushService from './service/PushService'
 
 import AuthService from './service/AuthService'
-
-moment.locale('ja')
-
-Vue.filter('date-localize', function (value) {
-  return moment(value).format('LLLL')
-})
-
-Vue.component('login-form', LoginForm)
 
 function showMessage (el, message) {
   el.querySelector('.mdl-js-snackbar').MaterialSnackbar.showSnackbar({
@@ -83,7 +77,7 @@ function onCreate (e) {
 
 function onReset (e) {
   this.title = this.body = ''
-  this.createdAt = moment().startOf('minute').toISOString()
+  this.createdAt = new Date().toISOString()
   this.$nextTick(updateMDL)
 }
 
@@ -115,7 +109,10 @@ var app = new Vue({
     onLogout: onLogout,
     onReset: onReset
   },
-  mounted: vueMounted
+  mounted: vueMounted,
+  filters: {
+    'date-localize': DateLocalize
+  }
 })
 
 var logindialog = new Vue({
@@ -126,6 +123,9 @@ var logindialog = new Vue({
   },
   methods: {
     onLogin: onLogin
+  },
+  components: {
+    'login-form': LoginForm
   }
 })
 
