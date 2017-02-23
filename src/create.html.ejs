@@ -16,30 +16,13 @@
 <%- include('partial/header.ejs') %>
 
 <div class="container" id="app">
-  <form action="#" method="POST" class="card" @submit.prevent="onCreate" @reset.prevent="onReset">
-    <div class="card-title amber darken-1">Creating a new post</div>
-    <div class="card-content">
-      <div class="input-field">
-        <input id="title" type="text" required v-model="title">
-        <label for="title">Title</label>
-      </div>
-      <div class="input-field">
-        <textarea id="body" class="materialize-textarea" required v-model="body"></textarea>
-        <label for="body">Body</label>
-      </div>
-      <div class="input-field">
-        <datetime-local id="createdAt" required class="validate" v-model="createdAt"></datetime-local>
-        <label for="createdAt" class="active">Created at</label>
-      </div>
-    </div>
-    <div class="card-action">
-      <button class="btn" type="submit">Submit</button>
-      <button class="btn-flat" type="reset">Reset</button>
-      <button class="btn-flat" @click.prevent="onLogout">Logout</button>
-    </div>
-  </form>
+  <post-form-card heading="Creating a new post" v-model="post" @reset.prevent="onReset">
+    <button class="btn" type="submit">Submit</button>
+    <button class="btn-flat" type="reset">Reset</button>
+    <button class="btn-flat" @click.prevent="onLogout">Logout</button>
+  </post-form-card>
 
-  <post-cards :posts="[{ title: title, body: body, createdAt: createdAt }]" :ready="true"></post-cards>
+  <post-cards :posts="[post]" :ready="true"></post-cards>
 </div>
 
 <%- include('partial/footer.ejs') %>
