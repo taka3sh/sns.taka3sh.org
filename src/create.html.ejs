@@ -16,7 +16,7 @@
 <%- include('partial/header.ejs') %>
 
 <div class="container" id="app">
-  <post-form-card heading="Creating a new post" v-model="post" @reset.prevent="onReset">
+  <post-form-card heading="Creating a new post" v-model="post" @submit.prevent="onCreate" @reset.prevent="onReset">
     <button class="btn" type="submit">Submit</button>
     <button class="btn-flat" type="reset">Reset</button>
     <button class="btn-flat" @click.prevent="onLogout">Logout</button>

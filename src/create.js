@@ -42,10 +42,10 @@ function onCreate (e) {
   var self = this
 
   self.busy = true
-  StoredPost.create(this.title, this.body, this.createdAt)
+  StoredPost.create(this.post.title, this.post.body, this.post.createdAt)
   .then(function (post) {
     Materialize.toast('The new post was successfully created.')
-    return PushService.publish(post.key, self)
+    return PushService.publish(post.key, self.post)
   })
   .then(function () {
     self.busy = false
