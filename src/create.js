@@ -1,4 +1,4 @@
-/* globals addEventListener firebase Vue */
+/* globals addEventListener firebase moment Vue */
 
 import StoredPost from './model/StoredPost'
 import PushService from './service/PushService'
@@ -67,7 +67,7 @@ function onCreate (e) {
 
 function onReset (e) {
   this.title = this.body = ''
-  this.createdAt = new Date().toISOString()
+  this.createdAt = moment().startOf('minute').format()
 }
 
 function onLogin (email, password) {
@@ -83,6 +83,8 @@ function onLogin (email, password) {
 function onLogout () {
   AuthService.logout()
 }
+
+moment.locale('ja')
 
 var app = new Vue({
   el: '#app',
