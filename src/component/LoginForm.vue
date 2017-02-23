@@ -1,6 +1,6 @@
 <template>
   <div class="modal" id="logindialog">
-    <form action="#" method="POST" v-on:submit.prevent="onLogin">
+    <form action="#" method="POST" @submit.prevent="$emit('submit', $event.target.elements.email.value, $event.target.elements.password.value)">
       <div class="modal-content">
         <h4>Login</h4>
         <div class="row">
@@ -30,28 +30,17 @@ function mounted() {
     dismissible: false,
     inDuration: 0,
   })
-  this.$watch('user', userChanged, { immediate: true })
-}
 
-function userChanged (value) {
-  $(this.$el).modal(value ? 'close' : 'open')
-}
-
-function onLogin (e) {
-  this.$emit('login', e.target.elements.email.value, e.target.elements.password.value)
+  this.$watch('show', function (value) {
+    $(this.$el).modal(value ? 'open' : 'close')
+  }, {
+    immediate: true
+  })
 }
 
 export default {
-  data: function () {
-    return {
-      busy: false
-    }
-  },
   props: {
-    user: String
-  },
-  methods: {
-    onLogin: onLogin
+    show: Boolean
   },
   mounted: mounted
 }

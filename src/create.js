@@ -91,6 +91,7 @@ var app = new Vue({
   },
   methods: {
     onCreate: onCreate,
+    onLogin: onLogin,
     onLogout: onLogout,
     onReset: onReset
   },

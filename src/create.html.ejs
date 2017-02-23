@@ -24,7 +24,7 @@
 
   <post-cards :posts="[post]" :ready="true"></post-cards>
 
-  <login-form :user="user"></login-form>
+  <login-form :show="user === null" @submit="onLogin"></login-form>
 </div>
 
 <%- include('partial/footer.ejs') %>
