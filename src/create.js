@@ -4,6 +4,7 @@ import StoredPost from './model/StoredPost'
 import PushService from './service/PushService'
 import AuthService from './service/AuthService'
 
+import DatetimeLocal from './component/DatetimeLocal.vue'
 import LoginForm from './component/LoginForm.vue'
 import PostCards from './component/PostCards.vue'
 import DateLocalize from './filter/DateLocalize'
@@ -67,7 +68,7 @@ function onCreate (e) {
 
 function onReset (e) {
   this.title = this.body = ''
-  this.createdAt = moment().startOf('minute').format()
+  this.createdAt = moment().format('YYYY-MM-DDThh:mm')
 }
 
 function onLogin (email, password) {
@@ -102,6 +103,7 @@ var app = new Vue({
   },
   mounted: vueMounted,
   components: {
+    'datetime-local': DatetimeLocal,
     'post-cards': PostCards
   },
   filters: {

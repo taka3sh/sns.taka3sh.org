@@ -28,8 +28,8 @@
         <label for="body">Body</label>
       </div>
       <div class="input-field">
-        <input id="createdAt" type="text" required v-model="createdAt">
-        <label for="createdAt">Created at</label>
+        <datetime-local id="createdAt" required class="validate" v-model="createdAt"></datetime-local>
+        <label for="createdAt" class="active">Created at</label>
       </div>
     </div>
     <div class="card-action">
