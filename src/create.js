@@ -25,14 +25,6 @@ function showMessage (el, message) {
   })
 }
 
-function updateMDL () {
-  this.$el.querySelectorAll('.mdl-js-textfield').forEach(function (elem) {
-    if (elem.MaterialTextfield) {
-      elem.MaterialTextfield.checkDirty()
-    }
-  })
-}
-
 function vueMounted () {
   this.$el.querySelector('form').reset()
 }
@@ -78,7 +70,6 @@ function onCreate (e) {
 function onReset (e) {
   this.title = this.body = ''
   this.createdAt = new Date().toISOString()
-  this.$nextTick(updateMDL)
 }
 
 function onLogin (email, password) {

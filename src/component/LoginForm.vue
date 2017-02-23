@@ -1,54 +1,40 @@
 <template>
-  <dialog class="mdl-dialog" id="logindialog">
+  <div class="modal" id="logindialog">
     <form action="#" method="POST" v-on:submit.prevent="onLogin">
-      <h4 class="mdl-dialog__title">Login</h4>
-      <div class="mdl-dialog__content">
-        <div>
-          <div class="mdl-textfield mdl-js-textfield">
-            <input class="mdl-textfield__input" type="email" name="email" required v-bind:readonly="busy">
-            <label class="mdl-textfield__label" for="email">Email</label>
+      <div class="modal-content">
+        <h4>Login</h4>
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="email" type="email">
+            <label for="email">Email</label>
           </div>
         </div>
-        <div>
-          <div class="mdl-textfield mdl-js-textfield">
-            <input class="mdl-textfield__input" type="password" name="password" required v-bind:readonly="busy">
-            <label class="mdl-textfield__label" for="password">Password</label>
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="password" type="password">
+            <label for="password">Password</label>
           </div>
         </div>
       </div>
-      <div class="mdl-dialog__actions">
-        <input type="submit" class="mdl-button" value="Login" v-bind:disabled="busy">
-        <button class="mdl-button" id="cancel" v-on:click.prevent="history.back()">Cancel</button>
-      </div>
-
-      <div class="mdl-js-snackbar mdl-snackbar">
-        <div class="mdl-snackbar__text"></div>
-        <button class="mdl-snackbar__action" type="button"></button>
+      <div class="modal-footer">
+        <button class="btn-flat" type="submit">Login</button>      
+        <button class="btn-flat" @click="history.back()">Cancel</button>
       </div>
     </form>
-  </dialog>
+  </div>
 </template>
 
 <script>
-function userChanged (value) {
-  if (this.$el.open && value) {
-    this.$el.close()
-  } else if (!this.$el.open && !value) {
-    this.$el.showModal()
-  }
+function mounted() {
+  $(this.$el).modal({
+    dismissible: false,
+    inDuration: 0,
+  })
+  this.$watch('user', userChanged, { immediate: true })
 }
 
-function componentMounted() {
-  var self = this
-
-  addEventListener('load', function () {
-    dialogPolyfill.registerDialog(self.$el)
-    self.$el.addEventListener('cancel', function (e) {
-      e.preventDefault()
-    })
-
-    self.$watch('user', userChanged, { immediate: true })
-  })
+function userChanged (value) {
+  $(this.$el).modal(value ? 'close' : 'open')
 }
 
 function onLogin (e) {
@@ -67,6 +53,6 @@ export default {
   methods: {
     onLogin: onLogin
   },
-  mounted: componentMounted
+  mounted: mounted
 }
 </script>
