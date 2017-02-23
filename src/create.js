@@ -11,12 +11,11 @@ import {
   postPrefix
 } from './constants/development'
 
+import PostCards from './component/PostCards.vue'
 import DateLocalize from './filter/DateLocalize'
 
 import StoredPost from './model/StoredPost'
-
 import PushService from './service/PushService'
-
 import AuthService from './service/AuthService'
 
 function showMessage (el, message) {
@@ -101,6 +100,9 @@ var app = new Vue({
     onReset: onReset
   },
   mounted: vueMounted,
+  components: {
+    'post-cards': PostCards
+  },
   filters: {
     'date-localize': DateLocalize
   }

@@ -35,6 +35,8 @@
       <button class="btn-flat">Logout</button>
     </div>
   </form>
+
+  <post-cards :posts="[{ title: title, body: body, createdAt: createdAt }]" :ready="true"></post-cards>
 </div>
 
 <%- include('partial/footer.ejs') %>
