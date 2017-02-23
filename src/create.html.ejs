@@ -8,6 +8,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
 
   <%- include('partial/head.ejs') %>
+  <%- include('partial/head-script.ejs') %>  
 </head>
 <body>
 <%- include('partial/header.ejs') %>
@@ -17,15 +18,15 @@
     <div class="card-title amber darken-1">Creating a new post</div>
     <div class="card-content">
       <div class="input-field">
-        <input id="title" type="text" v-model="title">
+        <input id="title" type="text" required v-model="title">
         <label for="title">Title</label>
       </div>
       <div class="input-field">
-        <textarea id="body" class="materialize-textarea" v-model="body"></textarea>
+        <textarea id="body" class="materialize-textarea" required v-model="body"></textarea>
         <label for="body">Body</label>
       </div>
       <div class="input-field">
-        <input id="createdAt" type="text" v-model="createdAt">
+        <input id="createdAt" type="text" required v-model="createdAt">
         <label for="createdAt">Created at</label>
       </div>
     </div>
