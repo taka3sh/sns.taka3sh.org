@@ -1,5 +1,5 @@
 <template>
-  <form action="#" method="POST" class="card" @submit.prevent="onCreate" @reset="$emit('reset', $event)">
+  <form action="#" method="POST" class="card" @submit.prevent="$emit('submit', $event)" @reset="$emit('reset', $event)">
     <div class="card-title amber darken-1">{{ heading }}</div>
     <div class="card-content">
       <div class="input-field">

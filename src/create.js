@@ -96,6 +96,7 @@ var app = new Vue({
   },
   mounted: vueMounted,
   components: {
+    'login-form': LoginForm,
     'post-cards': PostCards,
     'post-form-card': PostFormCard
   },
@@ -104,29 +105,12 @@ var app = new Vue({
   }
 })
 
-var logindialog = new Vue({
-  el: '#logindialog',
-  template: '<login-form :user="user" @login="onLogin">',
-  data: {
-    user: AuthService.getUser()
-  },
-  methods: {
-    onLogin: onLogin
-  },
-  components: {
-    'login-form': LoginForm
-  }
-})
-
 addEventListener('load', function () {
   firebaseLoaded()
 
   firebase.auth().onAuthStateChanged(function (user) {
-    app.user = logindialog.user = user && user.email
+    app.user = user && user.email
   })
 })
 
-export default {
-  app: app,
-  logindialog: logindialog
-}
+export default app
