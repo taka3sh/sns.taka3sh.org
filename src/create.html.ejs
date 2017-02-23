@@ -16,7 +16,7 @@
 <%- include('partial/header.ejs') %>
 
 <div class="container" id="app">
-  <form action="#" method="POST" class="card" @reset.prevent="onReset">
+  <form action="#" method="POST" class="card" @submit.prevent="onCreate" @reset.prevent="onReset">
     <div class="card-title amber darken-1">Creating a new post</div>
     <div class="card-content">
       <div class="input-field">

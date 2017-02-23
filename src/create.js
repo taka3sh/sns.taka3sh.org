@@ -1,4 +1,4 @@
-/* globals addEventListener firebase moment Vue */
+/* globals addEventListener firebase moment Materialize Vue */
 
 import StoredPost from './model/StoredPost'
 import PushService from './service/PushService'
@@ -17,12 +17,6 @@ import {
   pushEndpoint,
   postPrefix
 } from './constants/development'
-
-function showMessage (el, message) {
-  el.querySelector('.mdl-js-snackbar').MaterialSnackbar.showSnackbar({
-    message: message
-  })
-}
 
 function vueMounted () {
   this.$el.querySelector('form').reset()
@@ -50,19 +44,18 @@ function onCreate (e) {
   self.busy = true
   StoredPost.create(this.title, this.body, this.createdAt)
   .then(function (post) {
-    showMessage(self.$el, 'The new post was successfully created.')
-    e.target.elements.key.value = post.key
-    return PushService.publish(e.target)
+    Materialize.toast('The new post was successfully created.')
+    return PushService.publish(post.key, self)
   })
   .then(function () {
     self.busy = false
     e.target.reset()
-    showMessage(self.$el, 'The new post was successfully published.')
+    Materialize.toast('The new post was successfully published.')
   })
   .catch(function (err) {
     self.busy = false
     console.error(err)
-    showMessage(self.$el, err.message)
+    Materialize.toast(err.message)
   })
 }
 
@@ -77,7 +70,7 @@ function onLogin (email, password) {
   AuthService.login(email, password)
   .catch(function (err) {
     console.error(err)
-    showMessage(el, err.message)
+    Materialize.toast(err.message)
   })
 }
 
