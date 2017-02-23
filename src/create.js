@@ -1,6 +1,13 @@
-/* globals addEventListener firebase moment Vue */
+/* globals addEventListener firebase moment Materialize Vue */
+
+import StoredPost from './model/StoredPost'
+import PushService from './service/PushService'
+import AuthService from './service/AuthService'
 
 import LoginForm from './component/LoginForm.vue'
+import PostCards from './component/PostCards.vue'
+import PostFormCard from './component/PostFormCard.vue'
+import DateLocalize from './filter/DateLocalize'
 
 import {
   firebaseApiKey,
@@ -10,34 +17,6 @@ import {
   pushEndpoint,
   postPrefix
 } from './constants/development'
-
-import StoredPost from './model/StoredPost'
-
-import PushService from './service/PushService'
-
-import AuthService from './service/AuthService'
-
-moment.locale('ja')
-
-Vue.filter('date-localize', function (value) {
-  return moment(value).format('LLLL')
-})
-
-Vue.component('login-form', LoginForm)
-
-function showMessage (el, message) {
-  el.querySelector('.mdl-js-snackbar').MaterialSnackbar.showSnackbar({
-    message: message
-  })
-}
-
-function updateMDL () {
-  this.$el.querySelectorAll('.mdl-js-textfield').forEach(function (elem) {
-    if (elem.MaterialTextfield) {
-      elem.MaterialTextfield.checkDirty()
-    }
-  })
-}
 
 function vueMounted () {
   this.$el.querySelector('form').reset()
@@ -63,37 +42,33 @@ function onCreate (e) {
   var self = this
 
   self.busy = true
-  StoredPost.create(this.title, this.body, this.createdAt)
+  StoredPost.create(this.post.title, this.post.body, this.post.createdAt)
   .then(function (post) {
-    showMessage(self.$el, 'The new post was successfully created.')
-    e.target.elements.key.value = post.key
-    return PushService.publish(e.target)
+    Materialize.toast('The new post was successfully created.')
+    return PushService.publish(post.key, self.post)
   })
   .then(function () {
     self.busy = false
     e.target.reset()
-    showMessage(self.$el, 'The new post was successfully published.')
+    Materialize.toast('The new post was successfully published.')
   })
   .catch(function (err) {
     self.busy = false
     console.error(err)
-    showMessage(self.$el, err.message)
+    Materialize.toast(err.message)
   })
 }
 
 function onReset (e) {
-  this.title = this.body = ''
-  this.createdAt = moment().startOf('minute').toISOString()
-  this.$nextTick(updateMDL)
+  this.post.title = this.post.body = ''
+  this.post.createdAt = moment().format('YYYY-MM-DDThh:mm')
 }
 
 function onLogin (email, password) {
-  var el = this.$el
-
   AuthService.login(email, password)
   .catch(function (err) {
     console.error(err)
-    showMessage(el, err.message)
+    Materialize.toast(err.message)
   })
 }
 
@@ -101,31 +76,33 @@ function onLogout () {
   AuthService.logout()
 }
 
+moment.locale('ja')
+
 var app = new Vue({
   el: '#app',
   data: {
-    title: '',
-    body: '',
-    createdAt: '',
     user: AuthService.getUser(),
-    busy: false
+    busy: false,
+    post: {
+      title: '',
+      body: '',
+      createdAt: ''
+    }
   },
   methods: {
     onCreate: onCreate,
+    onLogin: onLogin,
     onLogout: onLogout,
     onReset: onReset
   },
-  mounted: vueMounted
-})
-
-var logindialog = new Vue({
-  el: '#logindialog',
-  template: '<login-form :user="user" @login="onLogin">',
-  data: {
-    user: AuthService.getUser()
+  mounted: vueMounted,
+  components: {
+    'login-form': LoginForm,
+    'post-cards': PostCards,
+    'post-form-card': PostFormCard
   },
-  methods: {
-    onLogin: onLogin
+  filters: {
+    'date-localize': DateLocalize
   }
 })
 
@@ -133,11 +110,8 @@ addEventListener('load', function () {
   firebaseLoaded()
 
   firebase.auth().onAuthStateChanged(function (user) {
-    app.user = logindialog.user = user && user.email
+    app.user = user && user.email
   })
 })
 
-export default {
-  app: app,
-  logindialog: logindialog
-}
+export default app

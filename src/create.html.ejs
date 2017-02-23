@@ -4,74 +4,30 @@
   <meta charset="utf-8">
   <title>新規作成 - 支援隊ヌーボー</title>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.7/dialog-polyfill.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.7/dialog-polyfill.min.js"></script>
-
   <%- include('partial/head.ejs') %>
+
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+
+  <%- include('partial/head-script.ejs') %>  
 </head>
 <body>
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header" id="app">
-  <%- include('partial/header.ejs') %>
+<%- include('partial/header.ejs') %>
 
-  <main class="mdl-layout__content">
-    <section class="mdl-grid">
-      <form action="#" method="POST" class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp" id="post" v-on:submit.prevent="onCreate" v-on:reset.prevent="onReset">
-        <div class="mdl-card__title">
-          <h2 class="mdl-card__title-text">Creating a new post</h2>
-        </div>
-        <div class="mdl-card__supporting-text">
-          <p>{{ user || 'Not logged in' }}</p>
-          <div>
-            <div class="mdl-textfield mdl-js-textfield">
-              <input class="mdl-textfield__input" type="text" name="title" v-model="title" required v-bind:readonly="busy">
-              <label class="mdl-textfield__label" for="title">Title</label>
-            </div>
-          </div>
-          <div>
-            <div class="mdl-textfield mdl-js-textfield">
-              <textarea class="mdl-textfield__input" type="text" rows="10" name="body" v-model="body" required v-bind:readonly="busy"></textarea>
-              <label class="mdl-textfield__label" for="body">Body</label>
-            </div>
-          </div>
-          <div>
-            <div class="mdl-textfield mdl-js-textfield">
-              <input class="mdl-textfield__input" type="datetime" name="createdAt" v-model="createdAt" required v-bind:readonly="busy">
-              <label class="mdl-textfield__label" for="createdAt">Date / Time</label>
-            </div>
-          </div>
-        </div>
-        <div class="mdl-card__actions">
-          <input class="mdl-button mdl-js-button mdl-button--raised" type="submit" value="Submit" v-bind:disabled="busy">
-          <input class="mdl-button mdl-js-button mdl-button--raised" type="reset" value="Reset" v-bind:disabled="busy">
-          <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" v-on:click="onLogout" v-bind:disabled="busy">
-            Logout
-          </a>
-        </div>
-        <input type="hidden" name="key">
-        <input type="hidden" name="idToken">
-      </form>
+<div class="container" id="app">
+  <post-form-card heading="Creating a new post" v-model="post" @submit.prevent="onCreate" @reset.prevent="onReset">
+    <button class="btn" type="submit">Submit</button>
+    <button class="btn-flat" type="reset">Reset</button>
+    <button class="btn-flat" @click.prevent="onLogout">Logout</button>
+  </post-form-card>
 
-      <article class="mdl-card mdl-cell mdl-cell--12-col mdl-shadow--2dp">
-        <div class="mdl-card__title">
-          <h2 class="mdl-card__title-text">{{ title || 'Preview' }}</h2>
-        </div>
-        <div class="mdl-card__supporting-text">
-          <p v-for="line in body.split('\n')" v-text="line"></p>
-          <p>{{ createdAt | date-localize }}</p>
-        </div>
-      </article>
-    </section>
+  <post-cards :posts="[post]" :ready="true"></post-cards>
 
-    <%- include('partial/footer.ejs') %>
-  </main>
-
-  <div class="mdl-js-snackbar mdl-snackbar">
-    <div class="mdl-snackbar__text"></div>
-    <button class="mdl-snackbar__action" type="button"></button>
-  </div>
+  <login-form :show="user === null" @submit="onLogin"></login-form>
 </div>
 
-<div id="logindialog"></div>
+<%- include('partial/footer.ejs') %>
 
 <script src="create.js"></script>
 </body>
