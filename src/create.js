@@ -1,6 +1,12 @@
-/* globals addEventListener firebase moment Vue */
+/* globals addEventListener firebase Vue */
+
+import StoredPost from './model/StoredPost'
+import PushService from './service/PushService'
+import AuthService from './service/AuthService'
 
 import LoginForm from './component/LoginForm.vue'
+import PostCards from './component/PostCards.vue'
+import DateLocalize from './filter/DateLocalize'
 
 import {
   firebaseApiKey,
@@ -10,13 +16,6 @@ import {
   pushEndpoint,
   postPrefix
 } from './constants/development'
-
-import PostCards from './component/PostCards.vue'
-import DateLocalize from './filter/DateLocalize'
-
-import StoredPost from './model/StoredPost'
-import PushService from './service/PushService'
-import AuthService from './service/AuthService'
 
 function showMessage (el, message) {
   el.querySelector('.mdl-js-snackbar').MaterialSnackbar.showSnackbar({
