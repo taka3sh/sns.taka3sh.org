@@ -1,7 +1,7 @@
 /* globals addEventListener firebase location Vue */
 
-import NotifySwitch from './component/NotifySwitch.vue'
-import PostCards from './component/PostCards.vue'
+import NotifySwitch from '../common/component/NotifySwitch.vue'
+import PostCards from '../common/component/PostCards.vue'
 
 import {
   firebaseApiKey,
@@ -9,13 +9,13 @@ import {
   firebaseMessagingSenderId,
   notifyEndpoint,
   postPrefix
-} from './constants/development'
+} from '../common/constants/development'
 
-import CachedPosts from './model/CachedPosts'
-import ShownPosts from './model/ShownPosts'
+import CachedPosts from '../common/model/CachedPosts'
+import ShownPosts from '../common/model/ShownPosts'
 
-import PostReceiver from './service/PostReceiver'
-import NotifyService from './service/NotifyService'
+import PostReceiver from '../common/service/PostReceiver'
+import NotifyService from '../common/service/NotifyService'
 
 setTimeout(function () {
   var hash = location.hash

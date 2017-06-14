@@ -1,13 +1,13 @@
 /* globals addEventListener firebase moment Materialize Vue */
 
-import StoredPost from './model/StoredPost'
-import PushService from './service/PushService'
-import AuthService from './service/AuthService'
+import StoredPost from '../common/model/StoredPost'
+import PushService from '../common/service/PushService'
+import AuthService from '../common/service/AuthService'
 
-import LoginForm from './component/LoginForm.vue'
-import PostCards from './component/PostCards.vue'
-import PostFormCard from './component/PostFormCard.vue'
-import DateLocalize from './filter/DateLocalize'
+import LoginForm from '../common/component/LoginForm.vue'
+import PostCards from '../common/component/PostCards.vue'
+import PostFormCard from '../common/component/PostFormCard.vue'
+import DateLocalize from '../common/filter/DateLocalize'
 
 import {
   firebaseApiKey,
@@ -16,7 +16,7 @@ import {
   firebaseMessagingSenderId,
   pushEndpoint,
   postPrefix
-} from './constants/development'
+} from '../common/constants/development'
 
 function vueMounted () {
   this.$el.querySelector('form').reset()

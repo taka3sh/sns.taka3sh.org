@@ -14,12 +14,12 @@ exports.build = function () {
 
   if (process.env.CONTEXT === 'production') {
     plugins.unshift(alias({
-      './constants/development': './constants/production'
+      '../common/constants/development': '../common/constants/production'
     }))
   }
 
   for (let name of html) {
-    ejs.renderFile(`./src/${name}.html.ejs`, function (err, data) {
+    ejs.renderFile(`./src/common/${name}.html.ejs`, function (err, data) {
       if (err) throw err
       fs.writeFileSync(`./public/${name}.html`, data)
     })
@@ -27,7 +27,7 @@ exports.build = function () {
 
   for (let name of js) {
     rollup.rollup({
-      entry: `./src/${name}.js`,
+      entry: `./src/${name}/${name}.js`,
       plugins: plugins
     })
     .then(bundle => {
