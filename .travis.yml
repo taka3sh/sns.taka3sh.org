@@ -4,6 +4,9 @@ cache:
   directories:
     - node_modules
 
+before_install:
+  - openssl aes-256-cbc -K $encrypted_ef8c2c06311c_key -iv $encrypted_ef8c2c06311c_iv -in client-secret.json.enc -out app/client-secret.json -d
+
 install:
   - nvm install 7
   - npm install
@@ -16,11 +19,10 @@ script:
   - ( cd app && go get )
 
 after_success:
-  - PATH=/tmp/google-cloud-sdk/bin:/tmp/go_appengine:"$PATH"
-  - if [[ $TRAVIS_BRANCH = master ]]; then curl -fsSL https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-144.0.0-linux-x86_64.tar.gz | tar -xz -C /tmp; fi
-  - if [[ $TRAVIS_BRANCH = master ]]; then ( cd /tmp && curl -fsSL https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_linux_amd64-1.9.48.zip >go_appengine.zip; unzip -q /tmp/go_appengine.zip ); fi
+  - cd app
 
 deploy:
-  provider: script
-  script: bash scripts/travis_deploy.sh
+  provider: gae
+  keyfile: client-secret.json
+  project: sns-taka3sh-org-157419
   skip_cleanup: true

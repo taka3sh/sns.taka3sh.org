@@ -1,0 +1,11 @@
+runtime: go
+api_version: go1
+
+handlers:
+
+- url: /publish(\.dev)?
+  script: _go_app
+
+- url: /subscribe(\.dev)?
+  script: _go_app
+
