@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 
 const ejs = require('ejs')
 const rollup = require('rollup')
@@ -14,7 +15,7 @@ exports.build = function () {
 
   if (process.env.CONTEXT === 'production') {
     plugins.unshift(alias({
-      '../common/constants/development': '../common/constants/production'
+      '../common/constants/development': path.join(__dirname, '../src/common/constants/production')
     }))
   }
 
