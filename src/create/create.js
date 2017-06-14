@@ -5,9 +5,9 @@ import PushService from './service/PushService'
 import AuthService from './service/AuthService'
 
 import LoginForm from './component/LoginForm.vue'
-import PostCards from './component/PostCards.vue'
+import PostCards from '../common/component/PostCards.vue'
 import PostFormCard from './component/PostFormCard.vue'
-import DateLocalize from './filter/DateLocalize'
+import DateLocalize from '../common/filter/DateLocalize'
 
 import {
   firebaseApiKey,
@@ -16,7 +16,7 @@ import {
   firebaseMessagingSenderId,
   pushEndpoint,
   postPrefix
-} from './constants/development'
+} from '../common/constants/development'
 
 function vueMounted () {
   this.$el.querySelector('form').reset()

@@ -1,7 +1,7 @@
 /* globals addEventListener firebase location Vue */
 
 import NotifySwitch from './component/NotifySwitch.vue'
-import PostCards from './component/PostCards.vue'
+import PostCards from '../common/component/PostCards.vue'
 
 import {
   firebaseApiKey,
@@ -9,7 +9,7 @@ import {
   firebaseMessagingSenderId,
   notifyEndpoint,
   postPrefix
-} from './constants/development'
+} from '../common/constants/development'
 
 import CachedPosts from './model/CachedPosts'
 import ShownPosts from './model/ShownPosts'
