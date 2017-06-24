@@ -4,3 +4,4 @@ yarn.lock
 
 public/*.html
 public/*.js
+!public/push7-worker.js

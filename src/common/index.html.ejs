@@ -20,6 +20,7 @@
     </div>
 
     <notify-switch :busy="busy" :enabled="notify" @click="onNotifyToggle" style="margin-top: 0; margin-bottom: 0"></notify-switch>
+    <div class="p7button" data-button-text="購読する"></div>
   </section>
 
   <post-cards style="padding-top: 0" :posts="posts" :ready="ready"></post-cards>
@@ -27,6 +28,8 @@
 
 <%- include('partial/footer.ejs') %>
 
+<script src="https://sdk.push7.jp/v2/p7sdk.js"></script>
+<script>p7.init("7ade8ba6dfb94098a1cc5034e877e0fb", {mode: "native", subscribe: "auto"})</script>
 <script src="index.js"></script>
 </body>
 </html>
