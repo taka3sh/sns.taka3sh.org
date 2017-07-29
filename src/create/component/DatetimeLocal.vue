@@ -1,5 +1,5 @@
 <template>
-  <input type="datetime-local" :value="value" @input="input">
+  <input type="text" :value="value" @input="input">
 </template>
 
 <script>
