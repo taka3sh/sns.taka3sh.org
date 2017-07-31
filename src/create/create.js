@@ -61,7 +61,7 @@ function onCreate (e) {
 
 function onReset (e) {
   this.post.title = this.post.body = ''
-  this.post.createdAt = moment().format('YYYY-MM-DDThh:mm')
+  this.post.createdAt = moment().format('YYYY-MM-DDTHH:mm')
 }
 
 function onLogin (email, password) {
