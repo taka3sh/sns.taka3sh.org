@@ -1,6 +1,6 @@
 <template>
   <form action="#" method="POST" class="card" @submit.prevent="$emit('submit', $event)" @reset="$emit('reset', $event)">
-    <div class="card-title pink darken-1">{{ heading }}</div>
+    <div class="card-title white-text pink lighten-1">{{ heading }}</div>
     <div class="card-content">
       <div class="input-field">
         <input id="title" type="text" required v-model="value.title">
