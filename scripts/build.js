@@ -5,14 +5,14 @@ const ejs = require('ejs')
 const rollup = require('rollup')
 
 const alias = require('@rollup/plugin-alias')
-const vuePlugin = require('rollup-plugin-vue')
+const VuePlugin = require('rollup-plugin-vue')
 
 const html = ['index', 'create']
 const js = ['firebase-messaging-sw', 'index', 'create']
 
 module.exports = {
   build: function () {
-    const plugins = [vuePlugin()]
+    const plugins = [VuePlugin()]
 
     if (process.env.CONTEXT === 'production') {
       plugins.unshift(alias({
