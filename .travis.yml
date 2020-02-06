@@ -19,7 +19,7 @@ script:
   - ( cd app && go get )
 
 after_success:
-  - cd app
+  - go get github.com/taka3sh/sns.taka3sh.org
 
 deploy:
   provider: gae
