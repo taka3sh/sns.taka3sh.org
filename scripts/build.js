@@ -1,6 +1,4 @@
 import { writeFileSync } from 'fs'
-import { dirname, join } from 'path'
-import { fileURLToPath } from 'url'
 
 import ejs from 'ejs'
 import rollup from 'rollup'
@@ -15,9 +13,7 @@ const plugins = process.env.CONTEXT === 'production'
   ? [VuePlugin()]
   : [
     VuePlugin(),
-    alias({
-      '../common/constants/development': join(dirname(fileURLToPath(import.meta.url)), '../src/common/constants/production')
-    })
+    alias({ '../common/constants/development': '../src/common/constants/production' })
   ]
 
 export async function build () {
