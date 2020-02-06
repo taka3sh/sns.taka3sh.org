@@ -26,14 +26,14 @@ export default {
 
   getEnabled: function () {
     return navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope')
-    .then(function (swReg) {
-      var tokenSent = getEnabled()
-      var notifyAllowed = !!swReg && Notification.permission === 'granted'
-      if (tokenSent && !notifyAllowed) {
-        setEnabled()
-      }
-      return tokenSent && notifyAllowed
-    })
+      .then(function (swReg) {
+        var tokenSent = getEnabled()
+        var notifyAllowed = !!swReg && Notification.permission === 'granted'
+        if (tokenSent && !notifyAllowed) {
+          setEnabled()
+        }
+        return tokenSent && notifyAllowed
+      })
   },
 
   init: function (messaging, endpoint) {
@@ -45,43 +45,43 @@ export default {
     var self = this
 
     return self.messaging.requestPermission()
-    .then(function () {
-      return self.messaging.getToken()
-    })
-    .then(function (currentToken) {
-      var body = new FormData()
-      body.append('token', currentToken)
-      return fetch(self.endpoint, {
-        method: 'POST',
-        body: body
+      .then(function () {
+        return self.messaging.getToken()
       })
-    })
-    .then(function (response) {
-      if (!response.ok) throw new Error(response.statusText)
-      setEnabled()
-      return self.showGreeting()
-    })
+      .then(function (currentToken) {
+        var body = new FormData()
+        body.append('token', currentToken)
+        return fetch(self.endpoint, {
+          method: 'POST',
+          body: body
+        })
+      })
+      .then(function (response) {
+        if (!response.ok) throw new Error(response.statusText)
+        setEnabled()
+        return self.showGreeting()
+      })
   },
 
   unsubscribe: function () {
     var messaging = this.messaging
 
     return messaging.getToken()
-    .then(function (currentToken) {
-      return messaging.deleteToken(currentToken)
-    })
-    .then(function () {
-      unsetEnabled()
-    })
+      .then(function (currentToken) {
+        return messaging.deleteToken(currentToken)
+      })
+      .then(function () {
+        unsetEnabled()
+      })
   },
 
   showGreeting: function () {
     navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope')
-    .then(function (swReg) {
-      return swReg.showNotification('通知設定が完了しました', {
-        body: '新しい投稿がある時、このアイコンの通知が配信されます。',
-        icon: '/icon.png'
+      .then(function (swReg) {
+        return swReg.showNotification('通知設定が完了しました', {
+          body: '新しい投稿がある時、このアイコンの通知が配信されます。',
+          icon: '/icon.png'
+        })
       })
-    })
   }
 }

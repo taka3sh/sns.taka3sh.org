@@ -19,11 +19,11 @@ addEventListener('notificationclick', function (e) {
       type: 'window',
       includeUncontrolled: true
     })
-    .then(function (clientList) {
-      for (var client of clientList) {
-        return client.focus()
-      }
-      return clients.openWindow('/#' + e.notification.data.key)
-    })
+      .then(function (clientList) {
+        for (var client of clientList) {
+          return client.focus()
+        }
+        return clients.openWindow('/#' + e.notification.data.key)
+      })
   )
 })

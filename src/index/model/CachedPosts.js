@@ -13,12 +13,12 @@ export default {
 
   getPosts: function () {
     var posts = JSON.parse(localStorage.getItem(CACHEDPOSTS_POSTS))
-    return posts instanceof Array && posts || []
+    return (posts instanceof Array && posts) || []
   },
 
   getKeys: function () {
     var keys = JSON.parse(localStorage.getItem(CACHEDPOSTS_KEYS))
-    return typeof keys === 'object' && keys || {}
+    return (typeof keys === 'object' && keys) || {}
   },
 
   add: function (key, post) {

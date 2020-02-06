@@ -84,14 +84,14 @@ function onNotifyToggle () {
   } else {
     self.busy = true
     NotifyService.subscribe()
-    .then(function () {
-      self.busy = false
-      self.notify = true
-    })
-    .catch(function (err) {
-      self.busy = false
-      console.error(err)
-    })
+      .then(function () {
+        self.busy = false
+        self.notify = true
+      })
+      .catch(function (err) {
+        self.busy = false
+        console.error(err)
+      })
   }
 }
 
@@ -117,10 +117,10 @@ var app = new Vue({
 
 addEventListener('load', function () {
   firebaseLoaded()
-  .then(function () {
-    app.ready = true
-    PostReceiver.listen()
-  })
+    .then(function () {
+      app.ready = true
+      PostReceiver.listen()
+    })
 })
 
 export default app
