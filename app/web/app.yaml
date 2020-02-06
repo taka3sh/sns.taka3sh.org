@@ -3,8 +3,8 @@ runtime: go111
 handlers:
 
 - url: /publish(\.dev)?
-  script: _go_app
+  script: auto
 
 - url: /subscribe(\.dev)?
-  script: _go_app
+  script: auto
 
