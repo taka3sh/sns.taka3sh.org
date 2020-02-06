@@ -1,40 +1,47 @@
-import { writeFileSync } from 'fs'
+const fs = require('fs')
+const path = require('path')
 
-import ejs from 'ejs'
-import rollup from 'rollup'
+const ejs = require('ejs')
+const rollup = require('rollup')
 
-import alias from '@rollup/plugin-alias'
-import VuePlugin from 'rollup-plugin-vue'
+const alias = require('@rollup/plugin-alias')
+const vuePlugin = require('rollup-plugin-vue')
 
 const html = ['index', 'create']
 const js = ['firebase-messaging-sw', 'index', 'create']
 
-const plugins = process.env.CONTEXT === 'production'
-  ? [VuePlugin()]
-  : [
-    VuePlugin(),
-    alias({ '../common/constants/development': '../src/common/constants/production' })
-  ]
+module.exports = {
+  build: function () {
+    const plugins = [vuePlugin()]
 
-export async function build () {
-  for (const name of html) {
-    ejs.renderFile(`./src/common/${name}.html.ejs`, function (err, data) {
-      if (err) throw err
-      writeFileSync(`./public/${name}.html`, data)
-    })
-  }
+    if (process.env.CONTEXT === 'production') {
+      plugins.unshift(alias({
+        '../common/constants/development': path.join(__dirname, '../src/common/constants/production')
+      }))
+    }
 
-  for (const name of js) {
-    const bundle = await rollup.rollup({
-      input: `./src/${name}/${name}.js`,
-      plugins: plugins
-    })
-    bundle.write({
-      format: 'iife',
-      file: `./public/${name}.js`,
-      name: 'app'
-    })
+    for (const name of html) {
+      ejs.renderFile(`./src/common/${name}.html.ejs`, function (err, data) {
+        if (err) throw err
+        fs.writeFileSync(`./public/${name}.html`, data)
+      })
+    }
+
+    for (const name of js) {
+      rollup.rollup({
+        input: `./src/${name}/${name}.js`,
+        plugins: plugins
+      })
+        .then(bundle => {
+          bundle.write({
+            format: 'iife',
+            file: `./public/${name}.js`,
+            name: 'app'
+          })
+        })
+        .catch(console.log)
+    }
   }
 }
 
-build()
+module.exports.build()
