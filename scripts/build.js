@@ -1,4 +1,4 @@
-import fs from 'fs'
+import { writeFileSync } from 'fs'
 import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -24,7 +24,7 @@ export async function build () {
   for (const name of html) {
     ejs.renderFile(`./src/common/${name}.html.ejs`, function (err, data) {
       if (err) throw err
-      fs.writeFileSync(`./public/${name}.html`, data)
+      writeFileSync(`./public/${name}.html`, data)
     })
   }
 
