@@ -5,7 +5,7 @@ cache:
     - node_modules
 
 before_install:
-  - openssl aes-256-cbc -K $encrypted_ef8c2c06311c_key -iv $encrypted_ef8c2c06311c_iv -in client-secret.json.enc -out client-secret.json -d
+  - openssl aes-256-cbc -K $encrypted_ef8c2c06311c_key -iv $encrypted_ef8c2c06311c_iv -in client-secret.json.enc -out app/client-secret.json -d
 
 install:
   - nvm install 13
@@ -19,11 +19,10 @@ script:
   - ( cd app && go get )
 
 after_success:
-  - go get github.com/taka3sh/sns.taka3sh.org
+  - cd app
 
 deploy:
   provider: gae
   keyfile: client-secret.json
   project: sns-taka3sh-org-157419
-  config: app/app.yaml
   skip_cleanup: true
