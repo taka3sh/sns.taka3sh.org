@@ -43,20 +43,20 @@ function onCreate (e) {
 
   self.busy = true
   StoredPost.create(this.post.title, this.post.body, this.post.createdAt)
-  .then(function (post) {
-    Materialize.toast('The new post was successfully created.')
-    return PushService.publish(post.key, self.post)
-  })
-  .then(function () {
-    self.busy = false
-    e.target.reset()
-    Materialize.toast('The new post was successfully published.')
-  })
-  .catch(function (err) {
-    self.busy = false
-    console.error(err)
-    Materialize.toast(err.message)
-  })
+    .then(function (post) {
+      Materialize.toast('The new post was successfully created.')
+      return PushService.publish(post.key, self.post)
+    })
+    .then(function () {
+      self.busy = false
+      e.target.reset()
+      Materialize.toast('The new post was successfully published.')
+    })
+    .catch(function (err) {
+      self.busy = false
+      console.error(err)
+      Materialize.toast(err.message)
+    })
 }
 
 function onReset (e) {
@@ -66,10 +66,10 @@ function onReset (e) {
 
 function onLogin (email, password) {
   AuthService.login(email, password)
-  .catch(function (err) {
-    console.error(err)
-    Materialize.toast(err.message)
-  })
+    .catch(function (err) {
+      console.error(err)
+      Materialize.toast(err.message)
+    })
 }
 
 function onLogout () {

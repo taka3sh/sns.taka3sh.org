@@ -4,14 +4,14 @@ const path = require('path')
 const ejs = require('ejs')
 const rollup = require('rollup')
 
-const alias = require('rollup-plugin-alias')
+const alias = require('@rollup/plugin-alias')
 const vue = require('rollup-plugin-vue')
 
 const html = ['index', 'create']
 const js = ['firebase-messaging-sw', 'index', 'create']
 
 exports.build = function () {
-  let plugins = [vue()]
+  const plugins = [vue()]
 
   if (process.env.CONTEXT === 'production') {
     plugins.unshift(alias({
@@ -19,26 +19,26 @@ exports.build = function () {
     }))
   }
 
-  for (let name of html) {
+  for (const name of html) {
     ejs.renderFile(`./src/common/${name}.html.ejs`, function (err, data) {
       if (err) throw err
       fs.writeFileSync(`./public/${name}.html`, data)
     })
   }
 
-  for (let name of js) {
+  for (const name of js) {
     rollup.rollup({
-      entry: `./src/${name}/${name}.js`,
+      input: `./src/${name}/${name}.js`,
       plugins: plugins
     })
-    .then(bundle => {
-      bundle.write({
-        format: 'iife',
-        dest: `./public/${name}.js`,
-        moduleName: 'app'
+      .then(bundle => {
+        bundle.write({
+          format: 'iife',
+          file: `./public/${name}.js`,
+          name: 'app'
+        })
       })
-    })
-    .catch(console.log)
+      .catch(console.log)
   }
 }
 

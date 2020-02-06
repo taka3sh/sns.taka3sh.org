@@ -13,15 +13,15 @@ export default {
 
   login: function (email, password) {
     return this.auth.signInWithEmailAndPassword(email, password)
-    .then(function (user) {
-      localStorage.setItem(AUTHSERVICE_USER, user.email)
-    })
+      .then(function (user) {
+        localStorage.setItem(AUTHSERVICE_USER, user.email)
+      })
   },
 
   logout: function () {
     this.auth.signOut()
-    .then(function () {
-      localStorage.removeItem(AUTHSERVICE_USER)
-    })
+      .then(function () {
+        localStorage.removeItem(AUTHSERVICE_USER)
+      })
   }
 }

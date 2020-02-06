@@ -16,17 +16,17 @@ export default {
     data.append('createdAt', new Date(post.createdAt).toISOString())
 
     return this.auth.currentUser.getToken(true)
-    .then(function (idToken) {
-      data.append('idToken', idToken)
+      .then(function (idToken) {
+        data.append('idToken', idToken)
 
-      return fetch(endpoint, {
-        method: 'POST',
-        mode: 'cors',
-        body: data
+        return fetch(endpoint, {
+          method: 'POST',
+          mode: 'cors',
+          body: data
+        })
+          .then(function (response) {
+            if (!response.ok) throw new Error('Failed to publish')
+          })
       })
-      .then(function (response) {
-        if (!response.ok) throw new Error('Failed to publish')
-      })
-    })
   }
 }
