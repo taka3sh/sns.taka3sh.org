@@ -1,10 +1,10 @@
-const fs = require('fs')
+import { watch } from 'fs'
 
-const build = require('./build')
+import { build } from './build.js'
 
-fs.watch('./src', {
+watch('./src', {
   recursive: true
 }, function (eventType, filename) {
   console.log(filename)
-  build.build()
+  build()
 })
