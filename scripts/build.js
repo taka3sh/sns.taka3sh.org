@@ -1,5 +1,6 @@
 import fs from 'fs'
-import path from 'path'
+import { dirname, join } from 'path'
+import { fileURLToPath } from 'url'
 
 import ejs from 'ejs'
 import rollup from 'rollup'
@@ -10,15 +11,16 @@ import VuePlugin from 'rollup-plugin-vue'
 const html = ['index', 'create']
 const js = ['firebase-messaging-sw', 'index', 'create']
 
-export function build() {
-  const plugins = [VuePlugin()]
+const plugins = process.env.CONTEXT === 'production'
+  ? [VuePlugin()]
+  : [
+    VuePlugin(),
+    alias({
+      '../common/constants/development': join(dirname(fileURLToPath(import.meta.url)), '../src/common/constants/production')
+    })
+  ]
 
-  if (process.env.CONTEXT === 'production') {
-    plugins.unshift(alias({
-      '../common/constants/development': path.join(__dirname, '../src/common/constants/production')
-    }))
-  }
-
+export async function build () {
   for (const name of html) {
     ejs.renderFile(`./src/common/${name}.html.ejs`, function (err, data) {
       if (err) throw err
@@ -27,18 +29,15 @@ export function build() {
   }
 
   for (const name of js) {
-    rollup.rollup({
+    const bundle = await rollup.rollup({
       input: `./src/${name}/${name}.js`,
       plugins: plugins
     })
-      .then(bundle => {
-        bundle.write({
-          format: 'iife',
-          file: `./public/${name}.js`,
-          name: 'app'
-        })
-      })
-      .catch(console.log)
+    bundle.write({
+      format: 'iife',
+      file: `./public/${name}.js`,
+      name: 'app'
+    })
   }
 }
 
