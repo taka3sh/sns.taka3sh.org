@@ -19,7 +19,8 @@ script:
   - ( cd app && go get )
 
 after_success:
-  - cd app
+  - mkdir -p gopath/src/github.com/taka3sh
+  - ln -s $PWD gopath/src/github.com/taka3sh/sns.taka3sh.org
 
 deploy:
   provider: gae
