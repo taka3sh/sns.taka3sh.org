@@ -25,4 +25,5 @@ deploy:
   provider: gae
   keyfile: client-secret.json
   project: sns-taka3sh-org-157419
+  config: app/app.yaml
   skip_cleanup: true
