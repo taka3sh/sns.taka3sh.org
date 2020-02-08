@@ -18,6 +18,8 @@ func main() {
 	http.Handle("/publish.dev", app.PublishServer{Topic: "/topics/posts.dev"})
 	http.HandleFunc("/index.html", app.HandleIndex)
 
+	appengine.Main()
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
@@ -26,5 +28,4 @@ func main() {
 
 	log.Printf("Listening on port %s", port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
-	appengine.Main()
 }
