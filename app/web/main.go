@@ -7,8 +7,6 @@ import (
 	"os"
 
 	"github.com/taka3sh/sns.taka3sh.org/app"
-
-	"google.golang.org/appengine"
 )
 
 func main() {
@@ -17,8 +15,6 @@ func main() {
 	http.Handle("/publish", app.PublishServer{Topic: "/topics/posts"})
 	http.Handle("/publish.dev", app.PublishServer{Topic: "/topics/posts.dev"})
 	http.HandleFunc("/index.html", app.HandleIndex)
-
-	appengine.Main()
 
 	port := os.Getenv("PORT")
 	if port == "" {

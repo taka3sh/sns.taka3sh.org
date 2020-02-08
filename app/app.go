@@ -1,11 +1,11 @@
 package app
 
 import (
+	"context"
+	"log"
 	"net/http"
 
-	"golang.org/x/net/context"
-
-	"google.golang.org/appengine/datastore"
+	"cloud.google.com/go/datastore"
 )
 
 type secret struct {
@@ -21,9 +21,20 @@ func handleCors(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 }
 
-func getServerKey(ctx context.Context) (string, error) {
-	k := datastore.NewKey(ctx, "Secret", "fcmServerKey", 0, nil)
+func getServerKey() (string, error) {
+	ctx := context.Background()
+
+	dsClient, err := datastore.NewClient(ctx, "sns-taka3sh-org-157419")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	k := datastore.NameKey("Secret", "fcmServerKey", nil)
 	e := new(secret)
-	err := datastore.Get(ctx, k, e)
+
+	if err := dsClient.Get(ctx, k, e); err != nil {
+		log.Fatal(err)
+	}
+
 	return e.Value, err
 }
