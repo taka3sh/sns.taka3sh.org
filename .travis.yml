@@ -16,7 +16,7 @@ before_script:
 
 script:
   - npm run build
-  - go get
+  - ( cd app && go get )
   - go get -u "google.golang.org/appengine"
 
 deploy:
