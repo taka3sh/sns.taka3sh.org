@@ -1,8 +1,11 @@
 package app
 
 import (
+	"context"
 	"io"
 	"net/http"
+
+	"firebase.google.com/go/messaging"
 )
 
 type SubscribeServer struct {
@@ -13,22 +16,15 @@ func (s SubscribeServer) getEndpointURL(token string) string {
 	return "https://iid.googleapis.com/iid/v1/" + token + s.Topic
 }
 
-func (s SubscribeServer) subscribe(client *http.Client, key string, token string) (resp *http.Response, err error) {
-	req, err := http.NewRequest("POST", s.getEndpointURL(token), nil)
-	if err != nil {
-		return
-	}
-
-	req.Header.Set("Authorization", "key="+key)
-	req.Header.Set("Content-Type", "application/json")
-	resp, err = client.Do(req)
-	return
+func (s SubscribeServer) subscribe(ctx context.Context, client *messaging.Client, token string) (response string, err error) {
+	return client.SubscribeToTopic(ctx, []string{token}, topic)
 }
 
 func (s SubscribeServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	handleCors(w, r)
 
-	client := &http.Client{}
+	ctx := context.Background()
+	client := initializeAppDefault().Messaging(ctx)
 
 	token := r.FormValue("token")
 	if token == "" {
@@ -36,20 +32,11 @@ func (s SubscribeServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	key, err := getServerKey()
+	response, err := s.subscribe(client, key, token)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
 
-	resp, err := s.subscribe(client, key, token)
-	if err != nil {
-		http.Error(w, err.Error(), 500)
-		return
-	}
-	defer resp.Body.Close()
-
-	w.Header().Set("Content-Type", resp.Header.Get("Content-Type"))
-	w.WriteHeader(resp.StatusCode)
-	io.Copy(w, resp.Body)
+	io.Copy(w, response)
 }

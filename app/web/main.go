@@ -10,8 +10,8 @@ import (
 )
 
 func main() {
-	http.Handle("/subscribe", app.SubscribeServer{Topic: "/rel/topics/posts"})
-	http.Handle("/subscribe.dev", app.SubscribeServer{Topic: "/rel/topics/posts.dev"})
+	http.Handle("/subscribe", app.SubscribeServer{Topic: "posts"})
+	http.Handle("/subscribe.dev", app.SubscribeServer{Topic: "posts.dev"})
 	http.Handle("/publish", app.PublishServer{Topic: "/topics/posts"})
 	http.Handle("/publish.dev", app.PublishServer{Topic: "/topics/posts.dev"})
 	http.HandleFunc("/index.html", app.HandleIndex)

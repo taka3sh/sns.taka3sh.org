@@ -6,11 +6,21 @@ import (
 	"net/http"
 
 	"cloud.google.com/go/datastore"
+	firebase "firebase.google.com/go"
 )
 
 type secret struct {
 	Name  string
 	Value string
+}
+
+func initializeAppDefault() *firebase.App {
+	app, err := firebase.NewApp(context.Background(), nil)
+	if err != nil {
+		log.Fatalf("error initializing app: %v\n", err)
+	}
+
+	return app
 }
 
 func HandleIndex(w http.ResponseWriter, r *http.Request) {
