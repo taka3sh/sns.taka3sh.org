@@ -11,9 +11,6 @@ import (
 	"net/http"
 
 	"github.com/dgrijalva/jwt-go"
-
-	"google.golang.org/appengine"
-	"google.golang.org/appengine/urlfetch"
 )
 
 type uidVerifier struct {
@@ -105,8 +102,7 @@ type PublishServer struct {
 func (s PublishServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	handleCors(w, r)
 
-	ctx := appengine.NewContext(r)
-	client := urlfetch.Client(ctx)
+	client := &http.Client{}
 
 	v := uidVerifier{}
 	if err := v.fetchKeys(client); err != nil {
@@ -119,7 +115,7 @@ func (s PublishServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	key, err := getServerKey(ctx)
+	key, err := getServerKey()
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return

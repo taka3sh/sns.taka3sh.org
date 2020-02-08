@@ -3,9 +3,6 @@ package app
 import (
 	"io"
 	"net/http"
-
-	"google.golang.org/appengine"
-	"google.golang.org/appengine/urlfetch"
 )
 
 type SubscribeServer struct {
@@ -31,8 +28,7 @@ func (s SubscribeServer) subscribe(client *http.Client, key string, token string
 func (s SubscribeServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	handleCors(w, r)
 
-	ctx := appengine.NewContext(r)
-	client := urlfetch.Client(ctx)
+	client := &http.Client{}
 
 	token := r.FormValue("token")
 	if token == "" {
@@ -40,7 +36,7 @@ func (s SubscribeServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	key, err := getServerKey(ctx)
+	key, err := getServerKey()
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
