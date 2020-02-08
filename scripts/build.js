@@ -15,8 +15,13 @@ module.exports = {
     const plugins = [VuePlugin()]
 
     if (process.env.CONTEXT === 'production') {
-      plugins.unshift(alias({
-        '../common/constants/development': path.join(__dirname, '../src/common/constants/production')
+      plugins.push(alias({
+        entries: [
+          {
+            find: '../common/constants/development',
+            replacement: path.join(__dirname, '../src/common/constants/production')
+          }
+        ]
       }))
     }
 
