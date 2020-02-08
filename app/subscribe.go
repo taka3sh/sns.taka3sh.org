@@ -8,15 +8,15 @@ import (
 	"google.golang.org/appengine/urlfetch"
 )
 
-type subscribeServer struct {
-	topic string
+type SubscribeServer struct {
+	Topic string
 }
 
-func (s subscribeServer) getEndpointURL(token string) string {
-	return "https://iid.googleapis.com/iid/v1/" + token + s.topic
+func (s SubscribeServer) getEndpointURL(token string) string {
+	return "https://iid.googleapis.com/iid/v1/" + token + s.Topic
 }
 
-func (s subscribeServer) subscribe(client *http.Client, key string, token string) (resp *http.Response, err error) {
+func (s SubscribeServer) subscribe(client *http.Client, key string, token string) (resp *http.Response, err error) {
 	req, err := http.NewRequest("POST", s.getEndpointURL(token), nil)
 	if err != nil {
 		return
@@ -28,7 +28,7 @@ func (s subscribeServer) subscribe(client *http.Client, key string, token string
 	return
 }
 
-func (s subscribeServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (s SubscribeServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	handleCors(w, r)
 
 	ctx := appengine.NewContext(r)
