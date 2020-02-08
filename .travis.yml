@@ -18,11 +18,9 @@ script:
   - npm run build
   - ( cd app && go get )
 
-after_success:
-  - cd app/web
-
 deploy:
   provider: gae
   keyfile: client-secret.json
   project: sns-taka3sh-org-157419
+  config: app/web/app.yaml
   skip_cleanup: true
