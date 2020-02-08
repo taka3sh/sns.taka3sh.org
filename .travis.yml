@@ -18,7 +18,7 @@ before_script:
 
 script:
   - npm run build
-  - GO111MODULE=on ( cd app/web && go get )
+  - ( cd app/web && GO111MODULE=on go get )
 
 deploy:
   provider: gae
