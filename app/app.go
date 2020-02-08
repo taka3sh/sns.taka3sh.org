@@ -13,15 +13,7 @@ type secret struct {
 	Value string
 }
 
-func init() {
-	http.Handle("/subscribe", subscribeServer{topic: "/rel/topics/posts"})
-	http.Handle("/subscribe.dev", subscribeServer{topic: "/rel/topics/posts.dev"})
-	http.Handle("/publish", publishServer{topic: "/topics/posts"})
-	http.Handle("/publish.dev", publishServer{topic: "/topics/posts.dev"})
-	http.HandleFunc("/index.html", handleIndex)
-}
-
-func handleIndex(w http.ResponseWriter, r *http.Request) {
+func HandleIndex(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", 302)
 }
 
