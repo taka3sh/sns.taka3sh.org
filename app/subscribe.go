@@ -2,29 +2,32 @@ package app
 
 import (
 	"context"
-	"io"
+	"fmt"
 	"net/http"
 
-	"firebase.google.com/go/messaging"
+	firebase "firebase.google.com/go"
 )
 
 type SubscribeServer struct {
 	Topic string
 }
 
-func (s SubscribeServer) getEndpointURL(token string) string {
-	return "https://iid.googleapis.com/iid/v1/" + token + s.Topic
-}
-
-func (s SubscribeServer) subscribe(ctx context.Context, client *messaging.Client, token string) (response string, err error) {
-	return client.SubscribeToTopic(ctx, []string{token}, topic)
-}
-
 func (s SubscribeServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	handleCors(w, r)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
+	app, err := firebase.NewApp(context.Background(), nil)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
 
 	ctx := context.Background()
-	client := initializeAppDefault().Messaging(ctx)
+
+	client, err := app.Messaging(ctx)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
 
 	token := r.FormValue("token")
 	if token == "" {
@@ -32,11 +35,11 @@ func (s SubscribeServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response, err := s.subscribe(client, key, token)
+	response, err := client.SubscribeToTopic(ctx, []string{token}, s.Topic)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
 
-	io.Copy(w, response)
+	fmt.Fprintf(w, "Success: %d, Failure: %d", response.SuccessCount, response.FailureCount)
 }
