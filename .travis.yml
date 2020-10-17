@@ -13,7 +13,7 @@ before_install:
   - openssl aes-256-cbc -K $encrypted_ef8c2c06311c_key -iv $encrypted_ef8c2c06311c_iv -in client-secret.json.enc -out client-secret.json -d
 
 install:
-  - nvm install 13
+  - nvm install 14
   - npm install
 
 before_script:
