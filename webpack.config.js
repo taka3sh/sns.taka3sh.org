@@ -4,7 +4,8 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 module.exports = {
   entry: {
     index: './src/index/index.js',
-    create: './src/create/create.js'
+    create: './src/create/create.js',
+    'firebase-messaging-sw': './src/firebase-messaging-sw/firebase-messaging-sw.js'
   },
   output: {
     filename: '[name].js',
