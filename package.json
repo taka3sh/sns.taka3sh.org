@@ -9,8 +9,8 @@
     "watch": "node scripts/watch.js"
   },
   "engines": {
-    "node": "~13.8.0",
-    "npm": "~6.13.6"
+    "node": "~14.13.0",
+    "npm": "~6.14.8"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.0.1",
