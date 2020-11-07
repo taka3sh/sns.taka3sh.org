@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import firebase from 'firebase'
 import 'materialize-css/dist/css/materialize.min.css'
 
@@ -12,7 +12,7 @@ import {
   postPrefix
 } from './constants/development'
 
-import PostCards from './component/PostCards'
+import PostCards, { Props as PostCardsProps } from './component/PostCards'
 
 import CachedPosts from './model/CachedPosts'
 import ShownPosts from './model/ShownPosts'
@@ -61,41 +61,44 @@ CachedPosts.invalidateCache()
 
 ShownPosts.init(postKeys, posts)
 
-PostReceiver.onChildAdded = function (key, val) {
-  CachedPosts.add(key, val)
-  ShownPosts.add(key, val)
-}
-
 window.addEventListener('load', () => {
   firebaseLoaded().then(() => PostReceiver.listen())
 })
 
-const IndexApp = () => (
-  <div className="grey lighten-3">
-    <nav className="pink darken-1">
-      <div className="nav-wrapper container">
-        <span className="brand-logo">支援隊ヌーボー</span>
+const IndexApp = () => {
+  const [posts, setPosts] = useState<PostCardsProps['posts']>([])
+
+  PostReceiver.onChildAdded = function (key, val) {
+    setPosts([...posts, val])
+  }
+
+  return (
+    <div className="grey lighten-3">
+      <nav className="pink darken-1">
+        <div className="nav-wrapper container">
+          <span className="brand-logo">支援隊ヌーボー</span>
+        </div>
+      </nav>
+
+      <div className="container" id="app">
+        <div className="col s12">
+        </div>
+
+        <PostCards posts={posts}></PostCards>
+
+        <section className="col s12">
+          <div>こちらは、たかさん支援隊からの連絡などを配信するサイトです。</div>
+        </section>
       </div>
-    </nav>
 
-    <div className="container" id="app">
-      <div className="col s12">
-      </div>
-
-      <PostCards posts={posts}></PostCards>
-
-      <section className="col s12">
-        <div>こちらは、たかさん支援隊からの連絡などを配信するサイトです。</div>
-      </section>
+      <footer className="page-footer grey darken-3 white-text">
+        <div className="container">
+          <div>Copyright © 2015-2017 高井戸第三小学校学校支援本部</div>
+          <div>Developed by <a href="https://github.com/umireon">umireon</a>.</div>
+        </div>
+      </footer>
     </div>
-
-    <footer className="page-footer grey darken-3 white-text">
-      <div className="container">
-        <div>Copyright © 2015-2017 高井戸第三小学校学校支援本部</div>
-        <div>Developed by <a href="https://github.com/umireon">umireon</a>.</div>
-      </div>
-    </footer>
-  </div>
-)
+  )
+}
 
 export default IndexApp;
