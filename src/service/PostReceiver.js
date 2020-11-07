@@ -22,5 +22,6 @@ export default {
       post.key = snapshot.key
       self.onChildAdded(snapshot.key, post)
     })
-  }
+  },
+  onChildAdded(key, val) {}
 }
