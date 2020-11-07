@@ -17,43 +17,38 @@ import PostCards, { Props as PostCardsProps } from './component/PostCards'
 import PostReceiver from './service/PostReceiver'
 import NotifyService from './service/NotifyService'
 
-const firebaseLoaded = () => {
-  firebase.initializeApp({
-    apiKey: firebaseApiKey,
-    databaseURL: firebaseDatabaseURL,
-    projectId: firebaseProjectId,
-    messagingSenderId: firebaseMessagingSenderId,
-    appId: firebaseAppId
+firebase.initializeApp({
+  apiKey: firebaseApiKey,
+  databaseURL: firebaseDatabaseURL,
+  projectId: firebaseProjectId,
+  messagingSenderId: firebaseMessagingSenderId,
+  appId: firebaseAppId
+})
+
+const database = firebase.database()
+const messaging = firebase.messaging()
+
+NotifyService.init(messaging, notifyEndpoint)
+
+if (NotifyService.isSupported()) {
+  NotifyService.getEnabled().then(function (value) {
+    if (value) {
+      messaging.getToken()
+    }
   })
-
-  const database = firebase.database()
-  const messaging = firebase.messaging()
-
-  NotifyService.init(messaging, notifyEndpoint)
-
-  if (NotifyService.isSupported()) {
-    NotifyService.getEnabled().then(function (value) {
-      if (value) {
-        messaging.getToken()
-      }
-    })
-  }
-
-  var postsRef = database.ref(postPrefix)
-
-  PostReceiver.init(postsRef)
-  return PostReceiver.loadAll()
 }
 
-window.addEventListener('load', () => {
-  firebaseLoaded()
+database.ref(postPrefix).once('value', function (snapshot) {
+  snapshot.forEach(function (childSnapshot) {
+    PostReceiver.onChildAdded(childSnapshot.key, childSnapshot.val())
+  })
 })
 
 const IndexApp = () => {
   const [posts, setPosts] = useState<PostCardsProps['posts']>([])
 
   PostReceiver.onChildAdded = function (key, val) {
-    setPosts([...posts, val])
+    setPosts([val, ...posts])
   }
 
   return (
@@ -85,4 +80,4 @@ const IndexApp = () => {
   )
 }
 
-export default IndexApp;
+export default IndexApp
