@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>新規作成 - 支援隊ヌーボー</title>
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link rel="apple-touch-icon" href="/icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<link rel="icon" sizes="192x192" href="icon.png">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+<style>/*body {
+  background: #EFEFEF;
+}
+
+section {
+  max-width: 850px;
+}
+
+.mdl-card__title, .mdl-layout__header {
+  background: rgb(255, 175, 57);
+}
+
+.mdl-layout__title {
+  font-size: 32px;
+}
+
+.card-enter-active {
+  transition: all 0.5s;
+}
+
+.card-enter {
+  opacity: 0.3;
+  transform: translateX(-1em);
+}
+
+.card-move {
+  transition: transform 0.5s;
+}
+*/</style>
+
+
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+
+  <script src="https://unpkg.com/vue@2.6.12/dist/vue.min.js"></script>
+<script async defer src="https://www.gstatic.com/firebasejs/3.6.8/firebase.js"></script>
+<script async defer src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.2/fetch.min.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-92250340-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-92250340-1');
+</script>
+  
+</head>
+<body>
+<nav class="pink darken-1">
+  <div class="nav-wrapper container">
+    <span href="#" class="brand-logo">支援隊ヌーボー</span>
+  </div>
+</nav>
+
+
+<div class="container" id="app">
+  <post-form-card heading="Creating a new post" v-model="post" @submit.prevent="onCreate" @reset.prevent="onReset">
+    <button class="btn" type="submit">Submit</button>
+    <button class="btn-flat" type="reset">Reset</button>
+    <button class="btn-flat" @click.prevent="onLogout">Logout</button>
+  </post-form-card>
+
+  <post-cards :posts="[post]" :ready="true"></post-cards>
+
+  <login-form :show="user === null" @submit="onLogin"></login-form>
+</div>
+
+<footer class="page-footer grey darken-3 white-text">
+  <div class="container">
+    <div>
+      Copyright © 2015-2017 高井戸第三小学校学校支援本部
+    </div>
+    <div>
+      Developed by <a href="https://github.com/umireon">umireon</a>.
+    </div>
+  </div>
+</footer>
+
+
+<script src="create.js"></script>
+</body>
+</html>
