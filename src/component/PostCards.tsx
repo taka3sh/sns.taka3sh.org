@@ -14,7 +14,7 @@ function PostCards({ posts }: Props) {
     <div className="mdl-grid">
       {
         posts.map(post =>
-          <div className="card" id={post.key}>
+          <div className="card" id={post.key} key={post.key}>
             <div className="card-title white-text pink lighten-1">{post.title}</div>
             <div className="card-content">
               {
