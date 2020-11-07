@@ -30,9 +30,6 @@ const firebaseLoaded = () => {
   const messaging = firebase.messaging()
 
   NotifyService.init(messaging, notifyEndpoint)
-  messaging.onTokenRefresh(function () {
-    NotifyService.subscribe()
-  })
 
   if (NotifyService.isSupported()) {
     NotifyService.getEnabled().then(function (value) {
