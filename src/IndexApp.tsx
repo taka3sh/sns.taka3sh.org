@@ -14,9 +14,6 @@ import {
 
 import PostCards, { Props as PostCardsProps } from './component/PostCards'
 
-import CachedPosts from './model/CachedPosts'
-import ShownPosts from './model/ShownPosts'
-
 import PostReceiver from './service/PostReceiver'
 import NotifyService from './service/NotifyService'
 
@@ -46,23 +43,13 @@ const firebaseLoaded = () => {
   }
 
   var postsRef = database.ref(postPrefix)
-  postsRef.on('child_removed', function () {
-    CachedPosts.invalidateCache()
-  })
 
   PostReceiver.init(postsRef)
   return PostReceiver.loadAll()
 }
 
-const posts = CachedPosts.getPosts()
-const postKeys = CachedPosts.getKeys()
-
-CachedPosts.invalidateCache()
-
-ShownPosts.init(postKeys, posts)
-
 window.addEventListener('load', () => {
-  firebaseLoaded().then(() => PostReceiver.listen())
+  firebaseLoaded()
 })
 
 const IndexApp = () => {
