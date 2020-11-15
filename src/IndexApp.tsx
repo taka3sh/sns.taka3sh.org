@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import firebase from 'firebase'
 import 'materialize-css/dist/css/materialize.min.css'
 
@@ -14,7 +14,6 @@ import {
 
 import PostCards, { Props as PostCardsProps } from './component/PostCards'
 
-import PostReceiver from './service/PostReceiver'
 import NotifyService from './service/NotifyService'
 
 firebase.initializeApp({
@@ -38,18 +37,16 @@ if (NotifyService.isSupported()) {
   })
 }
 
-database.ref(postPrefix).once('value', function (snapshot) {
-  snapshot.forEach(function (childSnapshot) {
-    PostReceiver.onChildAdded(childSnapshot.key, childSnapshot.val())
-  })
-})
-
 const IndexApp = () => {
   const [posts, setPosts] = useState<PostCardsProps['posts']>([])
 
-  PostReceiver.onChildAdded = function (key, val) {
-    setPosts([val, ...posts])
-  }
+  useEffect(() => {
+    database.ref(postPrefix).once('value', function (snapshot) {
+      snapshot.forEach(function (childSnapshot) {
+        setPosts(prevPosts => [childSnapshot.val(), ...prevPosts])
+      })
+    })
+  }, [])
 
   return (
     <div className="grey lighten-3">
