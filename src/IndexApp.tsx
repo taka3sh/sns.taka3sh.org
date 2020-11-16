@@ -54,6 +54,8 @@ const IndexApp = () => {
   const [busy, setBusy] = useState(false)
   const [enabled, setEnabled] = useState(false)
 
+  notifyService.getEnabled().then(setEnabled)
+
   const handleNotifyToggle = () => {
     if (!notifyService.isSupported()) return
   
