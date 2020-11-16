@@ -9,16 +9,16 @@ export class AuthService {
     this.auth = auth
   }
 
-  getUser(): string | null {
-    return localStorage.getItem(AUTHSERVICE_USER)
+  getUser(): boolean {
+    return localStorage.getItem(AUTHSERVICE_USER) === 'loggedIn'
   }
 
-  login(email: string, password: string): Promise<string> {
+  login(email: string, password: string): Promise<boolean> {
     return this.auth.signInWithEmailAndPassword(email, password)
       .then(result => {
         if (result.user == null || result.user.email == null) throw new Error('Authentication error')
-        localStorage.setItem(AUTHSERVICE_USER, result.user.email)
-        return result.user.email
+        localStorage.setItem(AUTHSERVICE_USER, 'loggedIn')
+        return true
       })
   }
 

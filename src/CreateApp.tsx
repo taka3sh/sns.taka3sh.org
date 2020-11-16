@@ -110,7 +110,7 @@ const CreateApp = () => {
 
   const handleLogout = () => {
     authService.logout().then(() => {
-      setUser(null)
+      setUser(false)
     })
   }
 
@@ -137,7 +137,7 @@ const CreateApp = () => {
         <PostCards posts={[post]}></PostCards>
       </div>
 
-      <LoginForm isOpen={user === null} handleSubmit={handleSubmitLogin(handleLogin)} register={registerLogin}/>
+      <LoginForm isOpen={user === false} handleSubmit={handleSubmitLogin(handleLogin)} register={registerLogin}/>
 
       <footer className="page-footer grey darken-3 white-text">
         <div className="container">
