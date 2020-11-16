@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+
+import dayjs from 'dayjs'
 
 import 'materialize-css'
 import 'materialize-css/dist/css/materialize.min.css'
@@ -123,27 +126,19 @@ addEventListener('load', function () {
 */
 
 const CreateApp = () => {
-  const [post, setPost] = useState<Post>({
-    body: '',
-    title: '',
-    createdAt: '',
-    key: ''
+  const { register, handleSubmit, watch, errors } = useForm<Post>({
+    defaultValues: {
+      body: '',
+      title: '',
+      createdAt: dayjs().format('YYYY-MM-DDTHH:mm')
+    }
   })
 
-  const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPost(prevPost => {
-      return {...prevPost, title: event.target.value}
-    })
-  }
-
-  const handleChangeBody = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setPost(prevPost => {
-      return {...prevPost, body: event.target.value}
-    })
-  }
-
-  const handleChangeCreatedAt = (event: React.ChangeEvent<HTMLInputElement>) => {
-
+  const post = {
+    body: watch('body'),
+    title: watch('title'),
+    createdAt: watch('createdAt'),
+    key: ''
   }
 
   return (
@@ -156,11 +151,10 @@ const CreateApp = () => {
 
       <div className="container" id="app">
         <PostFormCard
+          errors={errors}
           heading="Creating a new post"
-          post={post}
-          handleChangeTitle={handleChangeTitle}
-          handleChangeBody={handleChangeBody}
-          handleChangeCreatedAt={handleChangeCreatedAt}
+          register={register}
+          onSubmit={handleSubmit(console.log)}
         >
           <button className="btn" type="submit">Submit</button>
           <button className="btn-flat" type="reset">Reset</button>
