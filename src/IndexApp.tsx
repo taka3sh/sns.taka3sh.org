@@ -12,7 +12,7 @@ import {
   postPrefix
 } from './constants/development'
 
-import PostCards, { Props as PostCardsProps } from './component/PostCards'
+import { PostCards, Props as PostCardsProps } from './component/PostCards'
 import { NotifySwitch } from './component/NotifySwitch'
 
 import NotifyService from './service/NotifyService'

@@ -9,7 +9,7 @@ export interface Props {
   }[]
 }
 
-function PostCards({ posts }: Props) {
+export const PostCards = ({ posts }: Props) => {
   return (
     <div className="mdl-grid">
       {
