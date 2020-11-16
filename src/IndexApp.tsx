@@ -40,7 +40,7 @@ if (NotifyService.isSupported()) {
   });
 }
 
-const IndexApp: React.FC<void> = () => {
+const IndexApp: React.FC<unknown> = () => {
   const [posts, setPosts] = useState<PostCardsProps['posts']>([]);
 
   useEffect(() => {

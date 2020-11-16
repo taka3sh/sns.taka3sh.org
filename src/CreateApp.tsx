@@ -49,7 +49,7 @@ const getDefaultValues = () => ({
   createdAt: dayjs().format('YYYY-MM-DDTHH:mm'),
 });
 
-const CreateApp: React.FC<void> = () => {
+const CreateApp: React.FC<unknown> = () => {
   const {
     register: registerPost,
     handleSubmit: handleSubmitPost,
