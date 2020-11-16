@@ -1,7 +1,7 @@
-window.addEventListener('push', (e) => {
+addEventListener('push', (e) => {
   const data = e.data.json()
   e.waitUntil(
-    window.registration.showNotification(data.notification.title, {
+    registration.showNotification(data.notification.title, {
       body: data.notification.body,
       data: data.data,
       icon: '/icon.png',
@@ -9,17 +9,17 @@ window.addEventListener('push', (e) => {
   )
 })
 
-window.addEventListener('notificationclick', (e) => {
+addEventListener('notificationclick', (e) => {
   e.notification.close()
   e.waitUntil(
-    window.clients
+    clients
       .matchAll({
         includeUncontrolled: true,
         type: 'window',
       })
       .then((clientList) => {
         clientList.array.forEach(() => window.client.focus())
-        return window.clients.openWindow(`/#${e.notification.data.key}`)
+        return clients.openWindow(`/#${e.notification.data.key}`)
       })
   )
 })
