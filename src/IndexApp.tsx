@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import firebase from 'firebase'
+import firebase from 'firebase/app'
+import 'firebase/messaging'
+import 'firebase/database'
 import 'materialize-css/dist/css/materialize.min.css'
 
 import {
