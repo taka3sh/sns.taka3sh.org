@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Post } from './PostTypes'
+import { Post } from '../PostTypes'
 
 export interface Props {
   readonly posts: Post[]

@@ -1,7 +1,7 @@
 import firebase from 'firebase/app'
 import dayjs from 'dayjs'
 
-import { Post } from './component/PostTypes'
+import { Post } from './PostTypes'
 
 export class PushService {
   readonly auth: firebase.auth.Auth

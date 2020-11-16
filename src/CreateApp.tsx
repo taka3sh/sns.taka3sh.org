@@ -15,7 +15,7 @@ import { StoredPost } from './StoredPost'
 import { AuthService } from './AuthService'
 import { PushService } from './PushService'
 
-import { Post } from './component/PostTypes'
+import { Post } from './PostTypes'
 import { PostCards } from './component/PostCards'
 import { PostFormCard } from './component/PostFormCard'
 import { LoginForm } from './component/LoginForm'

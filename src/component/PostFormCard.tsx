@@ -1,7 +1,7 @@
 import React from 'react'
 import { UseFormMethods } from "react-hook-form";
 
-import { Post } from './PostTypes'
+import { Post } from '../PostTypes'
 
 export interface Props extends React.PropsWithChildren<Pick<UseFormMethods<Post>, 'register' | 'errors' >> {
   readonly heading: string
