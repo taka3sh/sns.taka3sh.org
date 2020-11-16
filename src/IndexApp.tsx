@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import firebase from 'firebase/app'
-import 'firebase/messaging'
-import 'firebase/database'
-import 'materialize-css/dist/css/materialize.min.css'
+import React, { useState, useEffect } from 'react';
+import firebase from 'firebase/app';
+import 'firebase/messaging';
+import 'firebase/database';
+import 'materialize-css/dist/css/materialize.min.css';
 
 import {
   firebaseProjectId,
@@ -11,70 +11,70 @@ import {
   firebaseMessagingSenderId,
   firebaseAppId,
   notifyEndpoint,
-  postPrefix
-} from './constants/development'
+  postPrefix,
+} from './constants/development';
 
-import { PostCards, Props as PostCardsProps } from './component/PostCards'
-import { NotifySwitch } from './component/NotifySwitch'
+import { PostCards, Props as PostCardsProps } from './component/PostCards';
+import { NotifySwitch } from './component/NotifySwitch';
 
-import { NotifyService } from './NotifyService'
+import { NotifyService } from './NotifyService';
 
 firebase.initializeApp({
   apiKey: firebaseApiKey,
   databaseURL: firebaseDatabaseURL,
   projectId: firebaseProjectId,
   messagingSenderId: firebaseMessagingSenderId,
-  appId: firebaseAppId
-})
+  appId: firebaseAppId,
+});
 
-const database = firebase.database()
-const messaging = firebase.messaging()
+const database = firebase.database();
+const messaging = firebase.messaging();
 
-const notifyService = new NotifyService(messaging, notifyEndpoint)
+const notifyService = new NotifyService(messaging, notifyEndpoint);
 
 if (notifyService.isSupported()) {
-  notifyService.getEnabled().then(value => {
+  notifyService.getEnabled().then((value) => {
     if (value) {
-      messaging.getToken()
+      messaging.getToken();
     }
-  })
+  });
 }
 
 const IndexApp = () => {
-  const [posts, setPosts] = useState<PostCardsProps['posts']>([])
+  const [posts, setPosts] = useState<PostCardsProps['posts']>([]);
 
   useEffect(() => {
-    database.ref(postPrefix).once('value', function (snapshot) {
-      snapshot.forEach(function (childSnapshot) {
-        setPosts(prevPosts => [{...childSnapshot.val(), key: childSnapshot.key}, ...prevPosts])
-      })
-    })
-  }, [])
+    database.ref(postPrefix).once('value', (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        setPosts((prevPosts) => [{ ...childSnapshot.val(), key: childSnapshot.key }, ...prevPosts]);
+      });
+    });
+  }, []);
 
-  const [busy, setBusy] = useState(false)
-  const [enabled, setEnabled] = useState(false)
+  const [busy, setBusy] = useState(false);
+  const [enabled, setEnabled] = useState(false);
 
-  notifyService.getEnabled().then(setEnabled)
+  notifyService.getEnabled().then(setEnabled);
 
   const handleNotifyToggle = () => {
-    if (!notifyService.isSupported()) return
-  
+    if (!notifyService.isSupported()) return;
+
     if (enabled) {
-      notifyService.unsubscribe()
-      setEnabled(false)
+      notifyService.unsubscribe();
+      setEnabled(false);
     } else {
-      setBusy(true)
+      setBusy(true);
       notifyService.subscribe()
         .then(() => {
-          setBusy(false)
-          setEnabled(true)
+          setBusy(false);
+          setEnabled(true);
         })
-        .catch((error: Error) =>{
-          setBusy(false)
-          console.error(error)
-        })
+        .catch((error: Error) => {
+          setBusy(false);
+          console.error(error);
+        });
     }
-  }
+  };
 
   return (
     <div className="grey lighten-3">
@@ -91,17 +91,21 @@ const IndexApp = () => {
 
         <NotifySwitch busy={busy} enabled={enabled} handleNotifyToggle={handleNotifyToggle} />
 
-        <PostCards posts={posts}></PostCards>
+        <PostCards posts={posts} />
       </div>
 
       <footer className="page-footer grey darken-3 white-text">
         <div className="container">
           <div>Copyright © 2015-2017 高井戸第三小学校学校支援本部</div>
-          <div>Developed by <a href="https://github.com/umireon">umireon</a>.</div>
+          <div>
+            Developed by
+            <a href="https://github.com/umireon">umireon</a>
+            .
+          </div>
         </div>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default IndexApp
+export default IndexApp;

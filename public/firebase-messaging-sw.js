@@ -1,29 +1,29 @@
 /* global addEventListener clients registration */
 
-addEventListener('push', function (e) {
-  var data = e.data.json()
+addEventListener('push', (e) => {
+  const data = e.data.json();
   e.waitUntil(
     registration.showNotification(data.notification.title, {
       body: data.notification.body,
       icon: '/icon.png',
-      data: data.data
-    })
-  )
-})
+      data: data.data,
+    }),
+  );
+});
 
-addEventListener('notificationclick', function (e) {
-  console.log(e)
-  e.notification.close()
+addEventListener('notificationclick', (e) => {
+  console.log(e);
+  e.notification.close();
   e.waitUntil(
     clients.matchAll({
       type: 'window',
-      includeUncontrolled: true
+      includeUncontrolled: true,
     })
-      .then(function (clientList) {
-        for (var client of clientList) {
-          return client.focus()
+      .then((clientList) => {
+        for (const client of clientList) {
+          return client.focus();
         }
-        return clients.openWindow('/#' + e.notification.data.key)
-      })
-  )
-})
+        return clients.openWindow(`/#${e.notification.data.key}`);
+      }),
+  );
+});

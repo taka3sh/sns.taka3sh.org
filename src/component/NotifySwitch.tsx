@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 export interface Props {
   readonly busy: boolean
@@ -10,8 +10,8 @@ export const NotifySwitch = ({ busy, enabled, handleNotifyToggle }: Props) => (
   <div className="switch">
     <label>
       <input type="checkbox" checked={enabled} disabled={busy} onChange={handleNotifyToggle} />
-      <span className="lever"></span>
+      <span className="lever" />
       { enabled ? '通知オン' : '通知オフ' }
     </label>
   </div>
-)
+);

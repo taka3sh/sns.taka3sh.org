@@ -1,37 +1,35 @@
-import React from 'react'
-import { UseFormMethods } from "react-hook-form";
-import Modal from 'react-modal'
+import React from 'react';
+import { UseFormMethods } from 'react-hook-form';
+import Modal from 'react-modal';
 
 export interface Props extends Pick<UseFormMethods<{email: string, password: string}>, 'register'> {
   readonly isOpen: boolean
   readonly handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void
 }
 
-export const LoginForm = ({isOpen, handleSubmit, register}: Props) => {
-  return (
-    <Modal isOpen={isOpen}>
-      <div id="logindialog">
-        <form action="#" method="POST" onSubmit={handleSubmit}>
-          <div>
-            <h4>Login</h4>
-            <div className="row">
-              <div className="input-field col s12">
-                <input id="email" name="email" type="email" ref={register({ required: true })} />
-                <label htmlFor="email">Email</label>
-              </div>
-            </div>
-            <div className="row">
-              <div className="input-field col s12">
-                <input id="password" name="password" type="password" ref={register({ required: true })} />
-                <label htmlFor="password">Password</label>
-              </div>
+export const LoginForm = ({ isOpen, handleSubmit, register }: Props) => (
+  <Modal isOpen={isOpen}>
+    <div id="logindialog">
+      <form action="#" method="POST" onSubmit={handleSubmit}>
+        <div>
+          <h4>Login</h4>
+          <div className="row">
+            <div className="input-field col s12">
+              <input id="email" name="email" type="email" ref={register({ required: true })} />
+              <label htmlFor="email">Email</label>
             </div>
           </div>
-          <div className="modal-footer">
-            <button className="btn-flat" type="submit">Login</button>
+          <div className="row">
+            <div className="input-field col s12">
+              <input id="password" name="password" type="password" ref={register({ required: true })} />
+              <label htmlFor="password">Password</label>
+            </div>
           </div>
-        </form>
-      </div>
-    </Modal>
-  )
-}
+        </div>
+        <div className="modal-footer">
+          <button className="btn-flat" type="submit">Login</button>
+        </div>
+      </form>
+    </div>
+  </Modal>
+);

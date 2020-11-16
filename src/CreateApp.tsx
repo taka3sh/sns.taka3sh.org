@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import React, { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 
-import firebase from 'firebase/app'
-import 'firebase/auth'
-import 'firebase/database'
-import 'firebase/messaging'
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/database';
+import 'firebase/messaging';
 
-import dayjs from 'dayjs'
+import dayjs from 'dayjs';
 
-import Materialize from 'materialize-css'
-import 'materialize-css/dist/css/materialize.min.css'
+import Materialize from 'materialize-css';
+import 'materialize-css/dist/css/materialize.min.css';
 
-import { StoredPost } from './StoredPost'
-import { AuthService } from './AuthService'
-import { PushService } from './PushService'
+import { StoredPost } from './StoredPost';
+import { AuthService } from './AuthService';
+import { PushService } from './PushService';
 
-import { Post, PostWithKey } from './PostTypes'
-import { PostCards } from './component/PostCards'
-import { PostFormCard } from './component/PostFormCard'
-import { LoginForm } from './component/LoginForm'
+import { Post, PostWithKey } from './PostTypes';
+import { PostCards } from './component/PostCards';
+import { PostFormCard } from './component/PostFormCard';
+import { LoginForm } from './component/LoginForm';
 
 import {
   firebaseApiKey,
@@ -26,30 +26,28 @@ import {
   firebaseDatabaseURL,
   firebaseMessagingSenderId,
   pushEndpoint,
-  postPrefix
-} from './constants/development'
+  postPrefix,
+} from './constants/development';
 
 firebase.initializeApp({
   apiKey: firebaseApiKey,
   authDomain: firebaseAuthDomain,
   databaseURL: firebaseDatabaseURL,
-  messagingSenderId: firebaseMessagingSenderId
-})
+  messagingSenderId: firebaseMessagingSenderId,
+});
 
-const auth = firebase.auth()
-const database = firebase.database()
+const auth = firebase.auth();
+const database = firebase.database();
 
-const authService = new AuthService(auth)
-const pushService = new PushService(auth, pushEndpoint)
-const storedPost = new StoredPost(database.ref(postPrefix))
+const authService = new AuthService(auth);
+const pushService = new PushService(auth, pushEndpoint);
+const storedPost = new StoredPost(database.ref(postPrefix));
 
-const getDefaultValues = () => {
-  return {
-    body: '',
-    title: '',
-    createdAt: dayjs().format('YYYY-MM-DDTHH:mm')
-  }
-}
+const getDefaultValues = () => ({
+  body: '',
+  title: '',
+  createdAt: dayjs().format('YYYY-MM-DDTHH:mm'),
+});
 
 const CreateApp = () => {
   const {
@@ -57,62 +55,62 @@ const CreateApp = () => {
     handleSubmit: handleSubmitPost,
     watch: watchPost,
     errors: errorsPost,
-    reset: resetPost
+    reset: resetPost,
   } = useForm<Post>({
-    defaultValues: getDefaultValues()
-  })
+    defaultValues: getDefaultValues(),
+  });
 
   const handleReset = () => {
-    resetPost(getDefaultValues())
-    Materialize.updateTextFields()
-  }
+    resetPost(getDefaultValues());
+    Materialize.updateTextFields();
+  };
 
   const post: PostWithKey = {
     body: watchPost('body'),
     title: watchPost('title'),
     createdAt: watchPost('createdAt'),
-    key: ''
-  }
+    key: '',
+  };
 
   const handleCreate = (data: Post) => {
     storedPost.create(data.title, data.body, data.createdAt)
       .then((post: firebase.database.Reference) => {
-        Materialize.toast({ html: 'The new post was successfully created.' })
-        if (post.key === null) { throw new Error('Key is not generated')}
-        return pushService.publish(post.key, data)
+        Materialize.toast({ html: 'The new post was successfully created.' });
+        if (post.key === null) { throw new Error('Key is not generated'); }
+        return pushService.publish(post.key, data);
       })
-      .then(function () {
-        handleReset()
-        Materialize.toast({html: 'The new post was successfully published.'})
+      .then(() => {
+        handleReset();
+        Materialize.toast({ html: 'The new post was successfully published.' });
       })
-      .catch(function (err: Error) {
-        console.error(err)
-        Materialize.toast({ html: err.message })
-      })
-  }
+      .catch((err: Error) => {
+        console.error(err);
+        Materialize.toast({ html: err.message });
+      });
+  };
 
   const {
     register: registerLogin,
     handleSubmit: handleSubmitLogin,
-    watch: watchLogin
-  } = useForm<{email: string, password: string}>()
+    watch: watchLogin,
+  } = useForm<{email: string, password: string}>();
 
-  const [user, setUser] = useState(authService.getUser())
+  const [user, setUser] = useState(authService.getUser());
 
   const handleLogin = () => {
     authService.login(watchLogin('email'), watchLogin('password'))
       .then(setUser)
-      .catch(function (err: Error) {
-        console.error(err)
-        Materialize.toast({html: err.message})
-      })
-  }
+      .catch((err: Error) => {
+        console.error(err);
+        Materialize.toast({ html: err.message });
+      });
+  };
 
   const handleLogout = () => {
     authService.logout().then(() => {
-      setUser(false)
-    })
-  }
+      setUser(false);
+    });
+  };
 
   return (
     <div className="grey lighten-3">
@@ -127,26 +125,30 @@ const CreateApp = () => {
           errors={errorsPost}
           heading="Creating a new post"
           register={registerPost}
-          handleSubmit={handleSubmitPost(data => { handleCreate(data) })}
+          handleSubmit={handleSubmitPost((data) => { handleCreate(data); })}
         >
           <button className="btn" type="submit">Submit</button>
           <button className="btn-flat" onClick={handleReset}>Reset</button>
           <button className="btn-flat" onClick={handleLogout}>Logout</button>
         </PostFormCard>
 
-        <PostCards posts={[post]}></PostCards>
+        <PostCards posts={[post]} />
       </div>
 
-      <LoginForm isOpen={user === false} handleSubmit={handleSubmitLogin(handleLogin)} register={registerLogin}/>
+      <LoginForm isOpen={user === false} handleSubmit={handleSubmitLogin(handleLogin)} register={registerLogin} />
 
       <footer className="page-footer grey darken-3 white-text">
         <div className="container">
           <div>Copyright © 2015-2017 高井戸第三小学校学校支援本部</div>
-          <div>Developed by <a href="https://github.com/umireon">umireon</a>.</div>
+          <div>
+            Developed by
+            <a href="https://github.com/umireon">umireon</a>
+            .
+          </div>
         </div>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default CreateApp
+export default CreateApp;
