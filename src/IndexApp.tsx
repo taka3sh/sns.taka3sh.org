@@ -15,7 +15,7 @@ import {
 import { PostCards, Props as PostCardsProps } from './component/PostCards'
 import { NotifySwitch } from './component/NotifySwitch'
 
-import NotifyService from './service/NotifyService'
+import NotifyService from './NotifyService'
 
 firebase.initializeApp({
   apiKey: firebaseApiKey,
