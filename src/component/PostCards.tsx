@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { Post } from '../PostTypes'
+import { PostWithKey } from '../PostTypes'
 
 export interface Props {
-  readonly posts: Post[]
+  readonly posts: PostWithKey[]
 }
 
 export const PostCards = ({ posts }: Props) => {

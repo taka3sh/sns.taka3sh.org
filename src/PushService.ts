@@ -12,7 +12,7 @@ export class PushService {
     this.endpoint = endpoint
   }
 
-  publish(key: string, post: Pick<Post, 'title' | 'body' | 'createdAt'>) {
+  publish(key: string, post: Post) {
     const endpoint = this.endpoint
 
     const data = new FormData()

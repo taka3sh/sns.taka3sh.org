@@ -2,7 +2,7 @@ import React from 'react'
 import { UseFormMethods } from "react-hook-form";
 import Modal from 'react-modal'
 
-export interface Props extends Pick<UseFormMethods, 'register'> {
+export interface Props extends Pick<UseFormMethods<{email: string, password: string}>, 'register'> {
   readonly isOpen: boolean
   readonly handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void
 }

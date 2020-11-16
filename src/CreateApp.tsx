@@ -15,7 +15,7 @@ import { StoredPost } from './StoredPost'
 import { AuthService } from './AuthService'
 import { PushService } from './PushService'
 
-import { Post } from './PostTypes'
+import { Post, PostWithKey } from './PostTypes'
 import { PostCards } from './component/PostCards'
 import { PostFormCard } from './component/PostFormCard'
 import { LoginForm } from './component/LoginForm'
@@ -67,14 +67,14 @@ const CreateApp = () => {
     Materialize.updateTextFields()
   }
 
-  const post = {
+  const post: PostWithKey = {
     body: watchPost('body'),
     title: watchPost('title'),
     createdAt: watchPost('createdAt'),
     key: ''
   }
 
-  const handleCreate = (data: Pick<Post, 'title' | 'body' | 'createdAt'>) => {
+  const handleCreate = (data: Post) => {
     storedPost.create(data.title, data.body, data.createdAt)
       .then((post: firebase.database.Reference) => {
         Materialize.toast({ html: 'The new post was successfully created.' })
