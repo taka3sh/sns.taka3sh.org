@@ -125,14 +125,22 @@ addEventListener('load', function () {
 })
 */
 
+const getDefaultValues = () => {
+  return {
+    body: '',
+    title: '',
+    createdAt: dayjs().format('YYYY-MM-DDTHH:mm')
+  }
+}
+
 const CreateApp = () => {
-  const { register, handleSubmit, watch, errors } = useForm<Post>({
-    defaultValues: {
-      body: '',
-      title: '',
-      createdAt: dayjs().format('YYYY-MM-DDTHH:mm')
-    }
+  const { register, handleSubmit, watch, errors, reset } = useForm<Post>({
+    defaultValues: getDefaultValues()
   })
+
+  const handleReset = () => {
+    reset(getDefaultValues())
+  }
 
   const post = {
     body: watch('body'),
@@ -154,10 +162,10 @@ const CreateApp = () => {
           errors={errors}
           heading="Creating a new post"
           register={register}
-          onSubmit={handleSubmit(console.log)}
+          handleSubmit={handleSubmit(data => {console.log(data)})}
         >
           <button className="btn" type="submit">Submit</button>
-          <button className="btn-flat" type="reset">Reset</button>
+          <button className="btn-flat" onClick={handleReset}>Reset</button>
           <button className="btn-flat">Logout</button>
         </PostFormCard>
 

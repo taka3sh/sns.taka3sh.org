@@ -5,18 +5,18 @@ import { Post } from './PostTypes'
 
 export interface Props extends React.PropsWithChildren<Pick<UseFormMethods<Post>, 'register' | 'errors' >> {
   readonly heading: string
-  readonly onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
+  readonly handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void
 }
 
 export const PostFormCard = ({
   children,
   errors,
   heading,
-  onSubmit,
+  handleSubmit,
   register
 }: Props) => {
   return (
-    <form action="#" method="POST" className="card" onSubmit={onSubmit}>
+    <form action="#" method="POST" className="card" onSubmit={handleSubmit}>
       <div className="card-title white-text pink lighten-1">{heading}</div>
       <div className="card-content">
         <div className="input-field">
