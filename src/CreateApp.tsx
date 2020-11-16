@@ -13,12 +13,7 @@ import 'materialize-css/dist/css/materialize.min.css'
 
 import { StoredPost } from './StoredPost'
 import { AuthService } from './AuthService'
-
-/*
-import StoredPost from './model/StoredPost'
-import PushService from './service/PushService'
-import AuthService from './service/AuthService'
-*/
+import { PushService } from './PushService'
 
 import { Post } from './component/PostTypes'
 import { PostCards } from './component/PostCards'
@@ -34,85 +29,6 @@ import {
   postPrefix
 } from './constants/development'
 
-/*function vueMounted () {
-  this.$el.querySelector('form').reset()
-}
-
-function firebaseLoaded () {
-}
-
-function onCreate (e) {
-  var self = this
-
-  self.busy = true
-  StoredPost.create(this.post.title, this.post.body, this.post.createdAt)
-    .then(function (post) {
-      Materialize.toast('The new post was successfully created.')
-      return PushService.publish(post.key, self.post)
-    })
-    .then(function () {
-      self.busy = false
-      e.target.reset()
-      Materialize.toast('The new post was successfully published.')
-    })
-    .catch(function (err) {
-      self.busy = false
-      console.error(err)
-      Materialize.toast(err.message)
-    })
-}
-
-function onLogin (email, password) {
-  AuthService.login(email, password)
-    .catch(function (err) {
-      console.error(err)
-      Materialize.toast(err.message)
-    })
-}
-
-function onLogout () {
-  AuthService.logout()
-}
-
-moment.locale('ja')
-
-var app = new Vue({
-  el: '#app',
-  data: {
-    user: AuthService.getUser(),
-    busy: false,
-    post: {
-      title: '',
-      body: '',
-      createdAt: ''
-    }
-  },
-  methods: {
-    onCreate: onCreate,
-    onLogin: onLogin,
-    onLogout: onLogout,
-    onReset: onReset
-  },
-  mounted: vueMounted,
-  components: {
-    'login-form': LoginForm,
-    'post-cards': PostCards,
-    'post-form-card': PostFormCard
-  },
-  filters: {
-    'date-localize': DateLocalize
-  }
-})
-
-addEventListener('load', function () {
-  firebaseLoaded()
-
-  firebase.auth().onAuthStateChanged(function (user) {
-    app.user = user && user.email
-  })
-})
-*/
-
 firebase.initializeApp({
   apiKey: firebaseApiKey,
   authDomain: firebaseAuthDomain,
@@ -124,7 +40,7 @@ const auth = firebase.auth()
 const database = firebase.database()
 
 const authService = new AuthService(auth)
-//PushService.init(auth, pushEndpoint)
+const pushService = new PushService(auth, pushEndpoint)
 const storedPost = new StoredPost(database.ref(postPrefix))
 
 const getDefaultValues = () => {
@@ -148,6 +64,7 @@ const CreateApp = () => {
 
   const handleReset = () => {
     resetPost(getDefaultValues())
+    Materialize.updateTextFields()
   }
 
   const post = {
@@ -161,13 +78,13 @@ const CreateApp = () => {
     storedPost.create(data.title, data.body, data.createdAt)
       .then((post: firebase.database.Reference) => {
         Materialize.toast({ html: 'The new post was successfully created.' })
-        //return PushService.publish(post.key, self.post)
+        if (post.key === null) { throw new Error('Key is not generated')}
+        return pushService.publish(post.key, data)
       })
-      /*.then(function () {
-        self.busy = false
-        e.target.reset()
-        Materialize.toast('The new post was successfully published.')
-      })*/
+      .then(function () {
+        handleReset()
+        Materialize.toast({html: 'The new post was successfully published.'})
+      })
       .catch(function (err: Error) {
         console.error(err)
         Materialize.toast({ html: err.message })
