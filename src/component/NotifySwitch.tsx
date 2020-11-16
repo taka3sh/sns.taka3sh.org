@@ -1,9 +1,9 @@
 import React from 'react'
 
 export interface Props {
-  busy: boolean
-  enabled: boolean
-  handleNotifyToggle: () => void
+  readonly busy: boolean
+  readonly enabled: boolean
+  readonly handleNotifyToggle: () => void
 }
 
 export const NotifySwitch = ({ busy, enabled, handleNotifyToggle }: Props) => (

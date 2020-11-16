@@ -4,8 +4,8 @@ import dayjs from 'dayjs'
 import { Post } from './component/PostTypes'
 
 export class PushService {
-  auth: firebase.auth.Auth
-  endpoint: string
+  readonly auth: firebase.auth.Auth
+  readonly endpoint: string
 
   constructor(auth: firebase.auth.Auth, endpoint: string) {
     this.auth = auth

@@ -7,8 +7,8 @@ const setEnabled = () => { localStorage.setItem(NOTIFYSERVICE_ENABLED, 'true') }
 const unsetEnabled = () => { localStorage.removeItem(NOTIFYSERVICE_ENABLED) }
 
 export class NotifyService {
-  messaging: FirebaseMessaging
-  endpoint: string
+  readonly messaging: FirebaseMessaging
+  readonly endpoint: string
 
   constructor(messaging: any, endpoint: string) {
     this.messaging = messaging

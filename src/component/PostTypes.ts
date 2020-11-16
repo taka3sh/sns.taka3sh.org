@@ -1,6 +1,6 @@
 export interface Post {
-  key: string
-  title: string
-  body: string
-  createdAt: string
+  readonly key: string
+  readonly title: string
+  readonly body: string
+  readonly createdAt: string
 }

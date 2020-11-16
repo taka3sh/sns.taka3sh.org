@@ -3,7 +3,7 @@ import firebase from 'firebase/app'
 const AUTHSERVICE_USER = 'AuthService:user'
 
 export class AuthService {
-  auth: firebase.auth.Auth
+  readonly auth: firebase.auth.Auth
 
   constructor(auth: firebase.auth.Auth) {
     this.auth = auth

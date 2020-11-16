@@ -3,8 +3,8 @@ import { UseFormMethods } from "react-hook-form";
 import Modal from 'react-modal'
 
 export interface Props extends Pick<UseFormMethods, 'register'> {
-  isOpen: boolean
-  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void
+  readonly isOpen: boolean
+  readonly handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void
 }
 
 export const LoginForm = ({isOpen, handleSubmit, register}: Props) => {

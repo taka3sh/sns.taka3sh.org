@@ -3,7 +3,7 @@ import React from 'react'
 import { Post } from './PostTypes'
 
 export interface Props {
-  posts: Post[]
+  readonly posts: Post[]
 }
 
 export const PostCards = ({ posts }: Props) => {
