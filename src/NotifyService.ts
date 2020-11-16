@@ -1,4 +1,4 @@
-import { FirebaseMessaging } from '@firebase/messaging-types'
+import firebase from 'firebase/app'
 
 const NOTIFYSERVICE_ENABLED = 'NotifyService:enabled'
 
@@ -7,7 +7,7 @@ const setEnabled = () => { localStorage.setItem(NOTIFYSERVICE_ENABLED, 'true') }
 const unsetEnabled = () => { localStorage.removeItem(NOTIFYSERVICE_ENABLED) }
 
 export class NotifyService {
-  readonly messaging: FirebaseMessaging
+  readonly messaging: firebase.messaging.Messaging
   readonly endpoint: string
 
   constructor(messaging: any, endpoint: string) {
