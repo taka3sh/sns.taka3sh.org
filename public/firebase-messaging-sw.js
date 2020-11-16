@@ -3,8 +3,8 @@ window.addEventListener('push', (e) => {
   e.waitUntil(
     window.registration.showNotification(data.notification.title, {
       body: data.notification.body,
-      icon: '/icon.png',
       data: data.data,
+      icon: '/icon.png',
     })
   )
 })
@@ -14,8 +14,8 @@ window.addEventListener('notificationclick', (e) => {
   e.waitUntil(
     window.clients
       .matchAll({
-        type: 'window',
         includeUncontrolled: true,
+        type: 'window',
       })
       .then((clientList) => {
         clientList.array.forEach(() => window.client.focus())

@@ -21,10 +21,10 @@ import NotifyService from './NotifyService'
 
 firebase.initializeApp({
   apiKey: firebaseApiKey,
-  databaseURL: firebaseDatabaseURL,
-  projectId: firebaseProjectId,
-  messagingSenderId: firebaseMessagingSenderId,
   appId: firebaseAppId,
+  databaseURL: firebaseDatabaseURL,
+  messagingSenderId: firebaseMessagingSenderId,
+  projectId: firebaseProjectId,
 })
 
 const database = firebase.database()

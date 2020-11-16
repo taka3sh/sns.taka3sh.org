@@ -50,8 +50,8 @@ export const PostFormCard: React.FC<Props> = ({
             name="createdAt"
             type="text"
             ref={register({
-              required: true,
               pattern: /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/,
+              required: true,
             })}
           />
           Created at

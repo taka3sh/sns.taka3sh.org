@@ -43,6 +43,15 @@
                     ".tsx"
                 ]
             }
+        ],
+        "sort-keys": [
+            "error",
+            "asc",
+            {
+                "caseSensitive": true,
+                "natural": false,
+                "minKeys": 2
+            }
         ]
     },
     "settings": {

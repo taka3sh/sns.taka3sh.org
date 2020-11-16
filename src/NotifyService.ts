@@ -56,8 +56,8 @@ export default class {
         const body = new FormData()
         body.append('token', currentToken)
         return fetch(this.endpoint, {
-          method: 'POST',
           body,
+          method: 'POST',
         })
       })
       .then((response) => {

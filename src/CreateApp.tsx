@@ -45,8 +45,8 @@ const storedPost = new StoredPost(database.ref(postPrefix))
 
 const getDefaultValues = () => ({
   body: '',
-  title: '',
   createdAt: dayjs().format('YYYY-MM-DDTHH:mm'),
+  title: '',
 })
 
 const CreateApp: React.FC<unknown> = () => {
@@ -67,9 +67,9 @@ const CreateApp: React.FC<unknown> = () => {
 
   const post: PostWithKey = {
     body: watchPost('body'),
-    title: watchPost('title'),
     createdAt: watchPost('createdAt'),
     key: '',
+    title: watchPost('title'),
   }
 
   const handleCreate = (data: Post) => {

@@ -14,9 +14,9 @@ export default class {
     createdAt: string
   ): firebase.database.ThenableReference {
     return this.ref.push({
-      title,
       body,
       createdAt: dayjs(createdAt).toISOString(),
+      title,
     })
   }
 }

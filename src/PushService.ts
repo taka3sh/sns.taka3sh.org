@@ -28,9 +28,9 @@ export default class {
       data.append('idToken', idToken)
 
       return fetch(endpoint, {
+        body: data,
         method: 'POST',
         mode: 'cors',
-        body: data,
       }).then((response) => {
         if (!response.ok) throw new Error('Failed to publish')
       })
