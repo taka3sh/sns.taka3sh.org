@@ -13,6 +13,7 @@ import {
 } from './constants/development'
 
 import PostCards, { Props as PostCardsProps } from './component/PostCards'
+import { NotifySwitch } from './component/NotifySwitch'
 
 import NotifyService from './service/NotifyService'
 
@@ -48,6 +49,29 @@ const IndexApp = () => {
     })
   }, [])
 
+  const [busy, setBusy] = useState(false)
+  const [enabled, setEnabled] = useState(false)
+
+  const handleNotifyToggle = (event: React.MouseEvent<HTMLInputElement>) => {
+    if (!NotifyService.isSupported()) return
+  
+    if (enabled) {
+      NotifyService.unsubscribe()
+      setEnabled(false)
+    } else {
+      setBusy(true)
+      NotifyService.subscribe()
+        .then(() => {
+          setBusy(false)
+          setEnabled(true)
+        })
+        .catch((error: Error) =>{
+          setBusy(false)
+          console.error(error)
+        })
+    }
+  }
+
   return (
     <div className="grey lighten-3">
       <nav className="pink darken-1">
@@ -57,14 +81,13 @@ const IndexApp = () => {
       </nav>
 
       <div className="container" id="app">
-        <div className="col s12">
-        </div>
-
-        <PostCards posts={posts}></PostCards>
-
         <section className="col s12">
           <div>こちらは、たかさん支援隊からの連絡などを配信するサイトです。</div>
         </section>
+
+        <NotifySwitch busy={busy} enabled={enabled} handleNotifyToggle={handleNotifyToggle} />
+
+        <PostCards posts={posts}></PostCards>
       </div>
 
       <footer className="page-footer grey darken-3 white-text">
