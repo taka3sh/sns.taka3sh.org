@@ -12,6 +12,7 @@ import Materialize from 'materialize-css'
 import 'materialize-css/dist/css/materialize.min.css'
 
 import { StoredPost } from './StoredPost'
+import { AuthService } from './AuthService'
 
 /*
 import StoredPost from './model/StoredPost'
@@ -19,10 +20,10 @@ import PushService from './service/PushService'
 import AuthService from './service/AuthService'
 */
 
-//import LoginForm from './component/LoginForm.vue'
 import { Post } from './component/PostTypes'
 import { PostCards } from './component/PostCards'
 import { PostFormCard } from './component/PostFormCard'
+import { LoginForm } from './component/LoginForm'
 
 import {
   firebaseApiKey,
@@ -122,7 +123,7 @@ firebase.initializeApp({
 const auth = firebase.auth()
 const database = firebase.database()
 
-//AuthService.init(auth)
+const authService = new AuthService(auth)
 //PushService.init(auth, pushEndpoint)
 const storedPost = new StoredPost(database.ref(postPrefix))
 
@@ -135,18 +136,24 @@ const getDefaultValues = () => {
 }
 
 const CreateApp = () => {
-  const { register, handleSubmit, watch, errors, reset } = useForm<Post>({
+  const {
+    register: registerPost,
+    handleSubmit: handleSubmitPost,
+    watch: watchPost,
+    errors: errorsPost,
+    reset: resetPost
+  } = useForm<Post>({
     defaultValues: getDefaultValues()
   })
 
   const handleReset = () => {
-    reset(getDefaultValues())
+    resetPost(getDefaultValues())
   }
 
   const post = {
-    body: watch('body'),
-    title: watch('title'),
-    createdAt: watch('createdAt'),
+    body: watchPost('body'),
+    title: watchPost('title'),
+    createdAt: watchPost('createdAt'),
     key: ''
   }
 
@@ -167,6 +174,29 @@ const CreateApp = () => {
       })
   }
 
+  const {
+    register: registerLogin,
+    handleSubmit: handleSubmitLogin,
+    watch: watchLogin
+  } = useForm<{email: string, password: string}>()
+
+  const [user, setUser] = useState(authService.getUser())
+
+  const handleLogin = () => {
+    authService.login(watchLogin('email'), watchLogin('password'))
+      .then(setUser)
+      .catch(function (err: Error) {
+        console.error(err)
+        Materialize.toast({html: err.message})
+      })
+  }
+
+  const handleLogout = () => {
+    authService.logout().then(() => {
+      setUser(null)
+    })
+  }
+
   return (
     <div className="grey lighten-3">
       <nav className="pink darken-1">
@@ -177,18 +207,20 @@ const CreateApp = () => {
 
       <div className="container" id="app">
         <PostFormCard
-          errors={errors}
+          errors={errorsPost}
           heading="Creating a new post"
-          register={register}
-          handleSubmit={handleSubmit(data => { handleCreate(data) })}
+          register={registerPost}
+          handleSubmit={handleSubmitPost(data => { handleCreate(data) })}
         >
           <button className="btn" type="submit">Submit</button>
           <button className="btn-flat" onClick={handleReset}>Reset</button>
-          <button className="btn-flat">Logout</button>
+          <button className="btn-flat" onClick={handleLogout}>Logout</button>
         </PostFormCard>
 
         <PostCards posts={[post]}></PostCards>
       </div>
+
+      <LoginForm isOpen={user === null} handleSubmit={handleSubmitLogin(handleLogin)} register={registerLogin}/>
 
       <footer className="page-footer grey darken-3 white-text">
         <div className="container">
