@@ -44,6 +44,7 @@
     ]
   },
   "devDependencies": {
+    "@types/materialize-css": "^1.0.8",
     "materialize-css": "^1.0.0",
     "react-app-rewire-multiple-entry": "^2.2.1",
     "react-app-rewired": "^2.1.6"

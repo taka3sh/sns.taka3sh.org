@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
+import firebase from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/database'
+import 'firebase/messaging'
+
 import dayjs from 'dayjs'
 
-import 'materialize-css'
+import Materialize from 'materialize-css'
 import 'materialize-css/dist/css/materialize.min.css'
+
+import { StoredPost } from './StoredPost'
 
 /*
 import StoredPost from './model/StoredPost'
@@ -16,8 +23,6 @@ import AuthService from './service/AuthService'
 import { Post } from './component/PostTypes'
 import { PostCards } from './component/PostCards'
 import { PostFormCard } from './component/PostFormCard'
-//import PostFormCard from './component/PostFormCard.vue'
-//import DateLocalize from '../common/filter/DateLocalize'
 
 import {
   firebaseApiKey,
@@ -33,19 +38,6 @@ import {
 }
 
 function firebaseLoaded () {
-  firebase.initializeApp({
-    apiKey: firebaseApiKey,
-    authDomain: firebaseAuthDomain,
-    databaseURL: firebaseDatabaseURL,
-    messagingSenderId: firebaseMessagingSenderId
-  })
-
-  var auth = firebase.auth()
-  var database = firebase.database()
-
-  AuthService.init(auth)
-  PushService.init(auth, pushEndpoint)
-  StoredPost.init(database.ref(postPrefix))
 }
 
 function onCreate (e) {
@@ -67,11 +59,6 @@ function onCreate (e) {
       console.error(err)
       Materialize.toast(err.message)
     })
-}
-
-function onReset (e) {
-  this.post.title = this.post.body = ''
-  this.post.createdAt = moment().format('YYYY-MM-DDTHH:mm')
 }
 
 function onLogin (email, password) {
@@ -125,6 +112,20 @@ addEventListener('load', function () {
 })
 */
 
+firebase.initializeApp({
+  apiKey: firebaseApiKey,
+  authDomain: firebaseAuthDomain,
+  databaseURL: firebaseDatabaseURL,
+  messagingSenderId: firebaseMessagingSenderId
+})
+
+const auth = firebase.auth()
+const database = firebase.database()
+
+//AuthService.init(auth)
+//PushService.init(auth, pushEndpoint)
+const storedPost = new StoredPost(database.ref(postPrefix))
+
 const getDefaultValues = () => {
   return {
     body: '',
@@ -149,6 +150,23 @@ const CreateApp = () => {
     key: ''
   }
 
+  const handleCreate = (data: Pick<Post, 'title' | 'body' | 'createdAt'>) => {
+    storedPost.create(data.title, data.body, data.createdAt)
+      .then((post: firebase.database.Reference) => {
+        Materialize.toast({ html: 'The new post was successfully created.' })
+        //return PushService.publish(post.key, self.post)
+      })
+      /*.then(function () {
+        self.busy = false
+        e.target.reset()
+        Materialize.toast('The new post was successfully published.')
+      })*/
+      .catch(function (err: Error) {
+        console.error(err)
+        Materialize.toast({ html: err.message })
+      })
+  }
+
   return (
     <div className="grey lighten-3">
       <nav className="pink darken-1">
@@ -162,7 +180,7 @@ const CreateApp = () => {
           errors={errors}
           heading="Creating a new post"
           register={register}
-          handleSubmit={handleSubmit(data => {console.log(data)})}
+          handleSubmit={handleSubmit(data => { handleCreate(data) })}
         >
           <button className="btn" type="submit">Submit</button>
           <button className="btn-flat" onClick={handleReset}>Reset</button>
