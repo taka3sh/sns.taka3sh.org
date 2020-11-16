@@ -23,28 +23,24 @@ export const LoginForm: React.FC<Props> = ({
           <h4>Login</h4>
           <div className="row">
             <div className="input-field col s12">
-              <label htmlFor="email">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  ref={register({ required: true })}
-                />
-                Email
-              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                ref={register({ required: true })}
+              />
+              <label htmlFor="email">Email</label>
             </div>
           </div>
           <div className="row">
             <div className="input-field col s12">
-              <label htmlFor="password">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  ref={register({ required: true })}
-                />
-                Password
-              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                ref={register({ required: true })}
+              />
+              <label htmlFor="password">Password</label>
             </div>
           </div>
         </div>

@@ -22,38 +22,34 @@ export const PostFormCard: React.FC<Props> = ({
     <div className="card-title white-text pink lighten-1">{heading}</div>
     <div className="card-content">
       <div className="input-field">
-        <label htmlFor="title">
-          <input
-            id="title"
-            name="title"
-            type="text"
-            ref={register({ required: true })}
-          />
-          Title
-        </label>
+        <input
+          id="title"
+          name="title"
+          type="text"
+          ref={register({ required: true })}
+        />
+        <label htmlFor="title">Title</label>
       </div>
       <div className="input-field">
-        <label htmlFor="body">
-          <textarea
-            id="body"
-            name="body"
-            className="materialize-textarea"
-            ref={register({ required: true })}
-          />
-          Body
-        </label>
+        <textarea
+          id="body"
+          name="body"
+          className="materialize-textarea"
+          ref={register({ required: true })}
+        />
+        <label htmlFor="body">Body</label>
       </div>
       <div className="input-field">
+        <input
+          id="createdAt"
+          name="createdAt"
+          type="text"
+          ref={register({
+            pattern: /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/,
+            required: true,
+          })}
+        />
         <label htmlFor="createdAt" className="active">
-          <input
-            id="createdAt"
-            name="createdAt"
-            type="text"
-            ref={register({
-              pattern: /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/,
-              required: true,
-            })}
-          />
           Created at
         </label>
         {errors.createdAt && <span>Invalid date</span>}
