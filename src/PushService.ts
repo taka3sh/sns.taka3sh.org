@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 
 import { Post } from './PostTypes';
 
-export class PushService {
+export default class {
   readonly auth: firebase.auth.Auth
 
   readonly endpoint: string

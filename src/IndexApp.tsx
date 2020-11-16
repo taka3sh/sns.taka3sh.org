@@ -17,7 +17,7 @@ import {
 import { PostCards, Props as PostCardsProps } from './component/PostCards';
 import { NotifySwitch } from './component/NotifySwitch';
 
-import { NotifyService } from './NotifyService';
+import NotifyService from './NotifyService';
 
 firebase.initializeApp({
   apiKey: firebaseApiKey,
@@ -32,8 +32,8 @@ const messaging = firebase.messaging();
 
 const notifyService = new NotifyService(messaging, notifyEndpoint);
 
-if (notifyService.isSupported()) {
-  notifyService.getEnabled().then((value) => {
+if (NotifyService.isSupported()) {
+  NotifyService.getEnabled().then((value) => {
     if (value) {
       messaging.getToken();
     }
@@ -54,10 +54,10 @@ const IndexApp = () => {
   const [busy, setBusy] = useState(false);
   const [enabled, setEnabled] = useState(false);
 
-  notifyService.getEnabled().then(setEnabled);
+  NotifyService.getEnabled().then(setEnabled);
 
   const handleNotifyToggle = () => {
-    if (!notifyService.isSupported()) return;
+    if (!NotifyService.isSupported()) return;
 
     if (enabled) {
       notifyService.unsubscribe();
@@ -69,9 +69,8 @@ const IndexApp = () => {
           setBusy(false);
           setEnabled(true);
         })
-        .catch((error: Error) => {
+        .catch(() => {
           setBusy(false);
-          console.error(error);
         });
     }
   };

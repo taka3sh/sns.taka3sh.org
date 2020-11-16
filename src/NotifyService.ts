@@ -6,7 +6,15 @@ const getEnabled = () => localStorage.getItem(NOTIFYSERVICE_ENABLED) === 'true';
 const setEnabled = () => { localStorage.setItem(NOTIFYSERVICE_ENABLED, 'true'); };
 const unsetEnabled = () => { localStorage.removeItem(NOTIFYSERVICE_ENABLED); };
 
-export class NotifyService {
+const showGreeting = () => {
+  navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope')
+    .then((swReg) => swReg?.showNotification('通知設定が完了しました', {
+      body: '新しい投稿がある時、このアイコンの通知が配信されます。',
+      icon: '/icon192.png',
+    }));
+};
+
+export default class {
   readonly messaging: firebase.messaging.Messaging
 
   readonly endpoint: string
@@ -16,11 +24,11 @@ export class NotifyService {
     this.endpoint = endpoint;
   }
 
-  isSupported(): boolean {
+  static isSupported(): boolean {
     return 'Notification' in window && 'serviceWorker' in navigator;
   }
 
-  getEnabled(): Promise<boolean> {
+  static getEnabled(): Promise<boolean> {
     return navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope')
       .then((swReg) => {
         const tokenSent = getEnabled();
@@ -46,7 +54,7 @@ export class NotifyService {
       .then((response) => {
         if (!response.ok) throw new Error(response.statusText);
         setEnabled();
-        return this.showGreeting();
+        return showGreeting();
       });
   }
 
@@ -54,13 +62,5 @@ export class NotifyService {
     return this.messaging.getToken()
       .then((currentToken) => this.messaging.deleteToken(currentToken))
       .then(() => { unsetEnabled(); });
-  }
-
-  showGreeting() {
-    navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope')
-      .then((swReg) => swReg?.showNotification('通知設定が完了しました', {
-        body: '新しい投稿がある時、このアイコンの通知が配信されます。',
-        icon: '/icon192.png',
-      }));
   }
 }

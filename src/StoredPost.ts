@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import firebase from 'firebase/app';
 
-export class StoredPost {
+export default class {
   readonly ref: firebase.database.Reference
 
   constructor(ref: firebase.database.Reference) {

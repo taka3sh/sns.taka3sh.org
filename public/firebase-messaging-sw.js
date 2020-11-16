@@ -1,9 +1,7 @@
-/* global addEventListener clients registration */
-
-addEventListener('push', (e) => {
+window.addEventListener('push', (e) => {
   const data = e.data.json();
   e.waitUntil(
-    registration.showNotification(data.notification.title, {
+    window.registration.showNotification(data.notification.title, {
       body: data.notification.body,
       icon: '/icon.png',
       data: data.data,
@@ -11,19 +9,16 @@ addEventListener('push', (e) => {
   );
 });
 
-addEventListener('notificationclick', (e) => {
-  console.log(e);
+window.addEventListener('notificationclick', (e) => {
   e.notification.close();
   e.waitUntil(
-    clients.matchAll({
+    window.clients.matchAll({
       type: 'window',
       includeUncontrolled: true,
     })
       .then((clientList) => {
-        for (const client of clientList) {
-          return client.focus();
-        }
-        return clients.openWindow(`/#${e.notification.data.key}`);
+        clientList.array.forEach(() => window.client.focus());
+        return window.clients.openWindow(`/#${e.notification.data.key}`);
       }),
   );
 });

@@ -14,6 +14,7 @@ export const PostCards = ({ posts }: Props) => (
             <div className="card-title white-text pink lighten-1">{post.title}</div>
             <div className="card-content">
               {
+                // eslint-disable-next-line react/no-array-index-key
                 post.body.split('\n').map((line, index) => <p key={index}>{line}</p>)
               }
               <p>{post.createdAt}</p>

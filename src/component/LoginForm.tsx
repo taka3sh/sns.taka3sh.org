@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 
 export interface Props extends Pick<UseFormMethods<{email: string, password: string}>, 'register'> {
   readonly isOpen: boolean
-  readonly handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void
+  readonly handleSubmit: () => void
 }
 
 export const LoginForm = ({ isOpen, handleSubmit, register }: Props) => (
@@ -15,14 +15,18 @@ export const LoginForm = ({ isOpen, handleSubmit, register }: Props) => (
           <h4>Login</h4>
           <div className="row">
             <div className="input-field col s12">
-              <input id="email" name="email" type="email" ref={register({ required: true })} />
-              <label htmlFor="email">Email</label>
+              <label htmlFor="email">
+                <input id="email" name="email" type="email" ref={register({ required: true })} />
+                Email
+              </label>
             </div>
           </div>
           <div className="row">
             <div className="input-field col s12">
-              <input id="password" name="password" type="password" ref={register({ required: true })} />
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">
+                <input id="password" name="password" type="password" ref={register({ required: true })} />
+                Password
+              </label>
             </div>
           </div>
         </div>

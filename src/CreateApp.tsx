@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import firebase from 'firebase/app';
@@ -11,9 +11,9 @@ import dayjs from 'dayjs';
 import Materialize from 'materialize-css';
 import 'materialize-css/dist/css/materialize.min.css';
 
-import { StoredPost } from './StoredPost';
-import { AuthService } from './AuthService';
-import { PushService } from './PushService';
+import StoredPost from './StoredPost';
+import AuthService from './AuthService';
+import PushService from './PushService';
 
 import { Post, PostWithKey } from './PostTypes';
 import { PostCards } from './component/PostCards';
@@ -74,17 +74,16 @@ const CreateApp = () => {
 
   const handleCreate = (data: Post) => {
     storedPost.create(data.title, data.body, data.createdAt)
-      .then((post: firebase.database.Reference) => {
+      .then((postRef: firebase.database.Reference) => {
         Materialize.toast({ html: 'The new post was successfully created.' });
-        if (post.key === null) { throw new Error('Key is not generated'); }
-        return pushService.publish(post.key, data);
+        if (postRef.key === null) { throw new Error('Key is not generated'); }
+        return pushService.publish(postRef.key, data);
       })
       .then(() => {
         handleReset();
         Materialize.toast({ html: 'The new post was successfully published.' });
       })
       .catch((err: Error) => {
-        console.error(err);
         Materialize.toast({ html: err.message });
       });
   };
@@ -95,13 +94,12 @@ const CreateApp = () => {
     watch: watchLogin,
   } = useForm<{email: string, password: string}>();
 
-  const [user, setUser] = useState(authService.getUser());
+  const [user, setUser] = useState(AuthService.getUser());
 
   const handleLogin = () => {
     authService.login(watchLogin('email'), watchLogin('password'))
       .then(setUser)
       .catch((err: Error) => {
-        console.error(err);
         Materialize.toast({ html: err.message });
       });
   };
@@ -128,14 +126,18 @@ const CreateApp = () => {
           handleSubmit={handleSubmitPost((data) => { handleCreate(data); })}
         >
           <button className="btn" type="submit">Submit</button>
-          <button className="btn-flat" onClick={handleReset}>Reset</button>
-          <button className="btn-flat" onClick={handleLogout}>Logout</button>
+          <button className="btn-flat" type="button" onClick={handleReset}>Reset</button>
+          <button className="btn-flat" type="button" onClick={handleLogout}>Logout</button>
         </PostFormCard>
 
         <PostCards posts={[post]} />
       </div>
 
-      <LoginForm isOpen={user === false} handleSubmit={handleSubmitLogin(handleLogin)} register={registerLogin} />
+      <LoginForm
+        isOpen={user === false}
+        handleSubmit={handleSubmitLogin(handleLogin)}
+        register={registerLogin}
+      />
 
       <footer className="page-footer grey darken-3 white-text">
         <div className="container">

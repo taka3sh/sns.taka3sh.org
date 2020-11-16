@@ -2,14 +2,14 @@ import firebase from 'firebase/app';
 
 const AUTHSERVICE_USER = 'AuthService:user';
 
-export class AuthService {
+export default class {
   readonly auth: firebase.auth.Auth
 
   constructor(auth: firebase.auth.Auth) {
     this.auth = auth;
   }
 
-  getUser(): boolean {
+  static getUser(): boolean {
     return localStorage.getItem(AUTHSERVICE_USER) === 'loggedIn';
   }
 
