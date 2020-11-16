@@ -1,9 +1,12 @@
-import React from 'react';
-import { UseFormMethods } from 'react-hook-form';
+import React from 'react'
+import { UseFormMethods } from 'react-hook-form'
 
-import { Post } from '../PostTypes';
+import { Post } from '../PostTypes'
 
-export interface Props extends React.PropsWithChildren<Pick<UseFormMethods<Post>, 'register' | 'errors' >> {
+export interface Props
+  extends React.PropsWithChildren<
+    Pick<UseFormMethods<Post>, 'register' | 'errors'>
+  > {
   readonly heading: string
   readonly handleSubmit: () => void
 }
@@ -20,26 +23,42 @@ export const PostFormCard: React.FC<Props> = ({
     <div className="card-content">
       <div className="input-field">
         <label htmlFor="title">
-          <input id="title" name="title" type="text" ref={register({ required: true })} />
+          <input
+            id="title"
+            name="title"
+            type="text"
+            ref={register({ required: true })}
+          />
           Title
         </label>
       </div>
       <div className="input-field">
         <label htmlFor="body">
-          <textarea id="body" name="body" className="materialize-textarea" ref={register({ required: true })} />
+          <textarea
+            id="body"
+            name="body"
+            className="materialize-textarea"
+            ref={register({ required: true })}
+          />
           Body
         </label>
       </div>
       <div className="input-field">
         <label htmlFor="createdAt" className="active">
-          <input id="createdAt" name="createdAt" type="text" ref={register({ required: true, pattern: /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/ })} />
+          <input
+            id="createdAt"
+            name="createdAt"
+            type="text"
+            ref={register({
+              required: true,
+              pattern: /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/,
+            })}
+          />
           Created at
         </label>
         {errors.createdAt && <span>Invalid date</span>}
       </div>
     </div>
-    <div className="card-action">
-      {children}
-    </div>
+    <div className="card-action">{children}</div>
   </form>
-);
+)

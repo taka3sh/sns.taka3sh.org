@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
 
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/database';
-import 'firebase/messaging';
+import firebase from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/database'
+import 'firebase/messaging'
 
-import dayjs from 'dayjs';
+import dayjs from 'dayjs'
 
-import Materialize from 'materialize-css';
-import 'materialize-css/dist/css/materialize.min.css';
+import Materialize from 'materialize-css'
+import 'materialize-css/dist/css/materialize.min.css'
 
-import StoredPost from './StoredPost';
-import AuthService from './AuthService';
-import PushService from './PushService';
+import StoredPost from './StoredPost'
+import AuthService from './AuthService'
+import PushService from './PushService'
 
-import { Post, PostWithKey } from './PostTypes';
-import { PostCards } from './component/PostCards';
-import { PostFormCard } from './component/PostFormCard';
-import { LoginForm } from './component/LoginForm';
+import { Post, PostWithKey } from './PostTypes'
+import { PostCards } from './component/PostCards'
+import { PostFormCard } from './component/PostFormCard'
+import { LoginForm } from './component/LoginForm'
 
 import {
   firebaseApiKey,
@@ -27,27 +27,27 @@ import {
   firebaseMessagingSenderId,
   pushEndpoint,
   postPrefix,
-} from './constants/development';
+} from './constants/development'
 
 firebase.initializeApp({
   apiKey: firebaseApiKey,
   authDomain: firebaseAuthDomain,
   databaseURL: firebaseDatabaseURL,
   messagingSenderId: firebaseMessagingSenderId,
-});
+})
 
-const auth = firebase.auth();
-const database = firebase.database();
+const auth = firebase.auth()
+const database = firebase.database()
 
-const authService = new AuthService(auth);
-const pushService = new PushService(auth, pushEndpoint);
-const storedPost = new StoredPost(database.ref(postPrefix));
+const authService = new AuthService(auth)
+const pushService = new PushService(auth, pushEndpoint)
+const storedPost = new StoredPost(database.ref(postPrefix))
 
 const getDefaultValues = () => ({
   body: '',
   title: '',
   createdAt: dayjs().format('YYYY-MM-DDTHH:mm'),
-});
+})
 
 const CreateApp: React.FC<unknown> = () => {
   const {
@@ -58,57 +58,61 @@ const CreateApp: React.FC<unknown> = () => {
     reset: resetPost,
   } = useForm<Post>({
     defaultValues: getDefaultValues(),
-  });
+  })
 
   const handleReset = () => {
-    resetPost(getDefaultValues());
-    Materialize.updateTextFields();
-  };
+    resetPost(getDefaultValues())
+    Materialize.updateTextFields()
+  }
 
   const post: PostWithKey = {
     body: watchPost('body'),
     title: watchPost('title'),
     createdAt: watchPost('createdAt'),
     key: '',
-  };
+  }
 
   const handleCreate = (data: Post) => {
-    storedPost.create(data.title, data.body, data.createdAt)
+    storedPost
+      .create(data.title, data.body, data.createdAt)
       .then((postRef: firebase.database.Reference) => {
-        Materialize.toast({ html: 'The new post was successfully created.' });
-        if (postRef.key === null) { throw new Error('Key is not generated'); }
-        return pushService.publish(postRef.key, data);
+        Materialize.toast({ html: 'The new post was successfully created.' })
+        if (postRef.key === null) {
+          throw new Error('Key is not generated')
+        }
+        return pushService.publish(postRef.key, data)
       })
       .then(() => {
-        handleReset();
-        Materialize.toast({ html: 'The new post was successfully published.' });
+        handleReset()
+        Materialize.toast({ html: 'The new post was successfully published.' })
       })
       .catch((err: Error) => {
-        Materialize.toast({ html: err.message });
-      });
-  };
+        Materialize.toast({ html: err.message })
+      })
+  }
 
   const {
     register: registerLogin,
     handleSubmit: handleSubmitLogin,
     watch: watchLogin,
-  } = useForm<{email: string, password: string}>();
+  } = useForm<{ email: string; password: string }>()
 
-  const [user, setUser] = useState(AuthService.getUser());
+  const [user, setUser] = useState(AuthService.getUser())
 
   const handleLogin = () => {
-    authService.login(watchLogin('email'), watchLogin('password'))
+    authService
+      .login(watchLogin('email'), watchLogin('password'))
       .then(setUser)
       .catch((err: Error) => {
-        Materialize.toast({ html: err.message });
-      });
-  };
+        Materialize.toast({ html: err.message })
+      })
+  }
 
   const handleLogout = () => {
     authService.logout().then(() => {
-      setUser(false);
-    });
-  };
+      setUser(false)
+    })
+  }
 
   return (
     <div className="grey lighten-3">
@@ -123,11 +127,19 @@ const CreateApp: React.FC<unknown> = () => {
           errors={errorsPost}
           heading="Creating a new post"
           register={registerPost}
-          handleSubmit={handleSubmitPost((data) => { handleCreate(data); })}
+          handleSubmit={handleSubmitPost((data) => {
+            handleCreate(data)
+          })}
         >
-          <button className="btn" type="submit">Submit</button>
-          <button className="btn-flat" type="button" onClick={handleReset}>Reset</button>
-          <button className="btn-flat" type="button" onClick={handleLogout}>Logout</button>
+          <button className="btn" type="submit">
+            Submit
+          </button>
+          <button className="btn-flat" type="button" onClick={handleReset}>
+            Reset
+          </button>
+          <button className="btn-flat" type="button" onClick={handleLogout}>
+            Logout
+          </button>
         </PostFormCard>
 
         <PostCards posts={[post]} />
@@ -145,12 +157,11 @@ const CreateApp: React.FC<unknown> = () => {
           <div>
             Developed by
             <a href="https://github.com/umireon">umireon</a>
-            .
           </div>
         </div>
       </footer>
     </div>
-  );
-};
+  )
+}
 
-export default CreateApp;
+export default CreateApp

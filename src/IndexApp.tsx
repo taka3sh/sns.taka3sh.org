@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import firebase from 'firebase/app';
-import 'firebase/messaging';
-import 'firebase/database';
-import 'materialize-css/dist/css/materialize.min.css';
+import React, { useState, useEffect } from 'react'
+import firebase from 'firebase/app'
+import 'firebase/messaging'
+import 'firebase/database'
+import 'materialize-css/dist/css/materialize.min.css'
 
 import {
   firebaseProjectId,
@@ -12,12 +12,12 @@ import {
   firebaseAppId,
   notifyEndpoint,
   postPrefix,
-} from './constants/development';
+} from './constants/development'
 
-import { PostCards, Props as PostCardsProps } from './component/PostCards';
-import { NotifySwitch } from './component/NotifySwitch';
+import { PostCards, Props as PostCardsProps } from './component/PostCards'
+import { NotifySwitch } from './component/NotifySwitch'
 
-import NotifyService from './NotifyService';
+import NotifyService from './NotifyService'
 
 firebase.initializeApp({
   apiKey: firebaseApiKey,
@@ -25,55 +25,59 @@ firebase.initializeApp({
   projectId: firebaseProjectId,
   messagingSenderId: firebaseMessagingSenderId,
   appId: firebaseAppId,
-});
+})
 
-const database = firebase.database();
-const messaging = firebase.messaging();
+const database = firebase.database()
+const messaging = firebase.messaging()
 
-const notifyService = new NotifyService(messaging, notifyEndpoint);
+const notifyService = new NotifyService(messaging, notifyEndpoint)
 
 if (NotifyService.isSupported()) {
   NotifyService.getEnabled().then((value) => {
     if (value) {
-      messaging.getToken();
+      messaging.getToken()
     }
-  });
+  })
 }
 
 const IndexApp: React.FC<unknown> = () => {
-  const [posts, setPosts] = useState<PostCardsProps['posts']>([]);
+  const [posts, setPosts] = useState<PostCardsProps['posts']>([])
 
   useEffect(() => {
     database.ref(postPrefix).once('value', (snapshot) => {
       snapshot.forEach((childSnapshot) => {
-        setPosts((prevPosts) => [{ ...childSnapshot.val(), key: childSnapshot.key }, ...prevPosts]);
-      });
-    });
-  }, []);
+        setPosts((prevPosts) => [
+          { ...childSnapshot.val(), key: childSnapshot.key },
+          ...prevPosts,
+        ])
+      })
+    })
+  }, [])
 
-  const [busy, setBusy] = useState(false);
-  const [enabled, setEnabled] = useState(false);
+  const [busy, setBusy] = useState(false)
+  const [enabled, setEnabled] = useState(false)
 
-  NotifyService.getEnabled().then(setEnabled);
+  NotifyService.getEnabled().then(setEnabled)
 
   const handleNotifyToggle = () => {
-    if (!NotifyService.isSupported()) return;
+    if (!NotifyService.isSupported()) return
 
     if (enabled) {
-      notifyService.unsubscribe();
-      setEnabled(false);
+      notifyService.unsubscribe()
+      setEnabled(false)
     } else {
-      setBusy(true);
-      notifyService.subscribe()
+      setBusy(true)
+      notifyService
+        .subscribe()
         .then(() => {
-          setBusy(false);
-          setEnabled(true);
+          setBusy(false)
+          setEnabled(true)
         })
         .catch(() => {
-          setBusy(false);
-        });
+          setBusy(false)
+        })
     }
-  };
+  }
 
   return (
     <div className="grey lighten-3">
@@ -85,10 +89,16 @@ const IndexApp: React.FC<unknown> = () => {
 
       <div className="container" id="app">
         <section className="col s12">
-          <div>こちらは、たかさん支援隊からの連絡などを配信するサイトです。</div>
+          <div>
+            こちらは、たかさん支援隊からの連絡などを配信するサイトです。
+          </div>
         </section>
 
-        <NotifySwitch busy={busy} enabled={enabled} handleNotifyToggle={handleNotifyToggle} />
+        <NotifySwitch
+          busy={busy}
+          enabled={enabled}
+          handleNotifyToggle={handleNotifyToggle}
+        />
 
         <PostCards posts={posts} />
       </div>
@@ -99,12 +109,11 @@ const IndexApp: React.FC<unknown> = () => {
           <div>
             Developed by
             <a href="https://github.com/umireon">umireon</a>
-            .
           </div>
         </div>
       </footer>
     </div>
-  );
-};
+  )
+}
 
-export default IndexApp;
+export default IndexApp

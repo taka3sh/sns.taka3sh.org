@@ -1,18 +1,22 @@
-import dayjs from 'dayjs';
-import firebase from 'firebase/app';
+import dayjs from 'dayjs'
+import firebase from 'firebase/app'
 
 export default class {
   readonly ref: firebase.database.Reference
 
   constructor(ref: firebase.database.Reference) {
-    this.ref = ref;
+    this.ref = ref
   }
 
-  create(title: string, body: string, createdAt: string): firebase.database.ThenableReference {
+  create(
+    title: string,
+    body: string,
+    createdAt: string
+  ): firebase.database.ThenableReference {
     return this.ref.push({
       title,
       body,
       createdAt: dayjs(createdAt).toISOString(),
-    });
+    })
   }
 }
