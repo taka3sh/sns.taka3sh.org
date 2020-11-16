@@ -15,7 +15,7 @@ import {
 import { PostCards, Props as PostCardsProps } from './component/PostCards'
 import { NotifySwitch } from './component/NotifySwitch'
 
-import NotifyService from './NotifyService'
+import { NotifyService } from './NotifyService'
 
 firebase.initializeApp({
   apiKey: firebaseApiKey,
@@ -28,10 +28,10 @@ firebase.initializeApp({
 const database = firebase.database()
 const messaging = firebase.messaging()
 
-NotifyService.init(messaging, notifyEndpoint)
+const notifyService = new NotifyService(messaging, notifyEndpoint)
 
-if (NotifyService.isSupported()) {
-  NotifyService.getEnabled().then(function (value) {
+if (notifyService.isSupported()) {
+  notifyService.getEnabled().then(value => {
     if (value) {
       messaging.getToken()
     }
@@ -53,14 +53,14 @@ const IndexApp = () => {
   const [enabled, setEnabled] = useState(false)
 
   const handleNotifyToggle = (event: React.MouseEvent<HTMLInputElement>) => {
-    if (!NotifyService.isSupported()) return
+    if (!notifyService.isSupported()) return
   
     if (enabled) {
-      NotifyService.unsubscribe()
+      notifyService.unsubscribe()
       setEnabled(false)
     } else {
       setBusy(true)
-      NotifyService.subscribe()
+      notifyService.subscribe()
         .then(() => {
           setBusy(false)
           setEnabled(true)
