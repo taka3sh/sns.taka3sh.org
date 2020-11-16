@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-
+import 'materialize-css'
 import 'materialize-css/dist/css/materialize.min.css'
 
 /*
@@ -10,7 +10,9 @@ import AuthService from './service/AuthService'
 */
 
 //import LoginForm from './component/LoginForm.vue'
-import { PostCards, Props as PostCardsProps } from './component/PostCards'
+import { Post } from './component/PostTypes'
+import { PostCards } from './component/PostCards'
+import { PostFormCard } from './component/PostFormCard'
 //import PostFormCard from './component/PostFormCard.vue'
 //import DateLocalize from '../common/filter/DateLocalize'
 
@@ -121,6 +123,29 @@ addEventListener('load', function () {
 */
 
 const CreateApp = () => {
+  const [post, setPost] = useState<Post>({
+    body: '',
+    title: '',
+    createdAt: '',
+    key: ''
+  })
+
+  const handleChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPost(prevPost => {
+      return {...prevPost, title: event.target.value}
+    })
+  }
+
+  const handleChangeBody = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setPost(prevPost => {
+      return {...prevPost, body: event.target.value}
+    })
+  }
+
+  const handleChangeCreatedAt = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+  }
+
   return (
     <div className="grey lighten-3">
       <nav className="pink darken-1">
@@ -130,7 +155,19 @@ const CreateApp = () => {
       </nav>
 
       <div className="container" id="app">
-        <PostCards posts={[]}></PostCards>
+        <PostFormCard
+          heading="Creating a new post"
+          post={post}
+          handleChangeTitle={handleChangeTitle}
+          handleChangeBody={handleChangeBody}
+          handleChangeCreatedAt={handleChangeCreatedAt}
+        >
+          <button className="btn" type="submit">Submit</button>
+          <button className="btn-flat" type="reset">Reset</button>
+          <button className="btn-flat">Logout</button>
+        </PostFormCard>
+
+        <PostCards posts={[post]}></PostCards>
       </div>
 
       <footer className="page-footer grey darken-3 white-text">

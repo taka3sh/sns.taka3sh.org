@@ -1,12 +1,9 @@
-import React from 'react';
+import React from 'react'
+
+import { Post } from './PostTypes'
 
 export interface Props {
-  posts: {
-    key: string
-    title: string
-    body: string
-    createdAt: string
-  }[]
+  posts: Post[]
 }
 
 export const PostCards = ({ posts }: Props) => {
