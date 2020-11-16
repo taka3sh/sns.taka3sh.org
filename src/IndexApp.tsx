@@ -44,7 +44,7 @@ const IndexApp = () => {
   useEffect(() => {
     database.ref(postPrefix).once('value', function (snapshot) {
       snapshot.forEach(function (childSnapshot) {
-        setPosts(prevPosts => [childSnapshot.val(), ...prevPosts])
+        setPosts(prevPosts => [{...childSnapshot.val(), key: childSnapshot.key}, ...prevPosts])
       })
     })
   }, [])
