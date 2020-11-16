@@ -54,7 +54,7 @@ const IndexApp = () => {
   const [busy, setBusy] = useState(false)
   const [enabled, setEnabled] = useState(false)
 
-  const handleNotifyToggle = (event: React.MouseEvent<HTMLInputElement>) => {
+  const handleNotifyToggle = () => {
     if (!notifyService.isSupported()) return
   
     if (enabled) {
