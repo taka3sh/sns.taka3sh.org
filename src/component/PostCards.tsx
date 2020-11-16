@@ -1,6 +1,12 @@
 import React from 'react'
 
+import dayjs from 'dayjs'
+
+import 'dayjs/locale/ja'
+
 import { PostWithKey } from '../PostTypes'
+
+dayjs.locale('ja')
 
 export interface Props {
   readonly posts: PostWithKey[]
@@ -16,7 +22,7 @@ export const PostCards: React.FC<Props> = ({ posts }: Props) => (
             // eslint-disable-next-line react/no-array-index-key
             <p key={index}>{line}</p>
           ))}
-          <p>{post.createdAt}</p>
+          <p>{dayjs(post.createdAt).format('YYYY年MM月DD日 dddd HH:mm:ss')}</p>
         </div>
       </div>
     ))}

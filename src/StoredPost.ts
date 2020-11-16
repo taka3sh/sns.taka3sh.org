@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import firebase from 'firebase/app'
 
 export default class {
@@ -15,7 +14,7 @@ export default class {
   ): firebase.database.ThenableReference {
     return this.ref.push({
       body,
-      createdAt: dayjs(createdAt).toISOString(),
+      createdAt: new Date(createdAt).toISOString(),
       title,
     })
   }
