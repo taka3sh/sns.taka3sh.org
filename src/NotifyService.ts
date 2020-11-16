@@ -1,6 +1,6 @@
 import { FirebaseMessaging } from '@firebase/messaging-types'
 
-var NOTIFYSERVICE_ENABLED = 'NotifyService:enabled'
+const NOTIFYSERVICE_ENABLED = 'NotifyService:enabled'
 
 const getEnabled = () => localStorage.getItem(NOTIFYSERVICE_ENABLED) === 'true'
 const setEnabled = () => { localStorage.setItem(NOTIFYSERVICE_ENABLED, 'true') }
