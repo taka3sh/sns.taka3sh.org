@@ -13,7 +13,7 @@ export default class {
     this.endpoint = endpoint;
   }
 
-  publish(key: string, post: Post) {
+  publish(key: string, post: Post): Promise<void> {
     const { endpoint } = this;
 
     const data = new FormData();

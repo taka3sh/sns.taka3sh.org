@@ -8,7 +8,7 @@ export interface Props extends React.PropsWithChildren<Pick<UseFormMethods<Post>
   readonly handleSubmit: () => void
 }
 
-export const PostFormCard = ({
+export const PostFormCard: React.FC<Props> = ({
   children,
   errors,
   heading,

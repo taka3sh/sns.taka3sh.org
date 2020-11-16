@@ -7,7 +7,7 @@ export interface Props extends Pick<UseFormMethods<{email: string, password: str
   readonly handleSubmit: () => void
 }
 
-export const LoginForm = ({ isOpen, handleSubmit, register }: Props) => (
+export const LoginForm: React.FC<Props> = ({ isOpen, handleSubmit, register }: Props) => (
   <Modal isOpen={isOpen}>
     <div id="logindialog">
       <form action="#" method="POST" onSubmit={handleSubmit}>

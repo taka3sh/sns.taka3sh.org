@@ -19,7 +19,7 @@ export default class {
 
   readonly endpoint: string
 
-  constructor(messaging: any, endpoint: string) {
+  constructor(messaging: firebase.messaging.Messaging, endpoint: string) {
     this.messaging = messaging;
     this.endpoint = endpoint;
   }
@@ -40,7 +40,7 @@ export default class {
       });
   }
 
-  subscribe() {
+  subscribe(): Promise<void> {
     return this.messaging.requestPermission()
       .then(() => this.messaging.getToken())
       .then((currentToken) => {
@@ -54,11 +54,11 @@ export default class {
       .then((response) => {
         if (!response.ok) throw new Error(response.statusText);
         setEnabled();
-        return showGreeting();
+        showGreeting();
       });
   }
 
-  unsubscribe() {
+  unsubscribe(): Promise<void> {
     return this.messaging.getToken()
       .then((currentToken) => this.messaging.deleteToken(currentToken))
       .then(() => { unsetEnabled(); });

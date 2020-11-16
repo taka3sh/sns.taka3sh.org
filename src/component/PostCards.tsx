@@ -6,7 +6,7 @@ export interface Props {
   readonly posts: PostWithKey[]
 }
 
-export const PostCards = ({ posts }: Props) => (
+export const PostCards: React.FC<Props> = ({ posts }: Props) => (
   <div className="mdl-grid">
     {
         posts.map((post) => (

@@ -6,7 +6,7 @@ export interface Props {
   readonly handleNotifyToggle: () => void
 }
 
-export const NotifySwitch = ({ busy, enabled, handleNotifyToggle }: Props) => (
+export const NotifySwitch: React.FC<Props> = ({ busy, enabled, handleNotifyToggle }: Props) => (
   <div className="switch">
     <label htmlFor="enabled">
       <input id="enabled" name="enabled" type="checkbox" checked={enabled} disabled={busy} onChange={handleNotifyToggle} />
