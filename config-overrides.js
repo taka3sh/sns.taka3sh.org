@@ -9,11 +9,14 @@ const multipleEntry = require('react-app-rewire-multiple-entry')([
     template: 'public/create.html',
     outPath: '/create.html'
   }
-]);
+])
 
 module.exports = {
   webpack: function (config, env) {
-    multipleEntry.addMultiEntry(config);
-    return config;
+    multipleEntry.addMultiEntry(config)
+    if (process.env.CONTEXT === 'production') {
+      config.resolve.alias['./constants/development'] = './constants/production'
+    }
+    return config
   }
-};
+}
