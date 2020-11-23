@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"net/http"
 
-	firebase "firebase.google.com/go"
-	"firebase.google.com/go/messaging"
+	firebase "firebase.google.com/go/v4"
+	"firebase.google.com/go/v4/messaging"
 )
 
 func publish(client *http.Client, key string, payload *bytes.Buffer) (resp *http.Response, err error) {
