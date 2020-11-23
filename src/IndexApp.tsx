@@ -83,7 +83,7 @@ const IndexApp: React.FC<unknown> = () => {
     <div className="grey lighten-3">
       <nav className="pink darken-1">
         <div className="nav-wrapper container">
-          <span className="brand-logo" style={{ fontSize: '1.7rem' }}>
+          <span className="brand-logo" style={{ fontSize: '1.5rem' }}>
             支援隊ヌーボー
           </span>
         </div>
