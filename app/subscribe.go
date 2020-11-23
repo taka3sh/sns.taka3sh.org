@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	firebase "firebase.google.com/go"
+	firebase "firebase.google.com/go/v4"
 )
 
 type SubscribeServer struct {
