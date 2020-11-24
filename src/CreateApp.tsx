@@ -19,6 +19,8 @@ import { Post, PostWithKey } from './PostTypes'
 import { PostCards } from './component/PostCards'
 import { PostFormCard } from './component/PostFormCard'
 import { LoginForm } from './component/LoginForm'
+import Header from './component/Header'
+import Footer from './component/Footer'
 
 import {
   firebaseApiKey,
@@ -116,13 +118,7 @@ const CreateApp: React.FC<unknown> = () => {
 
   return (
     <div className="grey lighten-3">
-      <nav className="pink darken-1">
-        <div className="nav-wrapper container">
-          <span className="brand-logo" style={{ fontSize: '1.5rem' }}>
-            支援隊ヌーボー
-          </span>
-        </div>
-      </nav>
+      <Header />
 
       <div className="container" id="app">
         <PostFormCard
@@ -153,15 +149,7 @@ const CreateApp: React.FC<unknown> = () => {
         register={registerLogin}
       />
 
-      <footer className="page-footer grey darken-3 white-text">
-        <div className="container">
-          <div>Copyright © 2015-2020 高井戸第三小学校学校支援本部</div>
-          <div>
-            Developed by
-            <a href="https://github.com/umireon">umireon</a>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   )
 }
