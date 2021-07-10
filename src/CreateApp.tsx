@@ -56,7 +56,7 @@ const CreateApp: React.FC<unknown> = () => {
     register: registerPost,
     handleSubmit: handleSubmitPost,
     watch: watchPost,
-    errors: errorsPost,
+    formState: formStatePost,
     reset: resetPost,
   } = useForm<Post>({
     defaultValues: getDefaultValues(),
@@ -122,7 +122,7 @@ const CreateApp: React.FC<unknown> = () => {
 
       <div className="container" id="app">
         <PostFormCard
-          errors={errorsPost}
+          formState={formStatePost}
           heading="Creating a new post"
           register={registerPost}
           handleSubmit={handleSubmitPost((data) => {

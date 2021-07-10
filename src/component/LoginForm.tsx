@@ -1,12 +1,9 @@
 import React from 'react'
-import { UseFormMethods } from 'react-hook-form'
+import { UseFormReturn } from 'react-hook-form'
 import Modal from 'react-modal'
 
 export interface Props
-  extends Pick<
-    UseFormMethods<{ email: string; password: string }>,
-    'register'
-  > {
+  extends Pick<UseFormReturn<{ email: string; password: string }>, 'register'> {
   readonly isOpen: boolean
   readonly handleSubmit: () => void
 }
@@ -25,9 +22,9 @@ export const LoginForm: React.FC<Props> = ({
             <div className="input-field col s12">
               <input
                 id="email"
-                name="email"
                 type="email"
-                ref={register({ required: true })}
+                // eslint-disable-next-line react/jsx-props-no-spreading
+                {...register('email', { required: true })}
               />
               <label htmlFor="email">Email</label>
             </div>
@@ -36,9 +33,9 @@ export const LoginForm: React.FC<Props> = ({
             <div className="input-field col s12">
               <input
                 id="password"
-                name="password"
                 type="password"
-                ref={register({ required: true })}
+                // eslint-disable-next-line react/jsx-props-no-spreading
+                {...register('password', { required: true })}
               />
               <label htmlFor="password">Password</label>
             </div>
