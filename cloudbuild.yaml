@@ -28,7 +28,6 @@ steps:
       - functions
       - deploy
       - Subscribe
-      - --allow-unauthenticated
       - --region=asia-northeast1
       - --source=.
       - --runtime=go113
@@ -41,7 +40,6 @@ steps:
       - functions
       - deploy
       - SubscribeDev
-      - --allow-unauthenticated
       - --region=asia-northeast1
       - --source=.
       - --runtime=go113
