@@ -9,6 +9,7 @@ steps:
       - --source=.
       - --runtime=go113
       - --trigger-http
+      - --allow-unauthenticated
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     args:
       - gcloud
@@ -19,6 +20,7 @@ steps:
       - --source=.
       - --runtime=go113
       - --trigger-http
+      - --allow-unauthenticated
     waitFor: ['-']
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     args:
@@ -26,10 +28,12 @@ steps:
       - functions
       - deploy
       - Subscribe
+      - --allow-unauthenticated
       - --region=asia-northeast1
       - --source=.
       - --runtime=go113
       - --trigger-http
+      - --allow-unauthenticated
     waitFor: ['-']
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     args:
@@ -37,8 +41,10 @@ steps:
       - functions
       - deploy
       - SubscribeDev
+      - --allow-unauthenticated
       - --region=asia-northeast1
       - --source=.
       - --runtime=go113
       - --trigger-http
+      - --allow-unauthenticated
     waitFor: ['-']
