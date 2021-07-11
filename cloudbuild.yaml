@@ -7,4 +7,5 @@ steps:
       - app
       - --region=asia-northeast1
       - --source=app
+      - --runtime=go113
       - --trigger-http
