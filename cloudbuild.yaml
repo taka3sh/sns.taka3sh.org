@@ -4,8 +4,38 @@ steps:
       - gcloud
       - functions
       - deploy
-      - app
+      - Publish
       - --region=asia-northeast1
-      - --source=app
+      - --source=.
+      - --runtime=go113
+      - --trigger-http
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    args:
+      - gcloud
+      - functions
+      - deploy
+      - PublishDev
+      - --region=asia-northeast1
+      - --source=.
+      - --runtime=go113
+      - --trigger-http
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    args:
+      - gcloud
+      - functions
+      - deploy
+      - Subscribe
+      - --region=asia-northeast1
+      - --source=.
+      - --runtime=go113
+      - --trigger-http
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    args:
+      - gcloud
+      - functions
+      - deploy
+      - SubscribeDev
+      - --region=asia-northeast1
+      - --source=.
       - --runtime=go113
       - --trigger-http
