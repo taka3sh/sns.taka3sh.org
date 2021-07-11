@@ -19,6 +19,7 @@ steps:
       - --source=.
       - --runtime=go113
       - --trigger-http
+    waitFor: ['-']
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     args:
       - gcloud
@@ -29,6 +30,7 @@ steps:
       - --source=.
       - --runtime=go113
       - --trigger-http
+    waitFor: ['-']
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     args:
       - gcloud
@@ -39,3 +41,4 @@ steps:
       - --source=.
       - --runtime=go113
       - --trigger-http
+    waitFor: ['-']
