@@ -8,9 +8,9 @@ export {
 } from './production'
 
 export const notifyEndpoint =
-  'https://sns-taka3sh-org-157419.appspot.com/subscribe.dev'
+  'https://asia-northeast1-sns-taka3sh-org-157419.cloudfunctions.net/SubscribeDev'
 
 export const pushEndpoint =
-  'https://sns-taka3sh-org-157419.appspot.com/publish.dev'
+  'https://asia-northeast1-sns-taka3sh-org-157419.cloudfunctions.net/PublishDev'
 
 export const postPrefix = 'posts-stage'
