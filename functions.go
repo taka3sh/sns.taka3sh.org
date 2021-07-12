@@ -15,7 +15,7 @@ func handleCors(h http.Handler) http.Handler {
 }
 
 func Publish(w http.ResponseWriter, r *http.Request) {
-	handler := handleCors(functions.PublishServer{Topic: "posts.dev"})
+	handler := handleCors(functions.PublishServer{Topic: "posts"})
 	handler.ServeHTTP(w, r)
 }
 
