@@ -4,7 +4,7 @@ addEventListener('push', (e) => {
     registration.showNotification(data.notification.title, {
       body: data.notification.body,
       data: data.data,
-      icon: '/logo192.png',
+      icon: '/icon.png',
     })
   )
 })
