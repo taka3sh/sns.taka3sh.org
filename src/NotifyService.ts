@@ -16,7 +16,7 @@ const showGreeting = () => {
     .then((swReg) =>
       swReg?.showNotification('通知設定が完了しました', {
         body: '新しい投稿がある時、このアイコンの通知が配信されます。',
-        icon: '/icon192.png',
+        icon: '/logo192.png',
       })
     )
 }
