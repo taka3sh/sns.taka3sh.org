@@ -45,7 +45,7 @@ func (s PublishServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		Notification: &messaging.Notification{
 			Title:    r.FormValue("title"),
 			Body:     r.FormValue("body"),
-			ImageURL: "/icon.png",
+			ImageURL: "/logo192.png",
 		},
 		Topic: s.Topic,
 	}
