@@ -15,7 +15,7 @@
   "scripts": {
     "dev": "mkdir -p dist && cp public/* dist/ && parcel 'src/*.html'",
     "build": "tsc && mkdir -p dist && cp public/* dist/ && parcel build 'src/*.html'",
-    "lint": "eslint --ext .ts,.tsx,.js src/** *.ts"
+    "lint": "eslint --ext .ts,.tsx,.js ."
   },
   "devDependencies": {
     "@parcel/packager-raw-url": "^2.0.0-beta.3.1",
