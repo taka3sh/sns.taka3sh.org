@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import firebase from 'firebase/app'
 import 'firebase/messaging'
 import 'firebase/database'
 import 'materialize-css/dist/css/materialize.min.css'
 
 import {
-  firebaseProjectId,
   firebaseApiKey,
+  firebaseAppId,
   firebaseDatabaseURL,
   firebaseMessagingSenderId,
-  firebaseAppId,
+  firebaseProjectId,
   notifyEndpoint,
-  postPrefix,
+  postPrefix
 } from './constants/development'
 
 import { PostCards, Props as PostCardsProps } from './component/PostCards'
@@ -26,7 +26,7 @@ firebase.initializeApp({
   appId: firebaseAppId,
   databaseURL: firebaseDatabaseURL,
   messagingSenderId: firebaseMessagingSenderId,
-  projectId: firebaseProjectId,
+  projectId: firebaseProjectId
 })
 
 const database = firebase.database()
@@ -50,7 +50,7 @@ const IndexApp: React.FC<unknown> = () => {
       snapshot.forEach((childSnapshot) => {
         setPosts((prevPosts) => [
           { ...childSnapshot.val(), key: childSnapshot.key },
-          ...prevPosts,
+          ...prevPosts
         ])
       })
     })

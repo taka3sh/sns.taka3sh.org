@@ -11,7 +11,7 @@ export interface Props
 export const LoginForm: React.FC<Props> = ({
   isOpen,
   handleSubmit,
-  register,
+  register
 }: Props) => (
   <Modal isOpen={isOpen}>
     <div id="logindialog">

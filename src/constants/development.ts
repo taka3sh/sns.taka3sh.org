@@ -4,7 +4,7 @@ export {
   firebaseAuthDomain,
   firebaseDatabaseURL,
   firebaseMessagingSenderId,
-  firebaseAppId,
+  firebaseAppId
 } from './production'
 
 export const notifyEndpoint =

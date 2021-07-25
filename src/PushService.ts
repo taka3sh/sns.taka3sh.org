@@ -8,12 +8,12 @@ export default class {
 
   readonly endpoint: string
 
-  constructor(auth: firebase.auth.Auth, endpoint: string) {
+  constructor (auth: firebase.auth.Auth, endpoint: string) {
     this.auth = auth
     this.endpoint = endpoint
   }
 
-  publish(key: string, post: Post): Promise<void> {
+  publish (key: string, post: Post): Promise<void> {
     const { endpoint } = this
 
     const data = new FormData()
@@ -30,7 +30,7 @@ export default class {
       return fetch(endpoint, {
         body: data,
         method: 'POST',
-        mode: 'cors',
+        mode: 'cors'
       }).then((response) => {
         if (!response.ok) throw new Error('Failed to publish')
       })

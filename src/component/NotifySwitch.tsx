@@ -9,7 +9,7 @@ export interface Props {
 export const NotifySwitch: React.FC<Props> = ({
   busy,
   enabled,
-  handleNotifyToggle,
+  handleNotifyToggle
 }: Props) => (
   <div className="switch">
     <label htmlFor="enabled">

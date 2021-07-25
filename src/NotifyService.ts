@@ -16,7 +16,7 @@ const showGreeting = () => {
     .then((swReg) =>
       swReg?.showNotification('通知設定が完了しました', {
         body: '新しい投稿がある時、このアイコンの通知が配信されます。',
-        icon: '/logo192.png',
+        icon: '/logo192.png'
       })
     )
 }
@@ -26,16 +26,16 @@ export default class {
 
   readonly endpoint: string
 
-  constructor(messaging: firebase.messaging.Messaging, endpoint: string) {
+  constructor (messaging: firebase.messaging.Messaging, endpoint: string) {
     this.messaging = messaging
     this.endpoint = endpoint
   }
 
-  static isSupported(): boolean {
+  static isSupported (): boolean {
     return 'Notification' in window && 'serviceWorker' in navigator
   }
 
-  static getEnabled(): Promise<boolean> {
+  static getEnabled (): Promise<boolean> {
     return navigator.serviceWorker
       .getRegistration('/firebase-cloud-messaging-push-scope')
       .then((swReg) => {
@@ -48,7 +48,7 @@ export default class {
       })
   }
 
-  subscribe(): Promise<void> {
+  subscribe (): Promise<void> {
     return this.messaging
       .requestPermission()
       .then(() => this.messaging.getToken())
@@ -57,7 +57,7 @@ export default class {
         body.append('token', currentToken)
         return fetch(this.endpoint, {
           body,
-          method: 'POST',
+          method: 'POST'
         })
       })
       .then((response) => {
@@ -67,7 +67,7 @@ export default class {
       })
   }
 
-  unsubscribe(): Promise<void> {
+  unsubscribe (): Promise<void> {
     return this.messaging
       .getToken()
       .then((currentToken) => this.messaging.deleteToken(currentToken))

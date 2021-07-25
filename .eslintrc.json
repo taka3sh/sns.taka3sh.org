@@ -20,5 +20,14 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "no-use-before-define": "off",
+        "@typescript-eslint/no-use-before-define": ["error"],
+        "sort-keys": "error",
+        "sort-imports": "error"
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     }
 }

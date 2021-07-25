@@ -16,7 +16,7 @@ export const PostFormCard: React.FC<Props> = ({
   formState,
   heading,
   handleSubmit,
-  register,
+  register
 }: Props) => (
   <form action="#" method="POST" className="card" onSubmit={handleSubmit}>
     <div className="card-title white-text pink lighten-1">{heading}</div>
@@ -46,7 +46,7 @@ export const PostFormCard: React.FC<Props> = ({
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...register('createdAt', {
             pattern: /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/,
-            required: true,
+            required: true
           })}
         />
         <label htmlFor="createdAt" className="active">

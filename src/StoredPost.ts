@@ -3,11 +3,11 @@ import firebase from 'firebase/app'
 export default class {
   readonly ref: firebase.database.Reference
 
-  constructor(ref: firebase.database.Reference) {
+  constructor (ref: firebase.database.Reference) {
     this.ref = ref
   }
 
-  create(
+  create (
     title: string,
     body: string,
     createdAt: string
@@ -15,7 +15,7 @@ export default class {
     return this.ref.push({
       body,
       createdAt: new Date(createdAt).toISOString(),
-      title,
+      title
     })
   }
 }

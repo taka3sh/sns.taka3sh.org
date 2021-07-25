@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import firebase from 'firebase/app'
+
 import 'firebase/auth'
 import 'firebase/database'
 import 'firebase/messaging'
@@ -27,15 +28,15 @@ import {
   firebaseAuthDomain,
   firebaseDatabaseURL,
   firebaseMessagingSenderId,
-  pushEndpoint,
   postPrefix,
+  pushEndpoint
 } from './constants/development'
 
 firebase.initializeApp({
   apiKey: firebaseApiKey,
   authDomain: firebaseAuthDomain,
   databaseURL: firebaseDatabaseURL,
-  messagingSenderId: firebaseMessagingSenderId,
+  messagingSenderId: firebaseMessagingSenderId
 })
 
 const auth = firebase.auth()
@@ -48,7 +49,7 @@ const storedPost = new StoredPost(database.ref(postPrefix))
 const getDefaultValues = () => ({
   body: '',
   createdAt: dayjs().format('YYYY-MM-DDTHH:mm'),
-  title: '',
+  title: ''
 })
 
 const CreateApp: React.FC<unknown> = () => {
@@ -57,9 +58,9 @@ const CreateApp: React.FC<unknown> = () => {
     handleSubmit: handleSubmitPost,
     watch: watchPost,
     formState: formStatePost,
-    reset: resetPost,
+    reset: resetPost
   } = useForm<Post>({
-    defaultValues: getDefaultValues(),
+    defaultValues: getDefaultValues()
   })
 
   const handleReset = () => {
@@ -71,7 +72,7 @@ const CreateApp: React.FC<unknown> = () => {
     body: watchPost('body'),
     createdAt: watchPost('createdAt'),
     key: '',
-    title: watchPost('title'),
+    title: watchPost('title')
   }
 
   const handleCreate = (data: Post) => {
@@ -96,7 +97,7 @@ const CreateApp: React.FC<unknown> = () => {
   const {
     register: registerLogin,
     handleSubmit: handleSubmitLogin,
-    watch: watchLogin,
+    watch: watchLogin
   } = useForm<{ email: string; password: string }>()
 
   const [user, setUser] = useState(AuthService.getUser())
