@@ -55,8 +55,7 @@ export class NotifyService {
   }
 
   subscribe (): Promise<void> {
-    return this.messaging
-      .requestPermission()
+    return Notification.requestPermission()
       .then(() => this.messaging.getToken())
       .then((currentToken) => {
         const body = new FormData()
