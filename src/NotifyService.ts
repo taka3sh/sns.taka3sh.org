@@ -22,7 +22,7 @@ const showGreeting = () => {
 }
 
 export const registerNotifyServiceWorker = () => {
-  navigator.serviceWorker.register('./sw/index.ts', {
+  navigator.serviceWorker.register(new URL('./sw/index.ts', import.meta.url), {
     scope: '/sw/'
   })
 }

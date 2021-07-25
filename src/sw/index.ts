@@ -1,6 +1,3 @@
-/// <reference no-default-lib="true" />
-/// <reference lib="WebWorker" />
-
 /* eslint-disable no-undef */
 
 const sw = self as unknown as ServiceWorkerGlobalScope & typeof globalThis
