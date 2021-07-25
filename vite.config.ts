@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 import { defineConfig } from 'vite'
 import reactRefresh from '@vitejs/plugin-react-refresh'
 import { resolve } from 'path'
@@ -8,7 +9,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         create: resolve(__dirname, 'create.html'),
-        main: resolve(__dirname, 'index.html'),
+        index: resolve(__dirname, 'index.html'),
       },
     },
   },
