@@ -1,13 +1,12 @@
 {
     "env": {
         "browser": true,
-        "es2021": true
+        "es2021": true,
+        "worker": true
     },
     "extends": [
         "plugin:react/recommended",
-        "airbnb",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:prettier/recommended"
+        "standard"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -23,69 +22,18 @@
     ],
     "rules": {
         "no-use-before-define": "off",
-        "@typescript-eslint/no-use-before-define": [
-            "error"
-        ],
-        "import/extensions": [
-            "error",
-            "ignorePackages",
-            {
-                "js": "never",
-                "jsx": "never",
-                "ts": "never",
-                "tsx": "never"
-            }
-        ],
-        "react/jsx-filename-extension": [
-            1,
-            {
-                "extensions": [
-                    ".tsx"
-                ]
-            }
-        ],
-        "sort-keys": [
-            "error",
-            "asc",
-            {
-                "caseSensitive": true,
-                "natural": false,
-                "minKeys": 2
-            }
-        ],
-        "jsx-a11y/label-has-associated-control": [
+        "@typescript-eslint/no-use-before-define": ["error"],
+        "sort-keys": "error",
+        "sort-imports": [
             "error",
             {
-                "required": {
-                    "some": [
-                        "nesting",
-                        "id"
-                    ]
-                }
-            }
-        ],
-        "jsx-a11y/label-has-for": [
-            "error",
-            {
-                "required": {
-                    "some": [
-                        "nesting",
-                        "id"
-                    ]
-                }
+                "memberSyntaxSortOrder": ["all", "multiple", "single", "none"]
             }
         ]
     },
     "settings": {
-        "import/resolver": {
-            "node": {
-                "extensions": [
-                    ".js",
-                    ".jsx",
-                    ".ts",
-                    ".tsx"
-                ]
-            }
+        "react": {
+            "version": "detect"
         }
     }
 }

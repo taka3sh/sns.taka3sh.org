@@ -1,16 +1,16 @@
 import React from 'react'
 
-export interface Props {
+export interface NotifySwitchProps {
   readonly busy: boolean
   readonly enabled: boolean
   readonly handleNotifyToggle: () => void
 }
 
-export const NotifySwitch: React.FC<Props> = ({
+export const NotifySwitch: React.FC<NotifySwitchProps> = ({
   busy,
   enabled,
-  handleNotifyToggle,
-}: Props) => (
+  handleNotifyToggle
+}: NotifySwitchProps) => (
   <div className="switch">
     <label htmlFor="enabled">
       <input

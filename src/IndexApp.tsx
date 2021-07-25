@@ -1,37 +1,28 @@
-import React, { useState, useEffect } from 'react'
+import { NotifyService, registerNotifyServiceWorker } from './NotifyService'
+import { PostCards, PostCardsProps } from './component/PostCards'
+import React, { useEffect, useState } from 'react'
+import {
+  firebaseConfig,
+  notifyEndpoint,
+  postPrefix
+} from './constants'
+
+import { Footer } from './component/Footer'
+import { Header } from './component/Header'
+import { NotifySwitch } from './component/NotifySwitch'
 import firebase from 'firebase/app'
-import 'firebase/messaging'
+
+import 'firebase/auth'
 import 'firebase/database'
+import 'firebase/messaging'
 import 'materialize-css/dist/css/materialize.min.css'
 
-import {
-  firebaseProjectId,
-  firebaseApiKey,
-  firebaseDatabaseURL,
-  firebaseMessagingSenderId,
-  firebaseAppId,
-  notifyEndpoint,
-  postPrefix,
-} from './constants/development'
-
-import { PostCards, Props as PostCardsProps } from './component/PostCards'
-import { NotifySwitch } from './component/NotifySwitch'
-import Header from './component/Header'
-import Footer from './component/Footer'
-
-import NotifyService from './NotifyService'
-
-firebase.initializeApp({
-  apiKey: firebaseApiKey,
-  appId: firebaseAppId,
-  databaseURL: firebaseDatabaseURL,
-  messagingSenderId: firebaseMessagingSenderId,
-  projectId: firebaseProjectId,
-})
+firebase.initializeApp(firebaseConfig)
 
 const database = firebase.database()
 const messaging = firebase.messaging()
 
+registerNotifyServiceWorker()
 const notifyService = new NotifyService(messaging, notifyEndpoint)
 
 if (NotifyService.isSupported()) {
@@ -50,7 +41,7 @@ const IndexApp: React.FC<unknown> = () => {
       snapshot.forEach((childSnapshot) => {
         setPosts((prevPosts) => [
           { ...childSnapshot.val(), key: childSnapshot.key },
-          ...prevPosts,
+          ...prevPosts
         ])
       })
     })

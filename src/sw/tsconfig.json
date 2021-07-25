@@ -2,9 +2,8 @@
     "compilerOptions": {
         "target": "ESNext",
         "lib": [
-            "DOM",
-            "DOM.Iterable",
-            "ESNext"
+            "ESNext",
+            "WebWorker"
         ],
         "allowJs": false,
         "skipLibCheck": false,
@@ -16,18 +15,10 @@
         "moduleResolution": "Node",
         "resolveJsonModule": true,
         "isolatedModules": false,
-        "noEmit": true,
-        "jsx": "react"
+        "jsx": "react",
+        "composite": true
     },
-    "include": [
-        "./src"
-    ],
-    "exclude": [
-        "./src/sw/*"
-    ],
-    "references": [
-        {
-            "path": "./src/sw"
-        }
+    "files": [
+        "./index.ts"
     ]
 }

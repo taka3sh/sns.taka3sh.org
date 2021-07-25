@@ -1,4 +1,1 @@
-node_modules
-build
-config-overrides.js
-public/firebase-messaging-sw.js
+dist

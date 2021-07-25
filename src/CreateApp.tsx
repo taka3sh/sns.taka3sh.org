@@ -1,42 +1,31 @@
+
+import { Post, PostWithKey } from './PostTypes'
 import React, { useState } from 'react'
+import {
+  firebaseConfig,
+  postPrefix,
+  pushEndpoint
+} from './constants'
+
+import { AuthService } from './AuthService'
+import { Footer } from './component/Footer'
+import { Header } from './component/Header'
+import { LoginForm } from './component/LoginForm'
+import Materialize from 'materialize-css'
+import { PostCards } from './component/PostCards'
+import { PostFormCard } from './component/PostFormCard'
+import { PushService } from './PushService'
+import { StoredPost } from './StoredPost'
+import dayjs from 'dayjs'
+import firebase from 'firebase/app'
 import { useForm } from 'react-hook-form'
 
-import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/database'
 import 'firebase/messaging'
-
-import dayjs from 'dayjs'
-
-import Materialize from 'materialize-css'
 import 'materialize-css/dist/css/materialize.min.css'
 
-import StoredPost from './StoredPost'
-import AuthService from './AuthService'
-import PushService from './PushService'
-
-import { Post, PostWithKey } from './PostTypes'
-import { PostCards } from './component/PostCards'
-import { PostFormCard } from './component/PostFormCard'
-import { LoginForm } from './component/LoginForm'
-import Header from './component/Header'
-import Footer from './component/Footer'
-
-import {
-  firebaseApiKey,
-  firebaseAuthDomain,
-  firebaseDatabaseURL,
-  firebaseMessagingSenderId,
-  pushEndpoint,
-  postPrefix,
-} from './constants/development'
-
-firebase.initializeApp({
-  apiKey: firebaseApiKey,
-  authDomain: firebaseAuthDomain,
-  databaseURL: firebaseDatabaseURL,
-  messagingSenderId: firebaseMessagingSenderId,
-})
+firebase.initializeApp(firebaseConfig)
 
 const auth = firebase.auth()
 const database = firebase.database()
@@ -48,7 +37,7 @@ const storedPost = new StoredPost(database.ref(postPrefix))
 const getDefaultValues = () => ({
   body: '',
   createdAt: dayjs().format('YYYY-MM-DDTHH:mm'),
-  title: '',
+  title: ''
 })
 
 const CreateApp: React.FC<unknown> = () => {
@@ -57,9 +46,9 @@ const CreateApp: React.FC<unknown> = () => {
     handleSubmit: handleSubmitPost,
     watch: watchPost,
     formState: formStatePost,
-    reset: resetPost,
+    reset: resetPost
   } = useForm<Post>({
-    defaultValues: getDefaultValues(),
+    defaultValues: getDefaultValues()
   })
 
   const handleReset = () => {
@@ -71,7 +60,7 @@ const CreateApp: React.FC<unknown> = () => {
     body: watchPost('body'),
     createdAt: watchPost('createdAt'),
     key: '',
-    title: watchPost('title'),
+    title: watchPost('title')
   }
 
   const handleCreate = (data: Post) => {
@@ -96,7 +85,7 @@ const CreateApp: React.FC<unknown> = () => {
   const {
     register: registerLogin,
     handleSubmit: handleSubmitLogin,
-    watch: watchLogin,
+    watch: watchLogin
   } = useForm<{ email: string; password: string }>()
 
   const [user, setUser] = useState(AuthService.getUser())

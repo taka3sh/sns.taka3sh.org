@@ -1,6 +1,6 @@
+import CreateApp from './CreateApp'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import CreateApp from './CreateApp'
 import reportWebVitals from './reportWebVitals'
 
 ReactDOM.render(
