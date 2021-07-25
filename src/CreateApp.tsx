@@ -2,13 +2,10 @@
 import { Post, PostWithKey } from './PostTypes'
 import React, { useState } from 'react'
 import {
-  firebaseApiKey,
-  firebaseAuthDomain,
-  firebaseDatabaseURL,
-  firebaseMessagingSenderId,
+  firebaseConfig,
   postPrefix,
   pushEndpoint
-} from './constants/development'
+} from './constants'
 
 import { AuthService } from './AuthService'
 import { Footer } from './component/Footer'
@@ -28,12 +25,7 @@ import 'firebase/database'
 import 'firebase/messaging'
 import 'materialize-css/dist/css/materialize.min.css'
 
-firebase.initializeApp({
-  apiKey: firebaseApiKey,
-  authDomain: firebaseAuthDomain,
-  databaseURL: firebaseDatabaseURL,
-  messagingSenderId: firebaseMessagingSenderId
-})
+firebase.initializeApp(firebaseConfig)
 
 const auth = firebase.auth()
 const database = firebase.database()

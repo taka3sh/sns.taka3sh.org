@@ -1,14 +1,10 @@
 import { PostCards, PostCardsProps } from './component/PostCards'
 import React, { useEffect, useState } from 'react'
 import {
-  firebaseApiKey,
-  firebaseAppId,
-  firebaseDatabaseURL,
-  firebaseMessagingSenderId,
-  firebaseProjectId,
+  firebaseConfig,
   notifyEndpoint,
   postPrefix
-} from './constants/development'
+} from './constants'
 
 import { Footer } from './component/Footer'
 import { Header } from './component/Header'
@@ -21,13 +17,7 @@ import 'firebase/database'
 import 'firebase/messaging'
 import 'materialize-css/dist/css/materialize.min.css'
 
-firebase.initializeApp({
-  apiKey: firebaseApiKey,
-  appId: firebaseAppId,
-  databaseURL: firebaseDatabaseURL,
-  messagingSenderId: firebaseMessagingSenderId,
-  projectId: firebaseProjectId
-})
+firebase.initializeApp(firebaseConfig)
 
 const database = firebase.database()
 const messaging = firebase.messaging()
