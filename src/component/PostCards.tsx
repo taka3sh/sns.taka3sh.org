@@ -2,16 +2,15 @@ import { PostWithKey } from '../PostTypes'
 import React from 'react'
 import dayjs from 'dayjs'
 
-// eslint-disable-next-line sort-imports
 import 'dayjs/locale/ja'
 
 dayjs.locale('ja')
 
-export interface Props {
+export interface PostCardsProps {
   readonly posts: PostWithKey[]
 }
 
-export const PostCards: React.FC<Props> = ({ posts }: Props) => (
+export const PostCards: React.FC<PostCardsProps> = ({ posts }: PostCardsProps) => (
   <div className="mdl-grid">
     {posts.map((post) => (
       <div className="card" id={post.key} key={post.key}>
@@ -27,5 +26,3 @@ export const PostCards: React.FC<Props> = ({ posts }: Props) => (
     ))}
   </div>
 )
-
-export default PostCards

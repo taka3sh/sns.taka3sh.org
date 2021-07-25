@@ -2,7 +2,7 @@ import { Post } from '../PostTypes'
 import React from 'react'
 import { UseFormReturn } from 'react-hook-form'
 
-export interface Props
+export interface PostFormCardProps
   extends React.PropsWithChildren<
     Pick<UseFormReturn<Post>, 'register' | 'formState'>
   > {
@@ -10,13 +10,13 @@ export interface Props
   readonly handleSubmit: () => void
 }
 
-export const PostFormCard: React.FC<Props> = ({
+export const PostFormCard: React.FC<PostFormCardProps> = ({
   children,
   formState,
   heading,
   handleSubmit,
   register
-}: Props) => (
+}: PostFormCardProps) => (
   <form action="#" method="POST" className="card" onSubmit={handleSubmit}>
     <div className="card-title white-text pink lighten-1">{heading}</div>
     <div className="card-content">

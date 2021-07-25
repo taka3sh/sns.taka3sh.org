@@ -1,4 +1,4 @@
-import { PostCards, Props as PostCardsProps } from './component/PostCards'
+import { PostCards, PostCardsProps } from './component/PostCards'
 import React, { useEffect, useState } from 'react'
 import {
   firebaseApiKey,
@@ -10,9 +10,9 @@ import {
   postPrefix
 } from './constants/development'
 
-import Footer from './component/Footer'
-import Header from './component/Header'
-import NotifyService from './NotifyService'
+import { Footer } from './component/Footer'
+import { Header } from './component/Header'
+import { NotifyService } from './NotifyService'
 import { NotifySwitch } from './component/NotifySwitch'
 import firebase from 'firebase/app'
 

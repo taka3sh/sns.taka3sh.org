@@ -2,17 +2,17 @@ import Modal from 'react-modal'
 import React from 'react'
 import { UseFormReturn } from 'react-hook-form'
 
-export interface Props
+export interface LoginFormProps
   extends Pick<UseFormReturn<{ email: string; password: string }>, 'register'> {
   readonly isOpen: boolean
   readonly handleSubmit: () => void
 }
 
-export const LoginForm: React.FC<Props> = ({
+export const LoginForm: React.FC<LoginFormProps> = ({
   isOpen,
   handleSubmit,
   register
-}: Props) => (
+}: LoginFormProps) => (
   <Modal isOpen={isOpen}>
     <div id="logindialog">
       <form action="#" method="POST" onSubmit={handleSubmit}>

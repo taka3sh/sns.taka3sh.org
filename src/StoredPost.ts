@@ -1,6 +1,6 @@
 import firebase from 'firebase/app'
 
-export default class {
+export class StoredPost {
   readonly ref: firebase.database.Reference
 
   constructor (ref: firebase.database.Reference) {

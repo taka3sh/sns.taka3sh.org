@@ -21,7 +21,7 @@ const showGreeting = () => {
     )
 }
 
-export default class {
+export class NotifyService {
   readonly messaging: firebase.messaging.Messaging
 
   readonly endpoint: string
