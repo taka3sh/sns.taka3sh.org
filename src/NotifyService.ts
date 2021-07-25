@@ -12,7 +12,7 @@ const unsetEnabled = () => {
 
 const showGreeting = () => {
   navigator.serviceWorker
-    .getRegistration('/firebase-cloud-messaging-push-scope')
+    .getRegistration('NotifyService')
     .then((swReg) =>
       swReg?.showNotification('通知設定が完了しました', {
         body: '新しい投稿がある時、このアイコンの通知が配信されます。',
@@ -23,7 +23,7 @@ const showGreeting = () => {
 
 export const registerNotifyServiceWorker = () => {
   navigator.serviceWorker.register('../sw/index.ts', {
-    scope: '/NotifyService'
+    scope: 'NotifyService'
   })
 }
 
@@ -43,7 +43,7 @@ export class NotifyService {
 
   static getEnabled (): Promise<boolean> {
     return navigator.serviceWorker
-      .getRegistration('/NotifyService')
+      .getRegistration('NotifyService')
       .then((swReg) => {
         const tokenSent = getEnabled()
         const notifyAllowed = !!swReg && Notification.permission === 'granted'
