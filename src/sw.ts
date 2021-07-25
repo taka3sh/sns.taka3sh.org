@@ -6,6 +6,10 @@
 const sw = self as ServiceWorkerGlobalScope & typeof globalThis
 
 sw.addEventListener('push', (e: PushEvent) => {
+  if (e.data === null) {
+    throw new Error('data is null')
+  }
+
   const data = e.data.json()
   e.waitUntil(
     sw.registration.showNotification(data.notification.title, {

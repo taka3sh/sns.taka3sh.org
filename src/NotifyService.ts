@@ -22,11 +22,9 @@ const showGreeting = () => {
 }
 
 export const registerNotifyServiceWorker = () => {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.ts', {
-      scope: '/NotifyService'
-    })
-  }
+  navigator.serviceWorker.register('./sw.ts', {
+    scope: '/NotifyService'
+  })
 }
 
 export class NotifyService {
