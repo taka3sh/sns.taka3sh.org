@@ -10,9 +10,11 @@ const unsetEnabled = () => {
   localStorage.removeItem(NOTIFYSERVICE_ENABLED)
 }
 
+const scope = '/sw/'
+
 const showGreeting = () => {
   navigator.serviceWorker
-    .getRegistration('/sw/')
+    .getRegistration(scope)
     .then((swReg) =>
       swReg?.showNotification('通知設定が完了しました', {
         body: '新しい投稿がある時、このアイコンの通知が配信されます。',
@@ -23,7 +25,7 @@ const showGreeting = () => {
 
 export const registerNotifyServiceWorker = () => {
   navigator.serviceWorker.register(new URL('./sw/index.ts', import.meta.url), {
-    scope: '/sw/'
+    scope
   })
 }
 
@@ -43,7 +45,7 @@ export class NotifyService {
 
   static getEnabled (): Promise<boolean> {
     return navigator.serviceWorker
-      .getRegistration('/sw/')
+      .getRegistration(scope)
       .then((swReg) => {
         const tokenSent = getEnabled()
         const notifyAllowed = !!swReg && Notification.permission === 'granted'
@@ -56,7 +58,7 @@ export class NotifyService {
 
   subscribe (): Promise<void> {
     return navigator.serviceWorker
-      .getRegistration('/sw/')
+      .getRegistration(scope)
       .then(swReg => this.messaging.getToken({
         serviceWorkerRegistration: swReg
       }))
