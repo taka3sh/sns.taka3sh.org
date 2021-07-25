@@ -22,9 +22,12 @@
     "include": [
         "./src"
     ],
+    "exclude": [
+        "./src/sw/*"
+    ],
     "references": [
         {
-            "path": "./sw"
+            "path": "./src/sw"
         }
     ]
 }
