@@ -21,6 +21,14 @@ const showGreeting = () => {
     )
 }
 
+export const registerNotifyServiceWorker = () => {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.ts', {
+      scope: '/NotifyService'
+    })
+  }
+}
+
 export class NotifyService {
   readonly messaging: firebase.messaging.Messaging
 
@@ -37,7 +45,7 @@ export class NotifyService {
 
   static getEnabled (): Promise<boolean> {
     return navigator.serviceWorker
-      .getRegistration('/firebase-cloud-messaging-push-scope')
+      .getRegistration('/NotifyService')
       .then((swReg) => {
         const tokenSent = getEnabled()
         const notifyAllowed = !!swReg && Notification.permission === 'granted'

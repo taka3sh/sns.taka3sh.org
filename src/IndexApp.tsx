@@ -1,3 +1,4 @@
+import { NotifyService, registerNotifyServiceWorker } from './NotifyService'
 import { PostCards, PostCardsProps } from './component/PostCards'
 import React, { useEffect, useState } from 'react'
 import {
@@ -8,7 +9,6 @@ import {
 
 import { Footer } from './component/Footer'
 import { Header } from './component/Header'
-import { NotifyService } from './NotifyService'
 import { NotifySwitch } from './component/NotifySwitch'
 import firebase from 'firebase/app'
 
@@ -22,6 +22,7 @@ firebase.initializeApp(firebaseConfig)
 const database = firebase.database()
 const messaging = firebase.messaging()
 
+registerNotifyServiceWorker()
 const notifyService = new NotifyService(messaging, notifyEndpoint)
 
 if (NotifyService.isSupported()) {
