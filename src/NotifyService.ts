@@ -55,10 +55,11 @@ export class NotifyService {
   }
 
   subscribe (): Promise<void> {
-    return navigator.serviceWorker.getRegistration('/sw/')
+    return navigator.serviceWorker
+      .getRegistration('/sw/')
       .then(swReg => this.messaging.getToken({
         serviceWorkerRegistration: swReg
-      })
+      }))
       .then((currentToken) => {
         const body = new FormData()
         body.append('token', currentToken)
