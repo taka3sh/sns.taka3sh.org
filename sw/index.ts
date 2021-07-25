@@ -1,9 +1,9 @@
-/* eslint-disable no-undef */
-/// <reference no-default-lib="true"/>
-/// <reference lib="ESNext" />
+/// <reference no-default-lib="true" />
 /// <reference lib="WebWorker" />
 
-const sw = self as ServiceWorkerGlobalScope & typeof globalThis
+/* eslint-disable no-undef */
+
+const sw = self as unknown as ServiceWorkerGlobalScope & typeof globalThis
 
 sw.addEventListener('push', (e: PushEvent) => {
   if (e.data === null) {

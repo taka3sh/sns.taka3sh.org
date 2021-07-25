@@ -13,7 +13,8 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "build": "tsc && parcel build src/*.html src/firebase-messaging-sw.ts && cp public/* dist/",
+    "dev": "mkdir -p dist && cp public/* dist/ && parcel 'src/*.html'",
+    "build": "tsc && mkdir -p dist && cp public/* dist/ && parcel build 'src/*.html'",
     "lint": "eslint --ext .ts,.tsx,.js src/** *.ts"
   },
   "devDependencies": {
