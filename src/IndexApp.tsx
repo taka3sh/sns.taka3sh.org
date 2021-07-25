@@ -1,9 +1,5 @@
+import { PostCards, Props as PostCardsProps } from './component/PostCards'
 import React, { useEffect, useState } from 'react'
-import firebase from 'firebase/app'
-import 'firebase/messaging'
-import 'firebase/database'
-import 'materialize-css/dist/css/materialize.min.css'
-
 import {
   firebaseApiKey,
   firebaseAppId,
@@ -14,12 +10,16 @@ import {
   postPrefix
 } from './constants/development'
 
-import { PostCards, Props as PostCardsProps } from './component/PostCards'
-import { NotifySwitch } from './component/NotifySwitch'
-import Header from './component/Header'
 import Footer from './component/Footer'
-
+import Header from './component/Header'
 import NotifyService from './NotifyService'
+import { NotifySwitch } from './component/NotifySwitch'
+import firebase from 'firebase/app'
+
+import 'firebase/auth'
+import 'firebase/database'
+import 'firebase/messaging'
+import 'materialize-css/dist/css/materialize.min.css'
 
 firebase.initializeApp({
   apiKey: firebaseApiKey,

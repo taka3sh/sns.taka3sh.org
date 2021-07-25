@@ -1,6 +1,6 @@
+import IndexApp from './IndexApp'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import IndexApp from './IndexApp'
 import reportWebVitals from './reportWebVitals'
 
 ReactDOM.render(

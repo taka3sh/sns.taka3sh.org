@@ -1,6 +1,6 @@
+import Modal from 'react-modal'
 import React from 'react'
 import { UseFormReturn } from 'react-hook-form'
-import Modal from 'react-modal'
 
 export interface Props
   extends Pick<UseFormReturn<{ email: string; password: string }>, 'register'> {

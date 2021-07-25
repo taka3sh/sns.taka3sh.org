@@ -9,9 +9,9 @@ export default defineConfig({
     rollupOptions: {
       input: {
         create: resolve(__dirname, 'create.html'),
-        index: resolve(__dirname, 'index.html'),
-      },
-    },
+        index: resolve(__dirname, 'index.html')
+      }
+    }
   },
-  plugins: [reactRefresh()],
+  plugins: [reactRefresh()]
 })

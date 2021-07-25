@@ -1,10 +1,9 @@
+import { PostWithKey } from '../PostTypes'
 import React from 'react'
-
 import dayjs from 'dayjs'
 
+// eslint-disable-next-line sort-imports
 import 'dayjs/locale/ja'
-
-import { PostWithKey } from '../PostTypes'
 
 dayjs.locale('ja')
 

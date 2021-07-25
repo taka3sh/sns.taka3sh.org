@@ -1,28 +1,6 @@
-import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
-
-import firebase from 'firebase/app'
-
-import 'firebase/auth'
-import 'firebase/database'
-import 'firebase/messaging'
-
-import dayjs from 'dayjs'
-
-import Materialize from 'materialize-css'
-import 'materialize-css/dist/css/materialize.min.css'
-
-import StoredPost from './StoredPost'
-import AuthService from './AuthService'
-import PushService from './PushService'
 
 import { Post, PostWithKey } from './PostTypes'
-import { PostCards } from './component/PostCards'
-import { PostFormCard } from './component/PostFormCard'
-import { LoginForm } from './component/LoginForm'
-import Header from './component/Header'
-import Footer from './component/Footer'
-
+import React, { useState } from 'react'
 import {
   firebaseApiKey,
   firebaseAuthDomain,
@@ -31,6 +9,24 @@ import {
   postPrefix,
   pushEndpoint
 } from './constants/development'
+
+import AuthService from './AuthService'
+import Footer from './component/Footer'
+import Header from './component/Header'
+import { LoginForm } from './component/LoginForm'
+import Materialize from 'materialize-css'
+import { PostCards } from './component/PostCards'
+import { PostFormCard } from './component/PostFormCard'
+import PushService from './PushService'
+import StoredPost from './StoredPost'
+import dayjs from 'dayjs'
+import firebase from 'firebase/app'
+import { useForm } from 'react-hook-form'
+
+import 'firebase/auth'
+import 'firebase/database'
+import 'firebase/messaging'
+import 'materialize-css/dist/css/materialize.min.css'
 
 firebase.initializeApp({
   apiKey: firebaseApiKey,

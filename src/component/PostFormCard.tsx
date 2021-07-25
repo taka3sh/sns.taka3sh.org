@@ -1,7 +1,6 @@
+import { Post } from '../PostTypes'
 import React from 'react'
 import { UseFormReturn } from 'react-hook-form'
-
-import { Post } from '../PostTypes'
 
 export interface Props
   extends React.PropsWithChildren<

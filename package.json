@@ -16,7 +16,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
-    "lint": "eslint --ext .ts,.tsx,.js src/**"
+    "lint": "eslint --ext .ts,.tsx,.js src/** *.ts"
   },
   "devDependencies": {
     "@types/materialize-css": "^1.0.8",

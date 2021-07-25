@@ -23,7 +23,12 @@
         "no-use-before-define": "off",
         "@typescript-eslint/no-use-before-define": ["error"],
         "sort-keys": "error",
-        "sort-imports": "error"
+        "sort-imports": [
+            "error",
+            {
+                "memberSyntaxSortOrder": ["all", "multiple", "single", "none"]
+            }
+        ]
     },
     "settings": {
         "react": {

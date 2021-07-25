@@ -1,7 +1,6 @@
-import firebase from 'firebase/app'
-import dayjs from 'dayjs'
-
 import { Post } from './PostTypes'
+import dayjs from 'dayjs'
+import firebase from 'firebase/app'
 
 export default class {
   readonly auth: firebase.auth.Auth
