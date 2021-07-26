@@ -1,16 +1,22 @@
 import firebase from 'firebase/app'
 
-const NOTIFYSERVICE_ENABLED = 'NotifyService:enabled'
+const scope = '/sw/'
 
-const getEnabled = () => localStorage.getItem(NOTIFYSERVICE_ENABLED) === 'true'
-const setEnabled = () => {
+const NOTIFYSERVICE_ENABLED = 'NotifyService:enabled'
+const isTokenSent = () => localStorage.getItem(NOTIFYSERVICE_ENABLED) === 'true'
+const setTokenSent = () => {
   localStorage.setItem(NOTIFYSERVICE_ENABLED, 'true')
 }
-const unsetEnabled = () => {
-  localStorage.removeItem(NOTIFYSERVICE_ENABLED)
+const setTokenRemoved = () => {
+  localStorage.setItem(NOTIFYSERVICE_ENABLED, 'false')
 }
 
-const scope = '/sw/'
+export const isNotifyServiceEnabled = async (): Promise<boolean> => {
+  const swReg = await navigator.serviceWorker.getRegistration(scope)
+  const tokenSent = isTokenSent()
+  const notifyAllowed = typeof swReg !== 'undefined' && Notification.permission === 'granted'
+  return tokenSent && notifyAllowed
+}
 
 const showGreeting = () => {
   navigator.serviceWorker
@@ -31,7 +37,6 @@ export const registerNotifyServiceWorker = () => {
 
 export class NotifyService {
   readonly messaging: firebase.messaging.Messaging
-
   readonly endpoint: string
 
   constructor (messaging: firebase.messaging.Messaging, endpoint: string) {
@@ -39,50 +44,28 @@ export class NotifyService {
     this.endpoint = endpoint
   }
 
-  static isSupported (): boolean {
-    return 'Notification' in window && 'serviceWorker' in navigator
+  async subscribe (): Promise<void> {
+    const swReg = await navigator.serviceWorker.getRegistration(scope)
+    const currentToken = await this.messaging.getToken({
+      serviceWorkerRegistration: swReg
+    })
+    const body = new FormData()
+    body.append('token', currentToken)
+    const response = await fetch(this.endpoint, {
+      body,
+      method: 'POST'
+    })
+    if (!response.ok) throw new Error(response.statusText)
+    setTokenSent()
+    showGreeting()
   }
 
-  static getEnabled (): Promise<boolean> {
-    return navigator.serviceWorker
-      .getRegistration(scope)
-      .then((swReg) => {
-        const tokenSent = getEnabled()
-        const notifyAllowed = !!swReg && Notification.permission === 'granted'
-        if (tokenSent && !notifyAllowed) {
-          setEnabled()
-        }
-        return tokenSent && notifyAllowed
-      })
-  }
-
-  subscribe (): Promise<void> {
-    return navigator.serviceWorker
-      .getRegistration(scope)
-      .then(swReg => this.messaging.getToken({
-        serviceWorkerRegistration: swReg
-      }))
-      .then((currentToken) => {
-        const body = new FormData()
-        body.append('token', currentToken)
-        return fetch(this.endpoint, {
-          body,
-          method: 'POST'
-        })
-      })
-      .then((response) => {
-        if (!response.ok) throw new Error(response.statusText)
-        setEnabled()
-        showGreeting()
-      })
-  }
-
-  unsubscribe (): Promise<void> {
-    return this.messaging
-      .getToken()
-      .then((currentToken) => this.messaging.deleteToken(currentToken))
-      .then(() => {
-        unsetEnabled()
-      })
+  async unsubscribe (): Promise<boolean> {
+    const swReg = await navigator.serviceWorker.getRegistration(scope)
+    const isUnregistered = await swReg?.unregister() === true
+    if (isUnregistered) {
+      setTokenRemoved()
+    }
+    return isUnregistered
   }
 }

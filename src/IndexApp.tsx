@@ -1,4 +1,8 @@
-import { NotifyService, registerNotifyServiceWorker } from './NotifyService'
+import {
+  NotifyService,
+  isNotifyServiceEnabled,
+  registerNotifyServiceWorker
+} from './NotifyService'
 import { PostCards, PostCardsProps } from './component/PostCards'
 import React, { useEffect, useState } from 'react'
 import {
@@ -25,14 +29,6 @@ const messaging = firebase.messaging()
 registerNotifyServiceWorker()
 const notifyService = new NotifyService(messaging, notifyEndpoint)
 
-if (NotifyService.isSupported()) {
-  NotifyService.getEnabled().then((value) => {
-    if (value) {
-      messaging.getToken()
-    }
-  })
-}
-
 const IndexApp: React.FC<unknown> = () => {
   const [posts, setPosts] = useState<PostCardsProps['posts']>([])
 
@@ -50,11 +46,9 @@ const IndexApp: React.FC<unknown> = () => {
   const [busy, setBusy] = useState(false)
   const [enabled, setEnabled] = useState(false)
 
-  NotifyService.getEnabled().then(setEnabled)
+  isNotifyServiceEnabled().then(setEnabled)
 
   const handleNotifyToggle = () => {
-    if (!NotifyService.isSupported()) return
-
     if (enabled) {
       notifyService.unsubscribe()
       setEnabled(false)
