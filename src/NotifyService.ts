@@ -61,10 +61,7 @@ export class NotifyService {
   }
 
   async unsubscribe (): Promise<boolean> {
-    const isDeleted = await this.messaging.deleteToken()
-    if (isDeleted) {
-      setTokenRemoved()
-    }
-    return isDeleted
+    const swReg = await navigator.serviceWorker.getRegistration(scope)
+    return await swReg?.unregister() === true
   }
 }
