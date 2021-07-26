@@ -62,6 +62,10 @@ export class NotifyService {
 
   async unsubscribe (): Promise<boolean> {
     const swReg = await navigator.serviceWorker.getRegistration(scope)
-    return await swReg?.unregister() === true
+    const isUnregistered = await swReg?.unregister() === true
+    if (isUnregistered) {
+      setTokenRemoved()
+    }
+    return isUnregistered
   }
 }
