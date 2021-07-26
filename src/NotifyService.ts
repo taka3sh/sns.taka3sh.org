@@ -44,33 +44,27 @@ export class NotifyService {
     this.endpoint = endpoint
   }
 
-  subscribe (): Promise<void> {
-    return navigator.serviceWorker
-      .getRegistration(scope)
-      .then(swReg => this.messaging.getToken({
-        serviceWorkerRegistration: swReg
-      }))
-      .then((currentToken) => {
-        const body = new FormData()
-        body.append('token', currentToken)
-        return fetch(this.endpoint, {
-          body,
-          method: 'POST'
-        })
-      })
-      .then((response) => {
-        if (!response.ok) throw new Error(response.statusText)
-        setTokenSent()
-        showGreeting()
-      })
+  async subscribe (): Promise<void> {
+    const swReg = await navigator.serviceWorker.getRegistration(scope)
+    const currentToken = await this.messaging.getToken({
+      serviceWorkerRegistration: swReg
+    })
+    const body = new FormData()
+    body.append('token', currentToken)
+    const response = await fetch(this.endpoint, {
+      body,
+      method: 'POST'
+    })
+    if (!response.ok) throw new Error(response.statusText)
+    setTokenSent()
+    showGreeting()
   }
 
-  unsubscribe (): Promise<void> {
-    return this.messaging
-      .getToken()
-      .then((currentToken) => this.messaging.deleteToken(currentToken))
-      .then(() => {
-        setTokenRemoved()
-      })
+  async unsubscribe (): Promise<boolean> {
+    const isDeleted = await this.messaging.deleteToken()
+    if (isDeleted) {
+      setTokenRemoved()
+    }
+    return isDeleted
   }
 }
