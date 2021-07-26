@@ -1,16 +1,22 @@
 import firebase from 'firebase/app'
 
-const NOTIFYSERVICE_ENABLED = 'NotifyService:enabled'
+const scope = '/sw/'
 
-const getEnabled = () => localStorage.getItem(NOTIFYSERVICE_ENABLED) === 'true'
-const setEnabled = () => {
+const NOTIFYSERVICE_ENABLED = 'NotifyService:enabled'
+const isTokenSent = () => localStorage.getItem(NOTIFYSERVICE_ENABLED) === 'true'
+const setTokenSent = () => {
   localStorage.setItem(NOTIFYSERVICE_ENABLED, 'true')
 }
-const unsetEnabled = () => {
-  localStorage.removeItem(NOTIFYSERVICE_ENABLED)
+const setTokenRemoved = () => {
+  localStorage.setItem(NOTIFYSERVICE_ENABLED, 'false')
 }
 
-const scope = '/sw/'
+export const isNotifyServiceEnabled = async (): Promise<boolean> => {
+  const swReg = await navigator.serviceWorker.getRegistration(scope)
+  const tokenSent = isTokenSent()
+  const notifyAllowed = typeof swReg !== 'undefined' && Notification.permission === 'granted'
+  return tokenSent && notifyAllowed
+}
 
 const showGreeting = () => {
   navigator.serviceWorker
@@ -31,25 +37,11 @@ export const registerNotifyServiceWorker = () => {
 
 export class NotifyService {
   readonly messaging: firebase.messaging.Messaging
-
   readonly endpoint: string
 
   constructor (messaging: firebase.messaging.Messaging, endpoint: string) {
     this.messaging = messaging
     this.endpoint = endpoint
-  }
-
-  static getEnabled (): Promise<boolean> {
-    return navigator.serviceWorker
-      .getRegistration(scope)
-      .then((swReg) => {
-        const tokenSent = getEnabled()
-        const notifyAllowed = !!swReg && Notification.permission === 'granted'
-        if (tokenSent && !notifyAllowed) {
-          setEnabled()
-        }
-        return tokenSent && notifyAllowed
-      })
   }
 
   subscribe (): Promise<void> {
@@ -68,7 +60,7 @@ export class NotifyService {
       })
       .then((response) => {
         if (!response.ok) throw new Error(response.statusText)
-        setEnabled()
+        setTokenSent()
         showGreeting()
       })
   }
@@ -78,7 +70,7 @@ export class NotifyService {
       .getToken()
       .then((currentToken) => this.messaging.deleteToken(currentToken))
       .then(() => {
-        unsetEnabled()
+        setTokenRemoved()
       })
   }
 }
