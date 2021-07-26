@@ -39,10 +39,6 @@ export class NotifyService {
     this.endpoint = endpoint
   }
 
-  static isSupported (): boolean {
-    return 'Notification' in window && 'serviceWorker' in navigator
-  }
-
   static getEnabled (): Promise<boolean> {
     return navigator.serviceWorker
       .getRegistration(scope)
