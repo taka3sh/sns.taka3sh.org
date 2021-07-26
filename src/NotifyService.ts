@@ -29,7 +29,9 @@ const showGreeting = () => {
     )
 }
 
-export const registerNotifyServiceWorker = () => {
+export const registerNotifyServiceWorker = async (): Promise<void> => {
+  const firebaseSwReg = await navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope')
+  firebaseSwReg?.unregister()
   navigator.serviceWorker.register(new URL('./sw/index.ts', import.meta.url), {
     scope
   })
