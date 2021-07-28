@@ -10,7 +10,7 @@ export const NotifySwitch: React.VFC<NotifySwitchProps> = ({
   busy,
   enabled,
   handleNotifyToggle
-}) => (
+}: NotifySwitchProps) => (
   <div className="switch">
     <label htmlFor="enabled">
       <input
