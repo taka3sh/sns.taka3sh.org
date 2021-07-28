@@ -29,7 +29,7 @@ const messaging = firebase.messaging()
 registerNotifyServiceWorker()
 const notifyService = new NotifyService(messaging, notifyEndpoint)
 
-const IndexApp: React.FC<unknown> = () => {
+export const IndexApp: React.VFC = () => {
   const [posts, setPosts] = useState<PostCardsProps['posts']>([])
 
   useEffect(() => {
@@ -90,5 +90,3 @@ const IndexApp: React.FC<unknown> = () => {
     </div>
   )
 }
-
-export default IndexApp

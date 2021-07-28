@@ -6,11 +6,11 @@ export interface NotifySwitchProps {
   readonly handleNotifyToggle: () => void
 }
 
-export const NotifySwitch: React.FC<NotifySwitchProps> = ({
+export const NotifySwitch: React.VFC<NotifySwitchProps> = ({
   busy,
   enabled,
   handleNotifyToggle
-}: NotifySwitchProps) => (
+}) => (
   <div className="switch">
     <label htmlFor="enabled">
       <input

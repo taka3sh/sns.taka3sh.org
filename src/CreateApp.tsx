@@ -40,7 +40,7 @@ const getDefaultValues = () => ({
   title: ''
 })
 
-const CreateApp: React.FC<unknown> = () => {
+export const CreateApp: React.VFC = () => {
   const {
     register: registerPost,
     handleSubmit: handleSubmitPost,
@@ -142,5 +142,3 @@ const CreateApp: React.FC<unknown> = () => {
     </div>
   )
 }
-
-export default CreateApp

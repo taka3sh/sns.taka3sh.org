@@ -10,13 +10,13 @@ export interface PostFormCardProps
   readonly handleSubmit: () => void
 }
 
-export const PostFormCard: React.FC<PostFormCardProps> = ({
+export const PostFormCard: React.VFC<PostFormCardProps> = ({
   children,
   formState,
   heading,
   handleSubmit,
   register
-}: PostFormCardProps) => (
+}) => (
   <form action="#" method="POST" className="card" onSubmit={handleSubmit}>
     <div className="card-title white-text pink lighten-1">{heading}</div>
     <div className="card-content">
