@@ -8,7 +8,7 @@ export interface LoginFormProps
   readonly handleSubmit: () => void
 }
 
-export const LoginForm: React.FC<LoginFormProps> = ({
+export const LoginForm: React.VFC<LoginFormProps> = ({
   isOpen,
   handleSubmit,
   register

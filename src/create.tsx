@@ -1,4 +1,4 @@
-import CreateApp from './CreateApp'
+import { CreateApp } from './CreateApp'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import reportWebVitals from './reportWebVitals'

@@ -10,7 +10,7 @@ export interface PostFormCardProps
   readonly handleSubmit: () => void
 }
 
-export const PostFormCard: React.FC<PostFormCardProps> = ({
+export const PostFormCard: React.VFC<PostFormCardProps> = ({
   children,
   formState,
   heading,
