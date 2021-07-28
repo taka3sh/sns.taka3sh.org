@@ -12,7 +12,7 @@ export const LoginForm: React.VFC<LoginFormProps> = ({
   isOpen,
   handleSubmit,
   register
-}) => (
+}: LoginFormProps) => (
   <Modal isOpen={isOpen}>
     <div id="logindialog">
       <form action="#" method="POST" onSubmit={handleSubmit}>

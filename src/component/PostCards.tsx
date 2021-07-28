@@ -10,7 +10,7 @@ export interface PostCardsProps {
   readonly posts: PostWithKey[]
 }
 
-export const PostCards: React.VFC<PostCardsProps> = ({ posts }) => (
+export const PostCards: React.VFC<PostCardsProps> = ({ posts }: PostCardsProps) => (
   <div className="mdl-grid">
     {posts.map((post) => (
       <div className="card" id={post.key} key={post.key}>
