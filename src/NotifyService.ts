@@ -1,4 +1,5 @@
 import firebase from 'firebase/app'
+import logo192 from './logo192.png'
 
 const scope = '/sw/'
 
@@ -24,7 +25,7 @@ const showGreeting = () => {
     .then((swReg) =>
       swReg?.showNotification('通知設定が完了しました', {
         body: '新しい投稿がある時、このアイコンの通知が配信されます。',
-        icon: '/logo192.png'
+        icon: new URL(logo192).pathname
       })
     )
 }
@@ -33,7 +34,8 @@ export const registerNotifyServiceWorker = async (): Promise<ServiceWorkerRegist
   const firebaseSwReg = await navigator.serviceWorker.getRegistration('/firebase-cloud-messaging-push-scope')
   firebaseSwReg?.unregister()
   return navigator.serviceWorker.register(new URL('./sw/index.ts', import.meta.url), {
-    scope
+    scope,
+    type: 'module'
   })
 }
 
