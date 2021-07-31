@@ -1,0 +1,33 @@
+[build]
+  publish = "packages/www/dist"
+  command = "npm run build"
+
+[[redirects]]
+  from = "/"
+  to = "/index.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/create"
+  to = "/create.html"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/create.html"
+  to = "/create"
+  status = 301
+  force = true
+
+[[headers]]
+  for = "/manifest.webmanifest"
+
+  [headers.values]
+    Content-Type = "application/manifest+json; charset=UTF-8"
