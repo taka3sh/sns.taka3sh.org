@@ -1,5 +1,7 @@
 /* eslint-disable no-undef */
 
+import logo192 from './logo192.png'
+
 const sw = self as unknown as ServiceWorkerGlobalScope & typeof globalThis
 
 sw.addEventListener('push', (e: PushEvent) => {
@@ -12,7 +14,7 @@ sw.addEventListener('push', (e: PushEvent) => {
     sw.registration.showNotification(data.notification.title, {
       body: data.notification.body,
       data: data.data,
-      icon: '/logo192.png'
+      icon: new URL(logo192).pathname
     })
   )
 })

@@ -38,6 +38,7 @@ func (s PublishServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	println(r.FormValue("imageUrl"))
 	message := &messaging.Message{
 		Data: map[string]string{
 			"key": r.FormValue("key"),
@@ -45,7 +46,7 @@ func (s PublishServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		Notification: &messaging.Notification{
 			Title:    r.FormValue("title"),
 			Body:     r.FormValue("body"),
-			ImageURL: "/logo192.png",
+			ImageURL: r.FormValue("imageUrl"),
 		},
 		Topic: s.Topic,
 	}
