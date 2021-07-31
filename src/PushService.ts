@@ -1,6 +1,7 @@
 import { Post } from './PostTypes'
 import dayjs from 'dayjs'
 import firebase from 'firebase/app'
+import logo192 from './logo192.png'
 
 export class PushService {
   readonly auth: firebase.auth.Auth
@@ -20,6 +21,7 @@ export class PushService {
     data.append('title', post.title)
     data.append('body', post.body)
     data.append('createdAt', dayjs(post.createdAt).toISOString())
+    data.append('imageUrl', new URL(logo192).pathname)
 
     if (this.auth.currentUser === null) throw new Error('User is not defined')
 
