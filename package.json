@@ -9,8 +9,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.10.1",
-    "react-modal": "^3.14.3",
-    "web-vitals": "^2.1.0"
+    "react-modal": "^3.14.3"
   },
   "scripts": {
     "dev": "mkdir -p dist && cp public/* dist/ && parcel 'src/*.html'",
