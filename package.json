@@ -12,8 +12,8 @@
     "react-modal": "^3.14.3"
   },
   "scripts": {
-    "dev": "mkdir -p dist && cp public/* dist/ && parcel 'src/*.html'",
-    "build": "tsc && mkdir -p dist && cp public/* dist/ && parcel build 'src/*.html'",
+    "dev": "parcel 'src/*.html'",
+    "build": "tsc && parcel build 'src/*.html' && cp public/* dist/",
     "lint": "eslint --ext .ts,.tsx,.js ."
   },
   "devDependencies": {
