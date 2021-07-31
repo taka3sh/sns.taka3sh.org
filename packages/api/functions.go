@@ -1,10 +1,9 @@
-package sns
+package api
 
 import (
 	"net/http"
 
 	"github.com/rs/cors"
-	"github.com/taka3sh/sns.taka3sh.org/functions"
 )
 
 func handleCors(h http.Handler) http.Handler {
@@ -15,21 +14,21 @@ func handleCors(h http.Handler) http.Handler {
 }
 
 func Publish(w http.ResponseWriter, r *http.Request) {
-	handler := handleCors(functions.PublishServer{Topic: "posts"})
+	handler := handleCors(PublishServer{Topic: "posts"})
 	handler.ServeHTTP(w, r)
 }
 
 func PublishDev(w http.ResponseWriter, r *http.Request) {
-	handler := handleCors(functions.PublishServer{Topic: "posts.dev"})
+	handler := handleCors(PublishServer{Topic: "posts.dev"})
 	handler.ServeHTTP(w, r)
 }
 
 func Subscribe(w http.ResponseWriter, r *http.Request) {
-	handler := handleCors(functions.SubscribeServer{Topic: "posts"})
+	handler := handleCors(SubscribeServer{Topic: "posts"})
 	handler.ServeHTTP(w, r)
 }
 
 func SubscribeDev(w http.ResponseWriter, r *http.Request) {
-	handler := handleCors(functions.SubscribeServer{Topic: "posts.dev"})
+	handler := handleCors(SubscribeServer{Topic: "posts.dev"})
 	handler.ServeHTTP(w, r)
 }

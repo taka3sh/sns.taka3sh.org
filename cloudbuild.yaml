@@ -6,7 +6,7 @@ steps:
       - deploy
       - Publish
       - --region=asia-northeast1
-      - --source=.
+      - --source=./packages/api
       - --runtime=go113
       - --trigger-http
       - --allow-unauthenticated
@@ -17,7 +17,7 @@ steps:
       - deploy
       - PublishDev
       - --region=asia-northeast1
-      - --source=.
+      - --source=./packages/api
       - --runtime=go113
       - --trigger-http
       - --allow-unauthenticated
@@ -29,7 +29,7 @@ steps:
       - deploy
       - Subscribe
       - --region=asia-northeast1
-      - --source=.
+      - --source=./packages/api
       - --runtime=go113
       - --trigger-http
       - --allow-unauthenticated
@@ -41,7 +41,7 @@ steps:
       - deploy
       - SubscribeDev
       - --region=asia-northeast1
-      - --source=.
+      - --source=./packages/api
       - --runtime=go113
       - --trigger-http
       - --allow-unauthenticated
