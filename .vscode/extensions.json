@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "googlecloudtools.cloudcode",
+        "dbaeumer.vscode-eslint",
+        "golang.go"
+    ]
+}
