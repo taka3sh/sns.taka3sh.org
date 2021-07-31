@@ -1,24 +1,24 @@
 {
-    "compilerOptions": {
-        "target": "ESNext",
-        "lib": [
-            "ESNext",
-            "WebWorker"
-        ],
-        "allowJs": false,
-        "skipLibCheck": false,
-        "esModuleInterop": false,
-        "allowSyntheticDefaultImports": true,
-        "strict": true,
-        "forceConsistentCasingInFileNames": true,
-        "module": "ESNext",
-        "moduleResolution": "Node",
-        "resolveJsonModule": true,
-        "isolatedModules": false,
-        "jsx": "react",
-        "composite": true
-    },
-    "include": [
-        "./*",
-    ]
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": [
+      "ESNext",
+      "WebWorker"
+    ],
+    "allowJs": false,
+    "skipLibCheck": false,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": false,
+    "jsx": "react",
+    "composite": true
+  },
+  "include": [
+    "./*",
+  ]
 }
