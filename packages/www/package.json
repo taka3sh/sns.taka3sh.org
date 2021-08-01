@@ -13,7 +13,7 @@
   },
   "scripts": {
     "dev": "parcel 'src/*.html'",
-    "build": "tsc && parcel build 'src/*.html' && cp public/* dist/",
+    "build": "tsc && parcel build 'src/*.html' && cp robots.txt dist/",
     "lint": "eslint --ext .ts,.tsx ."
   },
   "devDependencies": {
