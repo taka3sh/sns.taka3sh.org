@@ -10,6 +10,7 @@ steps:
       - --runtime=go113
       - --trigger-http
       - --allow-unauthenticated
+      - --security-level=secure-always
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
     args:
       - gcloud
@@ -21,6 +22,7 @@ steps:
       - --runtime=go113
       - --trigger-http
       - --allow-unauthenticated
+      - --security-level=secure-always
     waitFor: ['-']
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
     args:
@@ -33,6 +35,7 @@ steps:
       - --runtime=go113
       - --trigger-http
       - --allow-unauthenticated
+      - --security-level=secure-always
     waitFor: ['-']
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
     args:
@@ -45,4 +48,5 @@ steps:
       - --runtime=go113
       - --trigger-http
       - --allow-unauthenticated
+      - --security-level=secure-always
     waitFor: ['-']
