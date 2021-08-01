@@ -19,15 +19,12 @@ export const isNotifyServiceEnabled = async (): Promise<boolean> => {
   return tokenSent && notifyAllowed
 }
 
-const showGreeting = () => {
-  navigator.serviceWorker
-    .getRegistration(scope)
-    .then((swReg) =>
-      swReg?.showNotification('通知設定が完了しました', {
-        body: '新しい投稿がある時、このアイコンの通知が配信されます。',
-        icon: new URL(logo192).pathname
-      })
-    )
+const showGreeting = async () => {
+  const swReg = await navigator.serviceWorker.getRegistration(scope)
+  swReg?.showNotification('通知設定が完了しました', {
+    body: '新しい投稿がある時、このアイコンの通知が配信されます。',
+    icon: new URL(logo192).pathname
+  })
 }
 
 export const registerNotifyServiceWorker = async (): Promise<ServiceWorkerRegistration> => {
