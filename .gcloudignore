@@ -18,7 +18,7 @@
 .parcel-cache
 .vscode
 node_modules
-packages/api
+packages/www
 .nvmrc
 netlify.toml
 package-lock.json
