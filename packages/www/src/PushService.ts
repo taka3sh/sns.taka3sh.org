@@ -13,7 +13,7 @@ export class PushService {
     this.endpoint = endpoint
   }
 
-  publish (key: string, post: Post): Promise<void> {
+  async publish (key: string, post: Post): Promise<void> {
     const { endpoint } = this
 
     const data = new FormData()
@@ -25,16 +25,14 @@ export class PushService {
 
     if (this.auth.currentUser === null) throw new Error('User is not defined')
 
-    return this.auth.currentUser.getIdToken(true).then((idToken) => {
-      data.append('idToken', idToken)
+    const idToken = await this.auth.currentUser.getIdToken(true)
+    data.append('idToken', idToken)
 
-      return fetch(endpoint, {
-        body: data,
-        method: 'POST',
-        mode: 'cors'
-      }).then((response) => {
-        if (!response.ok) throw new Error('Failed to publish')
-      })
+    const response = await fetch(endpoint, {
+      body: data,
+      method: 'POST',
+      mode: 'cors'
     })
+    if (!response.ok) throw new Error('Failed to publish')
   }
 }
