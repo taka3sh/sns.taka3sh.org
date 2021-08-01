@@ -1,4 +1,4 @@
-
+import { AuthService, getAuthServiceUser } from './AuthService'
 import { Post, PostWithKey } from './PostTypes'
 import React, { useState } from 'react'
 import {
@@ -7,7 +7,6 @@ import {
   pushEndpoint
 } from './constants'
 
-import { AuthService } from './AuthService'
 import { Footer } from './component/Footer'
 import { Header } from './component/Header'
 import { LoginForm } from './component/LoginForm'
@@ -88,7 +87,7 @@ export const CreateApp: React.VFC = () => {
     watch: watchLogin
   } = useForm<{ email: string; password: string }>()
 
-  const [user, setUser] = useState(AuthService.getUser())
+  const [user, setUser] = useState(getAuthServiceUser())
 
   const handleLogin = () => {
     authService
@@ -100,9 +99,8 @@ export const CreateApp: React.VFC = () => {
   }
 
   const handleLogout = () => {
-    authService.logout().then(() => {
-      setUser(false)
-    })
+    authService.logout()
+    setUser(false)
   }
 
   return (

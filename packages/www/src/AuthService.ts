@@ -2,6 +2,8 @@ import firebase from 'firebase/app'
 
 const AUTHSERVICE_USER = 'AuthService:user'
 
+export const getAuthServiceUser = (): boolean => localStorage.getItem(AUTHSERVICE_USER) === 'loggedIn'
+
 export class AuthService {
   readonly auth: firebase.auth.Auth
 
@@ -9,23 +11,15 @@ export class AuthService {
     this.auth = auth
   }
 
-  static getUser (): boolean {
-    return localStorage.getItem(AUTHSERVICE_USER) === 'loggedIn'
+  async login (email: string, password: string): Promise<boolean> {
+    const result = await this.auth.signInWithEmailAndPassword(email, password)
+    if (result.user === null || result.user.email === null) throw new Error('Authentication error')
+    localStorage.setItem(AUTHSERVICE_USER, 'loggedIn')
+    return true
   }
 
-  login (email: string, password: string): Promise<boolean> {
-    return this.auth
-      .signInWithEmailAndPassword(email, password)
-      .then((result) => {
-        if (result.user == null || result.user.email == null) { throw new Error('Authentication error') }
-        localStorage.setItem(AUTHSERVICE_USER, 'loggedIn')
-        return true
-      })
-  }
-
-  logout (): Promise<void> {
-    return this.auth.signOut().then(() => {
-      localStorage.removeItem(AUTHSERVICE_USER)
-    })
+  logout () {
+    this.auth.signOut()
+    localStorage.removeItem(AUTHSERVICE_USER)
   }
 }
