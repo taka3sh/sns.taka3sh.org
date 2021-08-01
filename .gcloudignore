@@ -13,8 +13,15 @@
 .git
 .gitignore
 
-node_modules
-src
-public
+.devcontainer
 .github
+.parcel-cache
+.vscode
+node_modules
+packages/api
+.nvmrc
+netlify.toml
+package-lock.json
+package.json
+README.md
 #!include:.gitignore
