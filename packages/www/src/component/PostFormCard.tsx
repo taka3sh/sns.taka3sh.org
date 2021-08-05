@@ -2,15 +2,15 @@ import { Post } from '../PostTypes'
 import React from 'react'
 import { UseFormReturn } from 'react-hook-form'
 
-export interface PostFormCardProps
-  extends React.PropsWithChildren<
-    Pick<UseFormReturn<Post>, 'register' | 'formState'>
-  > {
+export interface PostFormCardProps {
+  readonly children: React.ReactNode
+  readonly register: UseFormReturn<Post>['register']
+  readonly formState: UseFormReturn<Post>['formState']
   readonly heading: string
   readonly handleSubmit: () => void
 }
 
-export const PostFormCard: React.VFC<PostFormCardProps> = ({
+export const PostFormCard: React.FC<PostFormCardProps> = ({
   children,
   formState,
   heading,

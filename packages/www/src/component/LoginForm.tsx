@@ -1,9 +1,10 @@
+import { Login } from '../LoginFormTypes'
 import Modal from 'react-modal'
 import React from 'react'
 import { UseFormReturn } from 'react-hook-form'
 
-export interface LoginFormProps
-  extends Pick<UseFormReturn<{ email: string; password: string }>, 'register'> {
+export interface LoginFormProps {
+  readonly register: UseFormReturn<Login>['register']
   readonly isOpen: boolean
   readonly handleSubmit: () => void
 }
