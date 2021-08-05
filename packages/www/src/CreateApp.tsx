@@ -9,6 +9,7 @@ import {
 
 import { Footer } from './component/Footer'
 import { Header } from './component/Header'
+import { Login } from './LoginFormTypes'
 import { LoginForm } from './component/LoginForm'
 import Materialize from 'materialize-css'
 import { PostCards } from './component/PostCards'
@@ -85,7 +86,7 @@ export const CreateApp: React.VFC = () => {
     register: registerLogin,
     handleSubmit: handleSubmitLogin,
     watch: watchLogin
-  } = useForm<{ email: string; password: string }>()
+  } = useForm<Login>()
 
   const [user, setUser] = useState(getAuthServiceUser())
 
