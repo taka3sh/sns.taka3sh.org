@@ -2,6 +2,7 @@
     "recommendations": [
         "googlecloudtools.cloudcode",
         "dbaeumer.vscode-eslint",
-        "golang.go"
+        "golang.go",
+        "ms-vscode-remote.remote-containers"
     ]
 }
