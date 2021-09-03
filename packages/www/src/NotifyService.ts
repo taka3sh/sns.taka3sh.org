@@ -1,4 +1,5 @@
-import firebase from 'firebase/app'
+
+import { Messaging, getToken } from 'firebase/messaging'
 import logo192 from './logo192.png'
 
 const scope = '/sw/'
@@ -37,17 +38,17 @@ export const registerNotifyServiceWorker = async (): Promise<ServiceWorkerRegist
 }
 
 export class NotifyService {
-  readonly messaging: firebase.messaging.Messaging
+  readonly messaging: Messaging
   readonly endpoint: string
 
-  constructor (messaging: firebase.messaging.Messaging, endpoint: string) {
+  constructor (messaging: Messaging, endpoint: string) {
     this.messaging = messaging
     this.endpoint = endpoint
   }
 
   async subscribe (): Promise<void> {
     const swReg = await registerNotifyServiceWorker()
-    const currentToken = await this.messaging.getToken({
+    const currentToken = await getToken(this.messaging, {
       serviceWorkerRegistration: swReg
     })
     const body = new FormData()
