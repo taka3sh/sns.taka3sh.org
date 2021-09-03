@@ -18,8 +18,6 @@ import { NotifySwitch } from './component/NotifySwitch'
 import { getMessaging } from 'firebase/messaging'
 import { initializeApp } from 'firebase/app'
 
-import 'firebase/compat/database'
-import 'firebase/compat/messaging'
 import 'materialize-css/dist/css/materialize.min.css'
 
 const firebaseApp = initializeApp(firebaseConfig)
