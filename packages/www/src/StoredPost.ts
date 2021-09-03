@@ -1,18 +1,20 @@
-import firebase from 'firebase/app'
+import { Database, ThenableReference, push, ref } from 'firebase/database'
 
 export class StoredPost {
-  readonly ref: firebase.database.Reference
+  readonly database: Database
+  readonly prefix: string
 
-  constructor (ref: firebase.database.Reference) {
-    this.ref = ref
+  constructor (database: Database, prefix: string) {
+    this.database = database
+    this.prefix = prefix
   }
 
   create (
     title: string,
     body: string,
     createdAt: string
-  ): firebase.database.ThenableReference {
-    return this.ref.push({
+  ): ThenableReference {
+    return push(ref(this.database, this.prefix), {
       body,
       createdAt: new Date(createdAt).toISOString(),
       title

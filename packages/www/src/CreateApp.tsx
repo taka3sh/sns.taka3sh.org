@@ -17,22 +17,21 @@ import { PostFormCard } from './component/PostFormCard'
 import { PushService } from './PushService'
 import { StoredPost } from './StoredPost'
 import dayjs from 'dayjs'
-import firebase from 'firebase/app'
+import { getAuth } from 'firebase/auth'
+import { getDatabase } from 'firebase/database'
+import { initializeApp } from 'firebase/app'
 import { useForm } from 'react-hook-form'
 
-import 'firebase/auth'
-import 'firebase/database'
-import 'firebase/messaging'
 import 'materialize-css/dist/css/materialize.min.css'
 
-firebase.initializeApp(firebaseConfig)
+const firebaseApp = initializeApp(firebaseConfig)
 
-const auth = firebase.auth()
-const database = firebase.database()
+const auth = getAuth(firebaseApp)
+const database = getDatabase(firebaseApp)
 
 const authService = new AuthService(auth)
 const pushService = new PushService(auth, pushEndpoint)
-const storedPost = new StoredPost(database.ref(postPrefix))
+const storedPost = new StoredPost(database, postPrefix)
 
 const getDefaultValues = () => ({
   body: '',
@@ -66,7 +65,7 @@ export const CreateApp: React.VFC = () => {
   const handleCreate = (data: Post) => {
     storedPost
       .create(data.title, data.body, data.createdAt)
-      .then((postRef: firebase.database.Reference) => {
+      .then(postRef => {
         Materialize.toast({ html: 'The new post was successfully created.' })
         if (postRef.key === null) {
           throw new Error('Key is not generated')

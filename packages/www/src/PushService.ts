@@ -1,14 +1,13 @@
+import { Auth, getIdToken } from 'firebase/auth'
 import { Post } from './PostTypes'
 import dayjs from 'dayjs'
-import firebase from 'firebase/app'
 import logo192 from './logo192.png'
 
 export class PushService {
-  readonly auth: firebase.auth.Auth
-
+  readonly auth: Auth
   readonly endpoint: string
 
-  constructor (auth: firebase.auth.Auth, endpoint: string) {
+  constructor (auth: Auth, endpoint: string) {
     this.auth = auth
     this.endpoint = endpoint
   }
@@ -25,7 +24,7 @@ export class PushService {
 
     if (this.auth.currentUser === null) throw new Error('User is not defined')
 
-    const idToken = await this.auth.currentUser.getIdToken(true)
+    const idToken = await getIdToken(this.auth.currentUser, true)
     data.append('idToken', idToken)
 
     const response = await fetch(endpoint, {

@@ -5,6 +5,7 @@ import {
 } from './NotifyService'
 import { PostCards, PostCardsProps } from './component/PostCards'
 import React, { useEffect, useState } from 'react'
+import { child, get, getDatabase, ref } from 'firebase/database'
 import {
   firebaseConfig,
   notifyEndpoint,
@@ -14,17 +15,15 @@ import {
 import { Footer } from './component/Footer'
 import { Header } from './component/Header'
 import { NotifySwitch } from './component/NotifySwitch'
-import firebase from 'firebase/app'
+import { getMessaging } from 'firebase/messaging'
+import { initializeApp } from 'firebase/app'
 
-import 'firebase/auth'
-import 'firebase/database'
-import 'firebase/messaging'
 import 'materialize-css/dist/css/materialize.min.css'
 
-firebase.initializeApp(firebaseConfig)
+const firebaseApp = initializeApp(firebaseConfig)
 
-const database = firebase.database()
-const messaging = firebase.messaging()
+const database = getDatabase(firebaseApp)
+const messaging = getMessaging(firebaseApp)
 
 registerNotifyServiceWorker()
 const notifyService = new NotifyService(messaging, notifyEndpoint)
@@ -33,7 +32,8 @@ export const IndexApp: React.VFC = () => {
   const [posts, setPosts] = useState<PostCardsProps['posts']>([])
 
   useEffect(() => {
-    database.ref(postPrefix).once('value', (snapshot) => {
+    const dbRef = ref(database)
+    get(child(dbRef, postPrefix)).then(snapshot => {
       snapshot.forEach((childSnapshot) => {
         setPosts((prevPosts) => [
           { ...childSnapshot.val(), key: childSnapshot.key },
