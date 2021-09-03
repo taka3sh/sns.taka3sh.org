@@ -22,9 +22,6 @@ import { getDatabase } from 'firebase/database'
 import { initializeApp } from 'firebase/app'
 import { useForm } from 'react-hook-form'
 
-import 'firebase/compat/auth'
-import 'firebase/compat/database'
-import 'firebase/compat/messaging'
 import 'materialize-css/dist/css/materialize.min.css'
 
 const firebaseApp = initializeApp(firebaseConfig)
