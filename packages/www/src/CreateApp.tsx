@@ -17,12 +17,12 @@ import { PostFormCard } from './component/PostFormCard'
 import { PushService } from './PushService'
 import { StoredPost } from './StoredPost'
 import dayjs from 'dayjs'
-import firebase from 'firebase/app'
+import firebase from 'firebase/compat/app'
 import { useForm } from 'react-hook-form'
 
-import 'firebase/auth'
-import 'firebase/database'
-import 'firebase/messaging'
+import 'firebase/compat/auth'
+import 'firebase/compat/database'
+import 'firebase/compat/messaging'
 import 'materialize-css/dist/css/materialize.min.css'
 
 firebase.initializeApp(firebaseConfig)

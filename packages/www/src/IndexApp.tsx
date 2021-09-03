@@ -14,11 +14,11 @@ import {
 import { Footer } from './component/Footer'
 import { Header } from './component/Header'
 import { NotifySwitch } from './component/NotifySwitch'
-import firebase from 'firebase/app'
+import firebase from 'firebase/compat/app'
 
-import 'firebase/auth'
-import 'firebase/database'
-import 'firebase/messaging'
+import 'firebase/compat/auth'
+import 'firebase/compat/database'
+import 'firebase/compat/messaging'
 import 'materialize-css/dist/css/materialize.min.css'
 
 firebase.initializeApp(firebaseConfig)
