@@ -19,7 +19,10 @@
 .vscode
 node_modules
 packages/www
+.editorconfig
+.gcloudignore
 .nvmrc
+cloudbuild.yaml
 netlify.toml
 package-lock.json
 package.json
